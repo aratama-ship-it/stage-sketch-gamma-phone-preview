@@ -21549,7 +21549,7 @@
     if (L.plan) drawPlanVenue(target, L);
     else drawFrontVenue(target, L);
     if (showSelection && L.plan && target === planCtx) drawLightingPlanOverlay(target, L);
-    if (showSelection && ((L.plan && target === planCtx) || (!L.plan && target === ctx))) {
+    if ((showSelection || STUDY_READ_ONLY) && ((L.plan && target === planCtx) || (!L.plan && target === ctx))) {
       drawLightCuePools(target, L);
       if (!featureOn("workLightOff")) { drawLightCueBeams(target, L); drawLightCueLasers(target, L); drawLightCueBodies(target, L); }
     }
@@ -21625,7 +21625,7 @@
     }
 
     // 名前。頭上（平面では点の脇）に小さく置く。演者・装置・照明は別々に出し入れする
-    if (showSelection && ((L.plan && target === planCtx) || (!L.plan && target === ctx))) {
+    if ((showSelection || STUDY_READ_ONLY) && ((L.plan && target === planCtx) || (!L.plan && target === ctx))) {
       if (drawLightCueWorkLight(target, L)) {
         redrawLitPieces(target, L, orderedPieces, draw);
         // はけ途中の演者も背景照明より手前へ戻す。現シーンにいないため
@@ -42076,6 +42076,20 @@ html, body { margin: 0; padding: 0; color: #1c1a17; background: #fff; font-famil
   if (STUDY_READ_ONLY) {
     // Only presentation state is mutable. No editor, save, export or session bridge is exposed.
     window.SHOSAI_STAGE_STUDY_RENDERER = Object.freeze({
+      light(mode) {
+        if (mode !== "work" && mode !== "show") return;
+        const step = LIGHT_LOOK_STEPS.find(item => item.value === (mode === "show" ? "dark" : "off"));
+        prefs.lightPool = step.pool;
+        prefs.lightBeam = step.beam;
+        prefs.workLightOff = step.work;
+        applyFeatureFlags();
+        render();
+      },
+      lightInfo() {
+        // Same rig, cue model and stage-dimension guard as the actual painter.
+        // Unset/off cues still have a rig: show mode correctly leaves it dark.
+        return Boolean(lightCueOverlayForLayout(layout("plan")));
+      },
       load(doc, language) {
         stopSceneAnim(); stopSpinRun();
         lang = language === "en" ? "en" : "ja";

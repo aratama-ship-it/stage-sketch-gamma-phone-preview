@@ -1,0 +1,88 @@
+{
+  "build": "20261001-1134",
+  "images": [
+    {
+      "sample": "feature-test",
+      "scene": 26,
+      "view": "front",
+      "differentPixels": 230390,
+      "totalPixels": 230400,
+      "restored": true,
+      "workSha256": "8353384ccda9e00acca8ba72757e6e77e8c1e4bb411ce8de0a2cd092b8ae164d",
+      "showSha256": "8d9a2afe9c228bc5f79fadc4a9d54cd1f93a670d7f00c2dcf89ca2988e7ecf8e",
+      "comparison": "feature-test-scene-26-front.png"
+    },
+    {
+      "sample": "feature-test",
+      "scene": 26,
+      "view": "plan",
+      "differentPixels": 230400,
+      "totalPixels": 230400,
+      "restored": true,
+      "workSha256": "3c3606e44eba4b64b167bf5e3c6ff87920ef2c0e0fd738557bd70017b7ab4ae9",
+      "showSha256": "3d6e402a5e071a8b9bcee8b517c8c9ad69cf3821adb046a3f1e3f09603066c40",
+      "comparison": "feature-test-scene-26-plan.png"
+    },
+    {
+      "sample": "feature-test",
+      "scene": 1,
+      "view": "front",
+      "differentPixels": 230400,
+      "totalPixels": 230400,
+      "restored": true,
+      "workSha256": "92a1fbccaa2f467ef941de564b437d151d933128182e11d464cb42981cfe4527",
+      "showSha256": "220677320ea52eb31def12e9a502329d92697d23392d2039fcce50a89259fe9b",
+      "comparison": "feature-test-scene-1-front.png"
+    },
+    {
+      "sample": "feature-test",
+      "scene": 1,
+      "view": "plan",
+      "differentPixels": 230400,
+      "totalPixels": 230400,
+      "restored": true,
+      "workSha256": "8876ebf8fa6a59d621679a77e6561c2509ca30593e2106fab8601b81678b9dd2",
+      "showSha256": "772ded55abd1961300ec2e4e1512bb103b8918e7d0ca44f9bd128c09b0943110",
+      "comparison": "feature-test-scene-1-plan.png"
+    },
+    {
+      "sample": "romeo-juliet",
+      "scene": 1,
+      "view": "front",
+      "differentPixels": 230069,
+      "totalPixels": 230400,
+      "restored": true,
+      "workSha256": "e7c405038b5ecd29b39c4881636c99c51d03640fe75351deb1ef7a219dd53005",
+      "showSha256": "e92830af76240239dfb4e8bca7f750b209c9ddb24da5afb07eae40b0b19b73fc",
+      "comparison": "romeo-juliet-scene-1-front.png"
+    },
+    {
+      "sample": "romeo-juliet",
+      "scene": 1,
+      "view": "plan",
+      "differentPixels": 229088,
+      "totalPixels": 230400,
+      "restored": true,
+      "workSha256": "90ee5d43b9062ca0f7cc79269ae07c453a5b3d4f2dda604ab227bd4e1c80b39c",
+      "showSha256": "803192f761c013eeb52dbe2a78e55a8306d9bc5b289c435acdaaa9835d47b64e",
+      "comparison": "romeo-juliet-scene-1-plan.png"
+    }
+  ],
+  "checks": [
+    "UI toggle changes canvas both ways",
+    "parent storage",
+    "scene next/previous",
+    "portrait/landscape reapply",
+    "page reload",
+    "sandbox iframe reload",
+    "legacy-pieces-only four-outlines hides toggle",
+    "opaque sandbox storage denied",
+    "read-only renderer API",
+    "only local GET requests"
+  ],
+  "assets200": 36,
+  "noLightingSampleAvailable": false,
+  "consoleErrors": [],
+  "non200": [],
+  "externalOrWriteRequests": 0
+}
