@@ -124,6 +124,7 @@
       mode(kind, enabled) { if (kind === 'pen') penOn = enabled; else stickyOn = enabled; if (enabled) camera('center'); },
       central() { camera('center'); },
       fill(full) { fullFit = full; this.reset(); },
+      controls(open) { for (const v of Object.values(views)) { v.bar.dataset.open = String(open); v.toggle.setAttribute('aria-expanded', String(open)); } },
       crop(view, source) {
         const v = views[view], out = document.createElement('canvas');
         const ratio = Math.min(1, 960 / v.viewport.clientWidth, 960 / v.viewport.clientHeight);

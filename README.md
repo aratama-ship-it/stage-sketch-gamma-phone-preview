@@ -279,3 +279,8 @@ Safari折り返し補正（build `20261001-1638`）: `overrides/stage-study-phon
 モード切替トグルほか（build `20261002-0803`）: `#phone-lines` は `.phone-mode-scene`/`.phone-mode-lines` の2スパン。WebKitの `:hover` 固定でも `stage-study.css` の aria-pressed 塗りつぶしが出ないよう CSS で上書き。`linesExit` は削除。build.mjs の navigation パッチは `stageFill` を関数化（`fill(full)` は平面の全幅化だけを切り替える）。押し出し演出の長さは `syncLines` の `duration: 560`。
 
 正面図の下詰め・縦書き（build `20261002-0812`）: build.mjs の navigation レイアウトパッチで、`viewer-phone` かつ正面のとき `v.cy` を「主舞台の下端＝viewport下端−4px」に（それ以外は従来の中央寄せ）。縦書きは `overrides/stage-study-phone.js` の設定ペイン `.phone-setting` チェックボックス→`verticalOn`、`syncLines` が `.phone-lines.is-vertical` を付け替え。セリフ3要素は `.phone-lines-flow`（横書き時は `display: contents`、縦書き時は `direction: rtl` の横スクロール flex）に入れ、各要素は `writing-mode: vertical-rl`。押し出し演出は縦書き時のみ X 軸（`syncLines` の `axis`/`sign`）。
+
+## 2026-10-02 build 20261002-0849: ショー切り替え・操作ボタンを下バーへ・転換再生を削除
+- ショー情報パネルの先頭に「ショーを切り替える」リスト（見本3種。選ぶと `?sample=` で読み込み直す）。★プレビュー専用: アダプタの `shows` 固定リスト。本番γでは最近のショー/割り当てショー一覧が要る（設計判断）。
+- 図の中の「正面操作」トグルを下バーへ移動（正面/平面/両方で『正面操作』『平面操作』『図の操作』）。押すと図内の操作バー（席選択・拡大リセット）を重ねて表示。iframe へ `controls` メッセージ（build.mjs パッチ＝γへ戻す時は本体側にも要る）。図内のトグルは廃止。
+- 「転換再生」ボタン削除。

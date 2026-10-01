@@ -182,7 +182,7 @@ await patchAsset('stage-sketch.js', [[
   'speaker mark call',
 ]]);
 await patchAsset('stage-study-frame.js', [
-  ["        else if (message.action === 'replay')", "        else if (message.action === 'light') { engine.light(message.mode); }\n        else if (message.action === 'fit') { navigation?.fill(Boolean(message.full)); }\n        else if (message.action === 'speaker') { engine.speaker(message.castId); }\n        else if (message.action === 'replay')", 'light message'],
+  ["        else if (message.action === 'replay')", "        else if (message.action === 'light') { engine.light(message.mode); }\n        else if (message.action === 'fit') { navigation?.fill(Boolean(message.full)); }\n        else if (message.action === 'controls') { navigation?.controls(Boolean(message.open)); }\n        else if (message.action === 'speaker') { engine.speaker(message.castId); }\n        else if (message.action === 'replay')", 'light message'],
   ["        if (message.action === 'load') window.parent.postMessage({ channel: 'stage-study', action: 'loaded' }, location.origin);",
    `        if (message.action === 'load') {
           window.parent.postMessage({ channel: 'stage-study', action: 'light-capability', hasLights: engine.lightInfo() }, location.origin);
@@ -242,7 +242,7 @@ await patchAsset("stage-study-navigation.js", [
   ],
   [
     "      central() { camera('center'); },",
-    "      central() { camera('center'); },\n      fill(full) { fullFit = full; this.reset(); },",
+    "      central() { camera('center'); },\n      fill(full) { fullFit = full; this.reset(); },\n      controls(open) { for (const v of Object.values(views)) { v.bar.dataset.open = String(open); v.toggle.setAttribute('aria-expanded', String(open)); } },",
     "full-width fit switch for line rehearsal"
   ],
   [
@@ -299,8 +299,8 @@ await patchAsset("stage-study-navigation.js", [
 await patchAsset("stage-study-navigation.css", [
   [
     ".study-frame { --viewer-blue:",
-    "\n.viewer-controls-toggle { display: none; }\n@media (orientation: landscape) {\n  .viewer-phone.study-frame[data-view=\"both\"] .study-drawings { grid-template-columns: minmax(0,2fr) minmax(0,1fr); grid-template-rows: 1fr; }\n  .viewer-phone.study-frame .study-drawing { grid-template-rows: minmax(0,1fr); }\n  .viewer-phone .viewer-drawing-bar { position: absolute; right: 4px; top: 4px; z-index: 5; max-width: calc(100% - 8px); padding: 0; gap: 0; background: color-mix(in srgb, var(--viewer-bar) 90%, transparent); }\n  .viewer-phone .viewer-drawing-bar .viewer-controls-toggle { display: block; min-width: 44px; }\n  .viewer-phone .viewer-drawing-bar:not([data-open=\"true\"]) > :not(.viewer-controls-toggle) { display: none; }\n  .viewer-phone .viewer-drawing-bar[data-open=\"true\"] { flex-wrap: wrap; }\n  .viewer-phone .viewer-drawing-bar label { display: none; }\n  .viewer-phone .viewer-drawing-bar select { max-width: 150px; }\n}\n\n.study-frame { --viewer-blue:",
-    "landscape controls overlay no layout row"
+    "\n.viewer-controls-toggle { display: none; }\n@media (orientation: landscape) {\n  .viewer-phone.study-frame[data-view=\"both\"] .study-drawings { grid-template-columns: minmax(0,2fr) minmax(0,1fr); grid-template-rows: 1fr; }\n}\n.viewer-phone.study-frame .study-drawing { grid-template-rows: minmax(0,1fr); }\n.viewer-phone .viewer-drawing-bar { position: absolute; right: 4px; top: 4px; z-index: 5; max-width: calc(100% - 8px); padding: 0; gap: 0; background: color-mix(in srgb, var(--viewer-bar) 90%, transparent); }\n.viewer-phone .viewer-drawing-bar:not([data-open=\"true\"]) { display: none; }\n.viewer-phone .viewer-drawing-bar[data-open=\"true\"] { flex-wrap: wrap; }\n.viewer-phone .viewer-drawing-bar label { display: none; }\n.viewer-phone .viewer-drawing-bar select { max-width: 150px; }\n\n.study-frame { --viewer-blue:",
+    "phone controls overlay opened from the parent bottom bar"
   ]
 ]);
 await patchAsset("stage-study-frame.js", [
@@ -387,7 +387,7 @@ const adapter = `/* 共有 Worker の API（/study/api/…）を横取りし、�
   const payload = () => payloadPromise ||= originalFetch('./samples/' + sample + '.json?b=${buildId}', { cache: 'no-store' }).then(r => {
     if (!r.ok) throw new Error('sample-missing'); return r.json();
   });
-  window.__STAGE_SKETCH_PHONE_PREVIEW__ = { build: ${JSON.stringify(buildId)}, source: ${JSON.stringify(`${sourceVersion} ${sourceCommit}`)}, sample, submissions: 0 };
+  window.__STAGE_SKETCH_PHONE_PREVIEW__ = { build: ${JSON.stringify(buildId)}, source: ${JSON.stringify(`${sourceVersion} ${sourceCommit}`)}, sample, submissions: 0, shows: ${JSON.stringify(Object.entries(sampleIndex).map(([k, v]) => ({ key: k, title: v.label, titleEn: v.labelEn })))} };
   window.fetch = async (input, options = {}) => {
     const url = new URL(input instanceof Request ? input.url : String(input), location.href);
     const method = String(options.method || (input instanceof Request ? input.method : 'GET')).toUpperCase();

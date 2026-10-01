@@ -43,6 +43,7 @@
         else if (message.action === 'scene') { sceneId = message.sceneId; engine.scene(sceneId); pen.load(message.strokes); pen.show(true); sticky.load(message.stickies); sticky.show(true); }
         else if (message.action === 'light') { engine.light(message.mode); }
         else if (message.action === 'fit') { navigation?.fill(Boolean(message.full)); }
+        else if (message.action === 'controls') { navigation?.controls(Boolean(message.open)); }
         else if (message.action === 'speaker') { engine.speaker(message.castId); }
         else if (message.action === 'replay') { pen.mode(false); pen.show(false); sticky.show(false); engine.replay(); }
         else if (message.action === 'stop') { engine.stop(); engine.scene(sceneId); pen.show(true); sticky.show(true); }

@@ -180,3 +180,5 @@ body.study-phone { --phone-lines-ratio: .4; --phone-line-size: 1.2rem; --phone-l
 .study-phone .phone-lines.is-vertical .phone-line-next-label { margin: 0 0 0 var(--study-s2); }
 .study-phone .phone-lines.is-vertical .phone-line-next-speaker { margin: 0 0 0 var(--study-s2); padding: 0 0 0 var(--study-s2); }
 .study-phone .phone-lines.is-vertical .phone-line-ghost { direction: ltr; writing-mode: vertical-rl; }
+.study-phone .phone-show-switch { margin: 0 0 var(--study-s3); }
+.study-phone .phone-show-switch h3 { margin: 0 0 var(--study-s1); font-size: var(--phone-control); color: var(--study-accent-strong); }
