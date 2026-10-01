@@ -17,11 +17,9 @@
   const nav = make('nav', 'phone-scenes'); const previous = button('phone-prev', 'study-prev', () => linesOn ? stepLine(-1) : $('study-prev').click()), current = button('phone-current', null, () => show('scenes')), next = button('phone-next', 'study-next', () => linesOn ? stepLine(1) : $('study-next').click()); current.className = 'phone-current'; const sceneListButton = button('phone-scene-list', 'scenes', () => show('scenes')), sceneInfo = button('phone-scene-info', 'info', () => { if (sceneInfo.getAttribute('aria-disabled') !== 'true') show('sceneInfo'); }); nav.append(current, sceneListButton, sceneInfo); shell.append(nav);
   const actions = make('nav', 'phone-tools'); shell.append(actions);
   const topActions = make('nav', 'phone-header-actions'), views = make('div', 'phone-views');
-  views.setAttribute('role', 'group');
-  const viewButtons = Object.fromEntries(['front', 'plan', 'both'].map(key => {
-    const b = button('phone-view-' + key, key, () => { $('study-view').value = key; $('study-view').dispatchEvent(new Event('change')); sync(); });
-    views.append(b); return [key, b];
-  }));
+  const viewOrder = ['front', 'plan', 'both'];
+  const viewButton = button('phone-view', 'front', () => { const order = linesOn ? ['front', 'plan'] : viewOrder, now = $('study-view').value; $('study-view').value = order[(order.indexOf(now) + 1) % order.length]; $('study-view').dispatchEvent(new Event('change')); sync(); });
+  views.append(viewButton);
   const lightKey = 'stage-study-phone-light';
   let lightMode = 'work', hasLights = false;
   try { if (localStorage.getItem(lightKey) === 'show') lightMode = 'show'; } catch { /* Display remains usable without storage. */ }
@@ -288,12 +286,8 @@
     light.hidden = !hasLights; light.disabled = !ready || !hasLights;
     light.setAttribute('aria-pressed', String(lightMode === 'show'));
     light.setAttribute('aria-label', t('light')); light.title = t('light');
-    views.setAttribute('aria-label', t('view'));
-    for (const [key, b] of Object.entries(viewButtons)) {
-      b.disabled = !ready || $('study-view').disabled || (linesOn && key === 'both');
-      b.setAttribute('aria-label', t(key)); b.title = t(key);
-      b.setAttribute('aria-pressed', String($('study-view').value === key));
-    }
+    const viewKey = $('study-view').value, viewLabel = t('view') + ': ' + t(viewKey);
+    viewButton.replaceChildren(icon(viewKey)); viewButton.disabled = !ready || $('study-view').disabled; viewButton.setAttribute('aria-label', viewLabel); viewButton.title = viewLabel;
     const showTitle = $('study-title').textContent || defaultBrand;
     if (brand.textContent !== showTitle) brand.textContent = showTitle;
     brand.title = showTitle;
