@@ -287,7 +287,7 @@
     light.setAttribute('aria-pressed', String(lightMode === 'show'));
     light.setAttribute('aria-label', t('light')); light.title = t('light');
     const viewKey = $('study-view').value, viewLabel = t('view') + ': ' + t(viewKey);
-    viewButton.replaceChildren(icon(viewKey)); viewButton.disabled = !ready || $('study-view').disabled; viewButton.setAttribute('aria-label', viewLabel); viewButton.title = viewLabel;
+    const viewCycle = linesOn ? ['front', 'plan'] : viewOrder, viewDots = make('span', 'phone-dots'); viewDots.setAttribute('aria-hidden', 'true'); for (const k of viewCycle) { const d = make('i', ''); d.dataset.on = String(k === viewKey); viewDots.append(d); } viewButton.replaceChildren(icon(viewKey), viewDots); viewButton.disabled = !ready || $('study-view').disabled; viewButton.setAttribute('aria-label', viewLabel); viewButton.title = viewLabel;
     const showTitle = $('study-title').textContent || defaultBrand;
     if (brand.textContent !== showTitle) brand.textContent = showTitle;
     brand.title = showTitle;
