@@ -82,6 +82,7 @@ body.study-phone {
 .study-phone .phone-detail { grid-row: 3; grid-column: 1; min-height: 0; max-height: calc(var(--phone-height, 100dvh) * var(--phone-detail-ratio)); overflow: auto; overscroll-behavior: contain; padding: var(--study-s2) var(--study-s3); background: var(--study-bg); }
 .study-phone .phone-detail .study-note-text { margin: 0; }
 .study-phone .study-note-text { line-height: 1.8; letter-spacing: .02em; line-break: strict; word-break: auto-phrase; text-wrap: pretty; }
+.study-phone .study-note-text.phrase-wrap { word-break: keep-all; overflow-wrap: anywhere; }
 .study-phone .phone-detail { padding-block: var(--study-s3); }
 .study-phone .phone-backdrop { position: absolute; inset: 0; z-index: 39; background: var(--study-bg); opacity: var(--phone-overlay-opacity); }
 .study-phone .phone-panel.phone-modal {

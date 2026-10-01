@@ -89,3 +89,4 @@
 - localStorageでON/OFFとlineIdを保存し再読込復帰。開始前の表示は同名キーのsessionStorageで保持し、終了時に戻す。稽古中は両方を無効化。
 - Chromium 390×844／844×390／360×740で全84行・復帰・場面移動・入口非表示・横あふれなしを確認。ページエラー0。
 - 詳細と追加ビルドパッチはREADME「改善11」、PNG・JSONは `design/lines-verification/`。実機と読み上げは未確認。
+- **Safari折り返し補正（build 20261001-1638）**: WebKit 26.5はCSS `word-break: auto-phrase` 非対応で、iPhone SE縦では「倒れてい／ない。」のように文節の途中で折れた。`auto-phrase` 非対応のブラウザだけ `Intl.Segmenter('ja')` で文節境界に `<wbr>` を入れ、`word-break: keep-all` で語中改行を止める（セリフ本文・合図・場面メモ）。Chromiumは従来どおり `auto-phrase`。WebKit 8通り（SE/15/ProMax/360 × 縦横）で横あふれ・小ボタン・ページエラーなしを再確認。文節境界は近似（助詞・句読点・かな→漢字）で、実機Safariは未確認。

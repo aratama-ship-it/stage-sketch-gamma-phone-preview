@@ -80,6 +80,37 @@
   const lineMemo = make('p', 'phone-line-memo study-note-text'), linesEmpty = make('p', 'phone-lines-empty');
   linesRegion.append(linesHead, linePrevious, lineLive, lineMemo, linesEmpty); shell.append(linesRegion);
   const setText = (el, value) => { if (el.textContent !== value) el.textContent = value; };
+  // Safari lacks `word-break: auto-phrase`; approximate phrase breaks with Intl.Segmenter + <wbr> and `keep-all`.
+  const phraseWrap = typeof Intl !== 'undefined' && Intl.Segmenter && !(window.CSS && CSS.supports && CSS.supports('word-break', 'auto-phrase'));
+  const segmenter = phraseWrap ? new Intl.Segmenter('ja', { granularity: 'word' }) : null;
+  const caseParticles = new Set(['は', 'が', 'を', 'に', 'へ', 'と', 'の', 'で', 'も']), longParticles = new Set(['から', 'まで', 'より', 'ので', 'のに', 'けど', 'けれど']);
+  const isHira = (ch) => /[ぁ-ゟ]/.test(ch || '');
+  const phraseParts = (text) => {
+    const parts = []; let prev = '', before = '';
+    for (const { segment } of segmenter.segment(text)) {
+      const startsContent = /[㐀-鿿゠-ヿA-Za-z0-9「『（【]/.test(segment[0]);
+      const afterParticle = (caseParticles.has(prev) && !isHira(before.slice(-1))) || longParticles.has(prev);
+      const afterHira = isHira(prev.slice(-1)) && !/^[お御ご]$/.test(prev) && !/[っんー]$/.test(prev);
+      const afterPunct = /[、。！？」』）】…]$/.test(prev);
+      const closes = /^[、。！？」』）】…ー]/.test(segment);
+      const nextParticle = caseParticles.has(segment) || longParticles.has(segment);
+      if (prev && !closes && ((startsContent && afterHira) || (afterParticle && !nextParticle && (startsContent || !/^の[でに]$/.test(prev))) || afterPunct)) parts.push(null);
+      parts.push(segment); before = prev; prev = segment;
+    }
+    return parts;
+  };
+  const setPhrased = (el, value) => {
+    if (!phraseWrap) return setText(el, value);
+    if (el.textContent === value && el.dataset.phrased === '1') return;
+    el.classList.add('phrase-wrap'); el.dataset.phrased = '1';
+    if (!/[぀-ヿ㐀-鿿]/.test(value)) { el.textContent = value; return; }
+    el.replaceChildren(...phraseParts(value).map(part => part === null ? document.createElement('wbr') : document.createTextNode(part)));
+  };
+  if (phraseWrap) {
+    const rephrase = () => { observer.disconnect(); delete sceneNote.dataset.phrased; setPhrased(sceneNote, sceneNote.textContent); observer.observe(sceneNote, { childList: true }); };
+    const observer = new MutationObserver(rephrase);
+    observer.observe(sceneNote, { childList: true });
+  }
   function saveLines() {
     try { localStorage.setItem(linesKey, JSON.stringify({ on: linesOn, lineId })); } catch { /* In-memory use still works. */ }
   }
@@ -160,7 +191,7 @@
     setText(linesEmpty, `${t('noLines')}。${t('linesHint')}`);
     setText(linePrevious, preceding ? `${preceding.speaker}: ${preceding.text}` : '');
     setText(lineSpeaker, line?.speaker || ''); lineSpeaker.style.borderLeftColor = line?.color || 'var(--study-accent)';
-    setText(lineText, line?.text || ''); setText(lineMemo, line?.memo ? `${t('cueMemo')}: ${line.memo.replace(/^(?:合図|Cue)[:：]\s*/, '')}` : '');
+    setPhrased(lineText, line?.text || ''); setPhrased(lineMemo, line?.memo ? `${t('cueMemo')}: ${line.memo.replace(/^(?:合図|Cue)[:：]\s*/, '')}` : '');
     // Only changing lines resets the scroll; status/language updates do not.
     const renderKey = lineId || $('study-scenes').value;
     if (renderedLine !== renderKey) { renderedLine = renderKey; linesRegion.scrollTop = 0; }
