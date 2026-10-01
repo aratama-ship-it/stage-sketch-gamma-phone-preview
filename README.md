@@ -269,3 +269,5 @@ viewer.html、study-frame.html、index.html、manifest.json。追加証拠は de
 改善11の最終ビルド: `20261001-1354`。node --check（build・override・全配信JS）、ビルド、生成36ファイルのSHA-256、overrideバイト一致、git diff --check が合格。
 
 Safari折り返し補正（build `20261001-1638`）: `overrides/stage-study-phone.js` の `phraseParts`/`setPhrased`（`auto-phrase` 非対応時のみ有効）と `overrides/stage-study-phone.css` の `.phrase-wrap`。場面メモ `#study-scene-note` はMutationObserverで再描画（disconnect→描画→observeでループ回避）。WebKitは Playwright に `maxTouchPoints=5` の init script を足して検証（テスト専用・アプリ側は変更なし）。
+
+セリフエリア高さ固定（build `20261001-2223`）: `overrides/stage-study-phone.css` の `.phone-lines-on` グリッドを「セリフ=1fr／図=min(--phone-figure-height, 画面高50%)」に変更し、`.phone-lines` の max-height を廃止。横は帯を `画面高×--phone-lines-ratio` の固定行高に。WebKit(375×667・430×932・667×375)とChromiumで確認。
