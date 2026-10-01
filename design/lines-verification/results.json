@@ -1,0 +1,206 @@
+{
+  "build": "20261001-1354",
+  "runs": [
+    {
+      "width": 390,
+      "height": 844,
+      "first": {
+        "count": "セリフ 1 / 84 · 3 / 34 · 0:02",
+        "speaker": "ベンヴォーリオ",
+        "text": "剣を収めろ。まだ誰も倒れていない。今なら帰れる。",
+        "memo": "合図: 手のひらを見せてから／A-3・仮秒、発話で調整",
+        "scene": "rj-a-20260924-a-3",
+        "view": "front",
+        "on": "true"
+      },
+      "second": {
+        "count": "セリフ 2 / 84 · 3 / 34 · 0:12",
+        "speaker": "ティボルト",
+        "text": "剣を抜いて、平和を説くのか。おまえが邪魔だ。",
+        "memo": "合図: ベンの手から目をそらす／A-3・仮秒、発話で調整",
+        "scene": "rj-a-20260924-a-3",
+        "view": "front",
+        "on": "true"
+      },
+      "third": {
+        "count": "セリフ 3 / 84 · 4 / 34 · 0:37",
+        "speaker": "ロミオ",
+        "text": "今のは、助けてもらいました。",
+        "memo": "合図: 物を受け取り直す／A-4・仮秒、発話で調整",
+        "scene": "rj-a-20260924-a-4",
+        "view": "front",
+        "on": "true"
+      },
+      "layout": {
+        "overflow": false,
+        "region": {
+          "x": 0,
+          "y": 96,
+          "width": 390,
+          "height": 193.640625,
+          "scroll": 194
+        },
+        "workspace": {
+          "x": 0,
+          "y": 289.640625,
+          "width": 390,
+          "height": 506.359375
+        },
+        "buttons": [
+          {
+            "id": "phone-lines-exit",
+            "width": 89.640625,
+            "height": 40
+          },
+          {
+            "id": "phone-prev",
+            "width": 44,
+            "height": 48
+          },
+          {
+            "id": "phone-next",
+            "width": 44,
+            "height": 48
+          }
+        ]
+      },
+      "pageErrors": [],
+      "consoleErrors": [],
+      "checks": "entrance, 1/84, 2/84, scene crossing, reload, both return, empty scene, all 84 lines, end boundaries, no-script shows passed"
+    },
+    {
+      "width": 844,
+      "height": 390,
+      "first": {
+        "count": "セリフ 1 / 84 · 3 / 34 · 0:02",
+        "speaker": "ベンヴォーリオ",
+        "text": "剣を収めろ。まだ誰も倒れていない。今なら帰れる。",
+        "memo": "合図: 手のひらを見せてから／A-3・仮秒、発話で調整",
+        "scene": "rj-a-20260924-a-3",
+        "view": "front",
+        "on": "true"
+      },
+      "second": {
+        "count": "セリフ 2 / 84 · 3 / 34 · 0:12",
+        "speaker": "ティボルト",
+        "text": "剣を抜いて、平和を説くのか。おまえが邪魔だ。",
+        "memo": "合図: ベンの手から目をそらす／A-3・仮秒、発話で調整",
+        "scene": "rj-a-20260924-a-3",
+        "view": "front",
+        "on": "true"
+      },
+      "third": {
+        "count": "セリフ 3 / 84 · 4 / 34 · 0:37",
+        "speaker": "ロミオ",
+        "text": "今のは、助けてもらいました。",
+        "memo": "合図: 物を受け取り直す／A-4・仮秒、発話で調整",
+        "scene": "rj-a-20260924-a-4",
+        "view": "front",
+        "on": "true"
+      },
+      "layout": {
+        "overflow": false,
+        "region": {
+          "x": 0,
+          "y": 0,
+          "width": 780,
+          "height": 132.59375,
+          "scroll": 161
+        },
+        "workspace": {
+          "x": 0,
+          "y": 132.59375,
+          "width": 780,
+          "height": 257.40625
+        },
+        "buttons": [
+          {
+            "id": "phone-lines-exit",
+            "width": 89.640625,
+            "height": 40
+          },
+          {
+            "id": "phone-prev",
+            "width": 44,
+            "height": 44
+          },
+          {
+            "id": "phone-next",
+            "width": 44,
+            "height": 44
+          }
+        ]
+      },
+      "pageErrors": [],
+      "consoleErrors": [],
+      "checks": "entrance, 1/84, 2/84, scene crossing, reload, both return, empty scene, all 84 lines, end boundaries, no-script shows passed"
+    },
+    {
+      "width": 360,
+      "height": 740,
+      "first": {
+        "count": "セリフ 1 / 84 · 3 / 34 · 0:02",
+        "speaker": "ベンヴォーリオ",
+        "text": "剣を収めろ。まだ誰も倒れていない。今なら帰れる。",
+        "memo": "合図: 手のひらを見せてから／A-3・仮秒、発話で調整",
+        "scene": "rj-a-20260924-a-3",
+        "view": "front",
+        "on": "true"
+      },
+      "second": {
+        "count": "セリフ 2 / 84 · 3 / 34 · 0:12",
+        "speaker": "ティボルト",
+        "text": "剣を抜いて、平和を説くのか。おまえが邪魔だ。",
+        "memo": "合図: ベンの手から目をそらす／A-3・仮秒、発話で調整",
+        "scene": "rj-a-20260924-a-3",
+        "view": "front",
+        "on": "true"
+      },
+      "third": {
+        "count": "セリフ 3 / 84 · 4 / 34 · 0:37",
+        "speaker": "ロミオ",
+        "text": "今のは、助けてもらいました。",
+        "memo": "合図: 物を受け取り直す／A-4・仮秒、発話で調整",
+        "scene": "rj-a-20260924-a-4",
+        "view": "front",
+        "on": "true"
+      },
+      "layout": {
+        "overflow": false,
+        "region": {
+          "x": 0,
+          "y": 96,
+          "width": 360,
+          "height": 193.640625,
+          "scroll": 194
+        },
+        "workspace": {
+          "x": 0,
+          "y": 289.640625,
+          "width": 360,
+          "height": 402.359375
+        },
+        "buttons": [
+          {
+            "id": "phone-lines-exit",
+            "width": 89.640625,
+            "height": 40
+          },
+          {
+            "id": "phone-prev",
+            "width": 44,
+            "height": 48
+          },
+          {
+            "id": "phone-next",
+            "width": 44,
+            "height": 48
+          }
+        ]
+      },
+      "pageErrors": [],
+      "consoleErrors": [],
+      "checks": "entrance, 1/84, 2/84, scene crossing, reload, both return, empty scene, all 84 lines, end boundaries, no-script shows passed"
+    }
+  ]
+}

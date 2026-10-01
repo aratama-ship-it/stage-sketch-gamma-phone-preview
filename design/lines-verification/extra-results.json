@@ -1,0 +1,32 @@
+{
+  "build": "20261001-1354",
+  "frameScenes": [
+    "rj-a-20260924-a-3",
+    "rj-a-20260924-a-3",
+    "rj-a-20260924-a-4"
+  ],
+  "sameScene": "same frame sceneId and no scene message",
+  "crossSceneImage": "different",
+  "rotation": "plan remains plan, front remains front, exit restores entry both/front",
+  "language": "English labels and polite live region passed",
+  "memoAndPen": "passed",
+  "metrics": {
+    "textColor": "rgba(240, 231, 214, 0.85)",
+    "background": "rgb(25, 21, 18)",
+    "size": "19.2px",
+    "lineHeight": "32.64px",
+    "speakerColor": "rgba(240, 231, 214, 0.85)",
+    "storage": [
+      {
+        "key": "stage-study-phone-lines:cbf4eb20bbe2f8cd8cee54632f3a68479944936393512ecd",
+        "value": {
+          "on": true,
+          "lineId": "rj-a-20260924-cue-a-4-dialogue-1-line"
+        }
+      }
+    ],
+    "live": "<div class=\"phone-line-live\" aria-live=\"polite\" aria-atomic=\"true\"><p class=\"phone-line-speaker\" style=\"border-left-color: rgb(143, 62, 30);\">ロミオ</p><p class=\"phone-line-text study-note-text\">今のは、助けてもらいました。</p></div>"
+  },
+  "pageErrors": [],
+  "localRequestsOnly": true
+}

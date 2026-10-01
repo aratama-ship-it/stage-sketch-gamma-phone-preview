@@ -4,9 +4,9 @@
   const phone = navigator.maxTouchPoints > 0 && Math.min(screen.width, screen.height) <= 600;
   if (!phone) return;
   const $ = id => document.getElementById(id), shell = document.querySelector('.study-shell'), orientation = matchMedia('(orientation: portrait)');
-  const words = { menu: ['メニュー', 'Menu'], light: ['照明のみ（作業灯なし）', 'Show lighting only (work light off)'], info: ['ショー情報', 'Show information'], settings: ['設定', 'Settings'], sceneInfo: ['場面情報', 'Scene information'], scenes: ['場面一覧', 'Scenes'], tools: ['書き込み', 'Draw'], memo: ['自分用メモ', 'My notes'], memoShort: ['メモ', 'Notes'], close: ['閉じる', 'Close'], view: ['舞台図を切り替える', 'Switch stage view'], both: ['両方', 'Both'], front: ['正面', 'Front'], plan: ['平面', 'Plan'], play: ['転換再生', 'Replay'], stop: ['停止', 'Stop'], share: ['オーナーへ共有', 'Share with owner'] };
+  const words = { lines: ['稽古', 'Lines'], linesMode: ['セリフ稽古', 'Line rehearsal'], linesExit: ['稽古を終える', 'End rehearsal'], linePrev: ['前のセリフ', 'Previous line'], lineNext: ['次のセリフ', 'Next line'], lineCount: ['セリフ', 'Line'], noLines: ['この場面にセリフはありません', 'No lines in this scene'], cueMemo: ['合図', 'Cue'], linesHint: ['下の前／次ボタンでセリフのある場面へ進めます。', 'Use the previous / next buttons below to reach a scene with lines.'], menu: ['メニュー', 'Menu'], light: ['照明のみ（作業灯なし）', 'Show lighting only (work light off)'], info: ['ショー情報', 'Show information'], settings: ['設定', 'Settings'], sceneInfo: ['場面情報', 'Scene information'], scenes: ['場面一覧', 'Scenes'], tools: ['書き込み', 'Draw'], memo: ['自分用メモ', 'My notes'], memoShort: ['メモ', 'Notes'], close: ['閉じる', 'Close'], view: ['舞台図を切り替える', 'Switch stage view'], both: ['両方', 'Both'], front: ['正面', 'Front'], plan: ['平面', 'Plan'], play: ['転換再生', 'Replay'], stop: ['停止', 'Stop'], share: ['オーナーへ共有', 'Share with owner'] };
   const t = key => words[key][document.documentElement.lang === 'en' ? 1 : 0], make = (tag, className) => Object.assign(document.createElement(tag), { className });
-  const paths = { light: 'M12 3v4 M5.6 5.6l2.8 2.8 M18.4 5.6l-2.8 2.8 m-7.4 .9 7.6 0 3.5 10.2h-14.6z', close: 'm3 3 10 10 M13 3 3 13', info: 'M8 7v5 M8 4v.1 M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1', both: 'M1 2h14v5H1Z M1 9h14v5H1Z', front: 'M1 3h14v10H1Z M4 3v10 M12 3v10', plan: 'M2 2h12v12H2Z M2 11h12', scenes: 'M5 3h10 M5 8h10 M5 13h10 M1 3h1 M1 8h1 M1 13h1' };
+  const paths = { lines: 'M2 2h12v9H7l-4 3v-3H2Z', lineNext: 'm11 4 4 4-4 4 M1 2h7v7H5l-3 3V9H1Z', light: 'M12 3v4 M5.6 5.6l2.8 2.8 M18.4 5.6l-2.8 2.8 m-7.4 .9 7.6 0 3.5 10.2h-14.6z', close: 'm3 3 10 10 M13 3 3 13', info: 'M8 7v5 M8 4v.1 M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1', both: 'M1 2h14v5H1Z M1 9h14v5H1Z', front: 'M1 3h14v10H1Z M4 3v10 M12 3v10', plan: 'M2 2h12v12H2Z M2 11h12', scenes: 'M5 3h10 M5 8h10 M5 13h10 M1 3h1 M1 8h1 M1 13h1' };
   const gearMarkup = '<circle cx="8" cy="8" r="4.2" stroke-width="1.3"/><circle cx="8" cy="8" r="1.4" stroke-width="1.3"/><path stroke-width="2.3" d="M8 3.10V1.90M11.94 5.55l1.04-.60M11.94 10.45l1.04.60M8 12.90v1.20M4.06 10.45l-1.04.60M4.06 5.55l-1.04-.60"/>';
   function icon(key) { const existing = $(key)?.querySelector('svg'); if (existing) return existing.cloneNode(true); const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg'); for (const [k, v] of Object.entries({ viewBox: key === 'light' ? '0 0 24 24' : '0 0 16 16', fill: 'none', stroke: 'currentColor', 'stroke-width': '1.3', 'stroke-linecap': 'round', 'stroke-linejoin': 'round', 'aria-hidden': 'true' })) svg.setAttribute(k, v); if (key === 'settings') { svg.innerHTML = gearMarkup; return svg; } const path = document.createElementNS(svg.namespaceURI, 'path'); path.setAttribute('d', paths[key]); svg.append(path); return svg; }
   function button(id, glyph, action) { const el = make('button', ''); el.type = 'button'; el.id = id; if (glyph) el.append(icon(glyph)); el.onclick = action; return el; }
@@ -14,7 +14,7 @@
   const panel = make('section', 'phone-panel'); panel.id = 'phone-panel'; panel.hidden = true; panel.setAttribute('role', 'region'); panel.setAttribute('aria-labelledby', 'phone-panel-title');
   const head = make('header', 'phone-panel-head'), title = make('h2', ''); title.id = 'phone-panel-title'; const close = button('phone-close', 'close', () => show('')); head.append(title, close); const contents = make('div', 'phone-panel-content'); panel.append(head, contents); shell.append(panel);
   const panes = {}; for (const key of ['info', 'settings', 'sceneInfo', 'scenes', 'tools', 'memo', 'menu']) { panes[key] = make('section', ''); panes[key].hidden = true; contents.append(panes[key]); }
-  const nav = make('nav', 'phone-scenes'); const previous = button('phone-prev', 'study-prev', () => $('study-prev').click()), current = button('phone-current', null, () => show('scenes')), next = button('phone-next', 'study-next', () => $('study-next').click()); current.className = 'phone-current'; const sceneListButton = button('phone-scene-list', 'scenes', () => show('scenes')), sceneInfo = button('phone-scene-info', 'info', () => { if (sceneInfo.getAttribute('aria-disabled') !== 'true') show('sceneInfo'); }); nav.append(current, sceneListButton, sceneInfo); shell.append(nav);
+  const nav = make('nav', 'phone-scenes'); const previous = button('phone-prev', 'study-prev', () => linesOn ? stepLine(-1) : $('study-prev').click()), current = button('phone-current', null, () => show('scenes')), next = button('phone-next', 'study-next', () => linesOn ? stepLine(1) : $('study-next').click()); current.className = 'phone-current'; const sceneListButton = button('phone-scene-list', 'scenes', () => show('scenes')), sceneInfo = button('phone-scene-info', 'info', () => { if (sceneInfo.getAttribute('aria-disabled') !== 'true') show('sceneInfo'); }); nav.append(current, sceneListButton, sceneInfo); shell.append(nav);
   const actions = make('nav', 'phone-tools'); shell.append(actions);
   const topActions = make('nav', 'phone-header-actions'), views = make('div', 'phone-views');
   views.setAttribute('role', 'group');
@@ -62,6 +62,130 @@
   panes.settings.append(document.querySelector('.study-kicker'), document.querySelector('.study-header-actions'), $('study-account'));
   panes.sceneInfo.append(sceneNote);
   const sceneList = make('div', 'phone-scene-list'); panes.scenes.append(sceneList); let opened = '', opener = null, listSignature = '';
+  // Read-only data bridge. No access to the viewer closure or mutation of its project.
+  const linesKey = 'stage-study-phone-lines:' + location.hash.slice(1);
+  let rehearsalLines = [], sceneOrder = new Map(), linesOn = false, lineId = '', pendingLines = null;
+  let beforeLinesView = '', renderedLine = '';
+  const linesToggle = button('phone-lines', 'lines', () => setLines(!linesOn));
+  linesToggle.hidden = true; linesToggle.append(make('span', '')); nav.append(linesToggle);
+  const linesRegion = make('section', 'phone-lines'); linesRegion.id = 'phone-lines-region';
+  linesRegion.hidden = true; linesRegion.setAttribute('role', 'region');
+  const linesHead = make('div', 'phone-lines-head'), linesMeta = make('span', 'phone-lines-meta');
+  const linesExit = button('phone-lines-exit', null, () => { setLines(false); (orientation.matches ? linesToggle : menu).focus(); });
+  linesHead.append(linesMeta, linesExit);
+  const linePrevious = make('p', 'phone-line-previous');
+  const lineLive = make('div', 'phone-line-live'); lineLive.setAttribute('aria-live', 'polite'); lineLive.setAttribute('aria-atomic', 'true');
+  const lineSpeaker = make('p', 'phone-line-speaker'), lineText = make('p', 'phone-line-text study-note-text');
+  lineLive.append(lineSpeaker, lineText);
+  const lineMemo = make('p', 'phone-line-memo study-note-text'), linesEmpty = make('p', 'phone-lines-empty');
+  linesRegion.append(linesHead, linePrevious, lineLive, lineMemo, linesEmpty); shell.append(linesRegion);
+  const setText = (el, value) => { if (el.textContent !== value) el.textContent = value; };
+  function saveLines() {
+    try { localStorage.setItem(linesKey, JSON.stringify({ on: linesOn, lineId })); } catch { /* In-memory use still works. */ }
+  }
+  function setView(view) {
+    if ($('study-view').value === view) return;
+    $('study-view').value = view; $('study-view').dispatchEvent(new Event('change'));
+  }
+  function goLine(index) {
+    const line = rehearsalLines[index]; if (!line) return;
+    lineId = line.id;
+    if ($('study-scenes').value !== line.sceneId) {
+      $('study-scenes').value = line.sceneId;
+      $('study-scenes').dispatchEvent(new Event('change'));
+    }
+    saveLines();
+  }
+  function setLines(on, restoreId = '', restoring = false) {
+    if (on && (!rehearsalLines.length || $('study-note-fields').disabled)) return;
+    if (on) {
+      if (!linesOn) {
+        beforeLinesView = $('study-view').value;
+        // A tab-local companion preserves the return view across reloads without
+        // changing the specified localStorage {on,lineId} record.
+        try {
+          const savedView = restoring && sessionStorage.getItem(linesKey);
+          if (['front', 'plan', 'both'].includes(savedView)) beforeLinesView = savedView;
+          sessionStorage.setItem(linesKey, beforeLinesView);
+        } catch { /* Fall back to the current view. */ }
+      }
+      linesOn = true;
+      let index = rehearsalLines.findIndex(line => line.id === restoreId);
+      if (index < 0) index = rehearsalLines.findIndex(line => line.sceneId === $('study-scenes').value);
+      goLine(index < 0 ? 0 : index);
+      if ($('study-view').value === 'both') setView('front');
+    } else {
+      linesOn = false;
+      if (beforeLinesView) setView(beforeLinesView);
+    }
+    if (opened) show('');
+    saveLines(); sync();
+  }
+  function lineStepIndex(direction) {
+    const index = rehearsalLines.findIndex(line => line.id === lineId && line.sceneId === $('study-scenes').value);
+    if (index >= 0) return index + direction;
+    const sceneIndex = sceneOrder.get($('study-scenes').value);
+    if (direction > 0) return rehearsalLines.findIndex(line => sceneOrder.get(line.sceneId) > sceneIndex);
+    for (let i = rehearsalLines.length - 1; i >= 0; i--) if (sceneOrder.get(rehearsalLines[i].sceneId) < sceneIndex) return i;
+    return -1;
+  }
+  function stepLine(direction) { goLine(lineStepIndex(direction)); sync(); }
+  function syncLines(ready) {
+    linesToggle.hidden = !ready || !rehearsalLines.length;
+    nav.classList.toggle('has-lines', !linesToggle.hidden);
+    linesToggle.disabled = !ready; linesToggle.setAttribute('aria-pressed', String(linesOn));
+    linesToggle.setAttribute('aria-label', t('linesMode')); linesToggle.title = t('linesMode');
+    setText(linesToggle.querySelector('span'), t('lines'));
+    linesRegion.hidden = !ready || !linesOn;
+    linesRegion.setAttribute('aria-label', t('linesMode')); setText(linesExit, t('linesExit'));
+    shell.classList.toggle('phone-lines-on', linesOn && ready);
+    steps.classList.toggle('phone-lines-steps', linesOn);
+    for (const [b, direction, original] of [[previous, -1, 'study-prev'], [next, 1, 'study-next']]) {
+      const glyph = linesOn ? 'lineNext' : original;
+      if (b.dataset.glyph !== glyph) { b.replaceChildren(icon(glyph)); b.dataset.glyph = glyph; }
+      b.classList.toggle('phone-line-back', linesOn && direction < 0);
+    }
+    if (!linesOn || !ready) return;
+    let index = rehearsalLines.findIndex(line => line.id === lineId && line.sceneId === $('study-scenes').value);
+    if (index < 0) {
+      index = rehearsalLines.findIndex(line => line.sceneId === $('study-scenes').value);
+      const nextId = rehearsalLines[index]?.id || '';
+      if (lineId !== nextId) { lineId = nextId; saveLines(); }
+    }
+    const line = rehearsalLines[index], preceding = rehearsalLines[index - 1];
+    const seconds = line?.seconds;
+    const time = seconds == null ? '' : `${Math.floor(seconds / 60)}:${String(Math.floor(seconds % 60)).padStart(2, '0')}`;
+    setText(linesMeta, [line ? `${t('lineCount')} ${index + 1} / ${rehearsalLines.length}` : t('linesMode'), $('study-scene-heading').textContent.split(' · ')[0], time].filter(Boolean).join(' · '));
+    lineLive.hidden = !line; linePrevious.hidden = !line || !preceding; lineMemo.hidden = !line?.memo; linesEmpty.hidden = Boolean(line);
+    setText(linesEmpty, `${t('noLines')}。${t('linesHint')}`);
+    setText(linePrevious, preceding ? `${preceding.speaker}: ${preceding.text}` : '');
+    setText(lineSpeaker, line?.speaker || ''); lineSpeaker.style.borderLeftColor = line?.color || 'var(--study-accent)';
+    setText(lineText, line?.text || ''); setText(lineMemo, line?.memo ? `${t('cueMemo')}: ${line.memo.replace(/^(?:合図|Cue)[:：]\s*/, '')}` : '');
+    // Only changing lines resets the scroll; status/language updates do not.
+    const renderKey = lineId || $('study-scenes').value;
+    if (renderedLine !== renderKey) { renderedLine = renderKey; linesRegion.scrollTop = 0; }
+    previous.setAttribute('aria-label', t('linePrev')); next.setAttribute('aria-label', t('lineNext'));
+    previous.disabled = lineStepIndex(-1) < 0;
+    const nextIndex = lineStepIndex(1); next.disabled = nextIndex < 0 || nextIndex >= rehearsalLines.length;
+  }
+  window.addEventListener('stage-study-loaded', event => {
+    const { project, scenes } = event.detail;
+    sceneOrder = new Map(scenes.map((scene, index) => [scene.id, index]));
+    const cues = new Map((project.cues || []).filter(cue => cue.kind === 'timeline' && cue.cueType === 'dialogue').map(cue => [cue.id, cue]));
+    const cast = new Map((project.cast || []).map(person => [person.id, person]));
+    rehearsalLines = (project.script?.lines || []).filter(line => sceneOrder.has(line.sceneId)).map((line, order) => {
+      const cue = cues.get(line.cueId), person = cast.get(line.castId);
+      const seconds = Number.isFinite(cue?.offsetSeconds) ? cue.offsetSeconds : Number.isFinite(cue?.atSeconds) ? cue.atSeconds : null;
+      const text = String(line.text || ''), memo = String(cue?.memo || '').split('\n');
+      if (text.trim() && memo[0].includes(text.trim())) memo.shift();
+      return { id: line.id, sceneId: line.sceneId, order, seconds, text, memo: memo.join('\n').trim(), speaker: line.speaker?.trim() || person?.name || '', color: person?.color || '' };
+    }).sort((a, b) => sceneOrder.get(a.sceneId) - sceneOrder.get(b.sceneId) || (a.seconds ?? Infinity) - (b.seconds ?? Infinity) || a.order - b.order);
+    let saved = null;
+    try { saved = JSON.parse(localStorage.getItem(linesKey)); } catch { /* Ignore invalid storage. */ }
+    pendingLines = rehearsalLines.length && saved?.on === true ? { lineId: saved.lineId } : null;
+    if (!rehearsalLines.length) linesOn = false;
+    // The event precedes options/frame initialization. sync() waits for viewer readiness.
+  });
   function show(key) {
     if (opened === key) key = '';
     if (key && !opened) opener = document.activeElement;
@@ -79,6 +203,7 @@
   const alert = make('p', 'phone-alert'); alert.setAttribute('role', 'status'); alert.hidden = true; shell.append(alert);
   function sync() {
     const ready = !$('study-workspace').hidden && !$('study-note-fields').disabled;
+    if (ready && pendingLines) { const saved = pendingLines; pendingLines = null; setLines(true, saved.lineId, true); return; }
     previous.disabled = $('study-prev').disabled || !ready; next.disabled = $('study-next').disabled || !ready; previous.setAttribute('aria-label', $('study-prev').getAttribute('aria-label')); next.setAttribute('aria-label', $('study-next').getAttribute('aria-label'));
     current.textContent = $('study-scene-heading').textContent || t('scenes'); current.disabled = !ready; current.setAttribute('aria-label', t('scenes') + ' · ' + current.textContent);
     const replay = $('study-pen-status').textContent.includes(document.documentElement.lang === 'en' ? 'hidden during replay' : '再生中'); play.replaceChildren(icon(replay ? 'study-stop' : 'study-replay'), Object.assign(make('span', ''), { textContent: t(replay ? 'stop' : 'play') })); play.disabled = !ready || (!replay && $('study-replay').disabled); play.setAttribute('aria-label', replay ? $('study-stop').title : $('study-replay').title);
@@ -87,7 +212,7 @@
     light.setAttribute('aria-label', t('light')); light.title = t('light');
     views.setAttribute('aria-label', t('view'));
     for (const [key, b] of Object.entries(viewButtons)) {
-      b.disabled = !ready || $('study-view').disabled;
+      b.disabled = !ready || $('study-view').disabled || (linesOn && key === 'both');
       b.setAttribute('aria-label', t(key)); b.title = t(key);
       b.setAttribute('aria-pressed', String($('study-view').value === key));
     }
@@ -97,7 +222,7 @@
     const hasNote = ready && Boolean(sceneNote.textContent.trim());
     sceneListButton.disabled = !ready || $('study-scenes').disabled;
     sceneInfo.setAttribute('aria-disabled', String(!hasNote)); sceneInfo.classList.toggle('has-note', hasNote);
-    const inline = hasNote && orientation.matches && ['front', 'plan'].includes($('study-view').value);
+    const inline = !linesOn && hasNote && orientation.matches && ['front', 'plan'].includes($('study-view').value);
     detail.hidden = !inline;
     // Keep a single canonical note node; the inline area keeps its place while the modal is open.
     const noteParent = opened === 'sceneInfo' || !inline ? panes.sceneInfo : detail;
@@ -107,6 +232,7 @@
     tools.disabled = !ready || $('study-pen').disabled; memo.disabled = !ready; tools.setAttribute('aria-pressed', $('study-pen').getAttribute('aria-pressed')); close.setAttribute('aria-label', t('close')); if (opened) title.textContent = t(opened); shareTitle.textContent = t('share');
     const opts = [...$('study-scenes').options], signature = opts.map(o => o.value + o.textContent).join('|'); if (signature !== listSignature) { listSignature = signature; sceneList.replaceChildren(...opts.map(o => { const b = button('', null, () => { $('study-scenes').value = o.value; $('study-scenes').dispatchEvent(new Event('change')); show(''); }); b.textContent = o.textContent; b.dataset.scene = o.value; return b; })); }
     for (const b of sceneList.children) { const selected = b.dataset.scene === $('study-scenes').value; b.setAttribute('aria-current', String(selected)); b.setAttribute('aria-pressed', String(selected)); b.disabled = !ready || $('study-scenes').disabled; }
+    syncLines(ready);
     const save = $('study-save-status'), danger = save.classList.contains('study-danger'), message = danger ? save.textContent : !opened && $('study-note-status').textContent.includes('送信できません') ? $('study-note-status').textContent : ''; if (alert.textContent !== message) alert.textContent = message; alert.hidden = !message; if ($('study-workspace').hidden && opened) show('');
   }
   function rotate(turned) { if (opened) show(''); if (orientation.matches) { shell.prepend(header); shell.append(nav); } else { panes.menu.append(header, nav); } (orientation.matches ? actions : shell).prepend(steps); steps.inert = modalKeys.has(opened); const current = $('study-view').value; $('study-view').value = turned === true ? (current === 'plan' ? 'plan' : 'front') : (orientation.matches ? 'front' : 'both'); $('study-view').dispatchEvent(new Event('change')); applyLight(); sync(); }

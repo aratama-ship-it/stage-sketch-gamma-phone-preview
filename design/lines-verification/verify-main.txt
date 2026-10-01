@@ -1,0 +1,34 @@
+const {chromium}=require('playwright'); const fs=require('fs'); const assert=require('assert/strict');
+const root=process.cwd(), out=root+'/design/lines-verification'; fs.mkdirSync(out,{recursive:true});
+const sample=JSON.parse(fs.readFileSync('samples/romeo-juliet.json')).document.project;
+const scenes=sample.scenes.filter(s=>s.kind==='scene'), lines=sample.script.lines;
+const results={build:JSON.parse(fs.readFileSync('manifest.json')).buildId, runs:[]};
+(async()=>{const browser=await chromium.launch({headless:true});
+try {for(const [width,height] of [[390,844],[844,390],[360,740]]) {
+ const context=await browser.newContext({viewport:{width,height},screen:{width,height},hasTouch:true,isMobile:true,deviceScaleFactor:1,locale:"ja-JP"}); const page=await context.newPage(); page.setDefaultTimeout(12000);
+ const errors=[];page.on('pageerror',e=>errors.push(String(e))); const consoleErrors=[];page.on('console',m=>{if(m.type()==='error')consoleErrors.push(m.text())});
+ const ready=()=>page.waitForFunction(()=>!document.getElementById('study-note-fields').disabled);
+ const menu=async()=>{if(width>height && !(await page.locator('#phone-lines').isVisible())) await page.locator('#phone-menu').click()};
+ const state=()=>page.evaluate(()=>({count:document.querySelector('.phone-lines-meta').textContent,speaker:document.querySelector('.phone-line-speaker').textContent,text:document.querySelector('.phone-line-text').textContent,memo:document.querySelector('.phone-line-memo').textContent,scene:document.getElementById('study-scenes').value,view:document.getElementById('study-view').value,on:document.getElementById('phone-lines').getAttribute('aria-pressed')}));
+ await page.goto('http://127.0.0.1:8984/viewer.html?sample=romeo-juliet'); await ready(); await menu(); assert(await page.locator('#phone-lines').isVisible());
+ await page.locator('#phone-view-both').click(); await page.locator('#phone-lines').click(); await page.waitForFunction(()=>document.querySelector('.phone-lines-meta').textContent.includes('1 / 84'));
+ let first=await state();assert.equal(first.scene,lines[0].sceneId);assert.equal(first.view,'front');assert.equal(first.speaker,'ベンヴォーリオ');assert.equal(first.text,lines[0].text);assert(!first.memo.includes(lines[0].text));assert(first.memo.includes('手のひら'));assert(await page.locator('#phone-prev').isDisabled());assert(await page.locator('#phone-view-both').isDisabled());
+ await page.frames()[1].waitForFunction(()=>document.body.dataset.view==='front');await page.waitForTimeout(150);await page.screenshot({path:out+`/${width}x${height}-line-1.png`});
+ await page.locator('#phone-next').click();let second=await state();assert(second.count.includes('2 / 84'));assert.equal(second.scene,first.scene);
+ await page.locator('#phone-next').click();let third=await state();assert(third.count.includes('3 / 84'));assert.equal(third.scene,lines[2].sceneId);
+ await page.reload();await ready();await page.waitForFunction(()=>document.querySelector('.phone-lines-meta').textContent.includes('3 / 84'));assert.equal((await state()).scene,third.scene);
+ await page.locator('#phone-lines-exit').click();assert.equal((await state()).view,'both');assert(!(await page.locator('#phone-lines-region').isVisible()));
+ await menu();await page.locator('#phone-lines').click(); // scene 4 first line
+ await menu();await page.locator('#phone-scene-list').click();await page.locator(`[data-scene="${scenes[0].id}"]`).click();await page.waitForFunction(()=>!document.querySelector('.phone-lines-empty').hidden);
+ assert((await page.locator('.phone-lines-empty').textContent()).includes('この場面にセリフはありません'));assert(await page.locator('#phone-prev').isDisabled());await page.locator('#phone-next').click();assert((await state()).count.includes('1 / 84'));
+ await page.locator('#phone-next').click(); await page.waitForTimeout(150);await page.screenshot({path:out+`/${width}x${height}-line-2.png`});
+ const layout=await page.evaluate(()=>{const region=document.querySelector('.phone-lines'),r=region.getBoundingClientRect(),w=document.querySelector('.study-workspace').getBoundingClientRect();return {overflow:document.documentElement.scrollWidth>innerWidth,region:{x:r.x,y:r.y,width:r.width,height:r.height,scroll:region.scrollHeight},workspace:{x:w.x,y:w.y,width:w.width,height:w.height},buttons:['phone-lines-exit','phone-prev','phone-next'].map(id=>{const r=document.getElementById(id).getBoundingClientRect();return {id,width:r.width,height:r.height}})}});
+ assert(!layout.overflow);assert(layout.region.height<=height*(width>height?.34:.4)+1);assert(layout.workspace.y>=layout.region.y+layout.region.height-1);assert(layout.workspace.height>0);layout.buttons.forEach(b=>assert(b.width>=40&&b.height>=40));
+ // Traverse every line and boundary through real buttons; expected source ordering is verified independently below.
+ for(let n=3;n<=84;n++){await page.locator('#phone-next').click();assert((await state()).count.includes(`${n} / 84`));}
+ assert(await page.locator('#phone-next').isDisabled());await page.locator('#phone-prev').click();assert((await state()).count.includes('83 / 84'));
+ for(const name of ['four-outlines','feature-test']){await page.goto(`http://127.0.0.1:8984/viewer.html?sample=${name}`);await ready();await menu();assert(await page.locator('#phone-lines').isHidden());}
+ assert.deepEqual(errors,[]);assert.deepEqual(consoleErrors,[]);results.runs.push({width,height,first,second,third,layout,pageErrors:errors,consoleErrors,checks:'entrance, 1/84, 2/84, scene crossing, reload, both return, empty scene, all 84 lines, end boundaries, no-script shows passed'}); await context.close();
+ }
+ fs.writeFileSync(out+'/results.json',JSON.stringify(results,null,2));console.log(JSON.stringify(results,null,2));
+} finally {await browser.close()}})().catch(e=>{console.error(e);process.exitCode=1});

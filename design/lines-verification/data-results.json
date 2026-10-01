@@ -1,0 +1,30 @@
+{
+  "fixture": "browser-only response substitution; source and sample files unchanged",
+  "expected": [
+    "First line",
+    "Second at same time",
+    "Third at same time",
+    "No cue",
+    "Null offset",
+    "Other scene"
+  ],
+  "actual": [
+    "First line",
+    "Second at same time",
+    "Third at same time",
+    "No cue",
+    "Null offset",
+    "Other scene"
+  ],
+  "checks": [
+    "unknown scene excluded",
+    "scene order",
+    "atSeconds fallback and zero timestamp",
+    "same time preserves array order",
+    "missing and null offset last",
+    "speaker override",
+    "memo first quote removed",
+    "empty middle scene previous/next"
+  ],
+  "pageErrors": []
+}

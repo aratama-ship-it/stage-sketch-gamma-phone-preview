@@ -209,3 +209,61 @@ UI2の変更ファイル一覧:
 - 追加証跡: `design/ui2-verification/`（画像、比較HTML、計測JSON、再実行用verify.py/persistence.py）。
 - 再生成: `index.html`、`viewer.html`、`study-frame.html`、`preview-adapter.js`、`manifest.json`、`stage-sketch.js`、`stage-study-frame.js`、`stage-study-navigation.js/.css`、`stage-study-phone.js/.css`、`stage-study-viewer.js`、`stage-study-continuity.js`。
 - 最終ビルド `20261001-1308`。全JS構文、manifest 36ファイルのSHA-256、override一致、replaceOnce 0件/複数件拒否、git diff --check が合格。
+
+
+## 改善11: セリフ稽古モード（2026-10-01）
+
+ローカル実装済み。場面行の「稽古」（横はメニュー内）で開始し、下の前後ボタンでセリフを送る。
+終了は場面行のトグルまたはセリフ領域右上から。縦は常設詳細と同じ行、横は右レール左側の図の上に配置する。
+ロミオ見本は84行、最初は場面3。台本がない「四つの輪郭」「全機能の試験場」では入口を隠す。
+
+**追加replaceOnceパッチ（γへ戻す際にも必要）:**
+
+| 対象 | パッチ |
+|---|---|
+| `stage-study-viewer.js` | `data = result; scenes = ...` の直後で `stage-study-loaded` CustomEventを発火。detailは `{ project: result.document.project, scenes }`。変更名は `read-only loaded project event for line rehearsal` |
+
+既存 `patchAsset` の `patches` 配列・`manifest.json.patches` に追加パッチ名と前後ハッシュを記録。
+overridesはこのイベントだけから台本・演者・キューを取得する。Viewer内部変数へ直接アクセスせず、場面移動は
+`study-scenes.value` と `change` イベントの既存 `select()` 経路。イベント時点ではまだframeが準備中なので、復帰は操作可能になるまで保留する。
+
+- 対象行はViewerのsceneに属する行のみ。シーン順→dialogueキューの秒（offsetSeconds、代替atSeconds、未設定は末尾）→元配列順。
+- 本文・話者はtextContentで表示。話者の色は左4pxバーのみ。キューmemoの冒頭が本文の引用ならその行だけ省略し、合図ラベルの重複は表示時に除く。
+- localStorage `stage-study-phone-lines:<token>` は仕様どおり `{ on, lineId }`。保存できない場合もメモリ内で操作可能。
+- **仕様の補足:** 同じキー名のsessionStorageに開始前の表示（front/plan/both）を保持する。再読み込み後の終了でも開始前の表示へ戻すため。タブを閉じた後の新しいセッションではそのときの既定表示を戻り先とする。localStorageの指定形式は拡張していない。
+- モード中は両方ボタンを無効化し、開始前が両方なら正面にする。回転規則は既存どおり。セリフのない場面では前後操作で隣のセリフのある場面へ移動する。
+- 新規CSSトークンは指定の3つのみ。色・書体・アニメーションの追加なし。
+
+### 検証と証拠
+
+`design/lines-verification/` に縦390×844・360×740／横844×390のPNG、英語PNG、結果JSONと検証コードのテキストを保存。
+Chromiumの `hasTouch:true, isMobile:true` で以下を確認（実機確認とは別）。
+
+- 3サイズすべて: 入口の出し分け、1/84の話者・本文・合図、2/84、場面3→4、全84行の送り、先頭／末尾の無効化、再読み込み復帰、終了時の両方復元。
+- 場面1のセリフなし案内と送り、場面一覧による最初のセリフへの整列、同じ場面選択では現在行を維持。
+- 図側のcapture応答で場面3→4を確認。同じ場面内ではsceneメッセージを送らず、図側のsceneIdも維持。
+- 正面／平面の回転保持、日英ラベル、aria-live/aria-atomic、既存ペンのON/OFF、自分用メモの保存・再読み込み。
+- 360pxを含め横あふれなし。終了ボタン40px高、前後は44px幅（縦48px高／横44px高）。横の帯は132.59px以下、図は残り257.41px以上。
+- ソートの境界（同秒、キューなし、null、atSeconds=0）、未知sceneの除外、話者名指定、引用省略、空の中間場面の前後移動はブラウザ内レスポンス置換で確認。見本JSONやγ元ファイルは変更していない。
+- ページエラー・コンソールエラー0。追加検証の通信は127.0.0.1へのリクエストのみ。
+- 本文・話者の合成色 #d0c8b9 / 背景 #191512 は10.93:1、補助文字 #aba495 は7.32:1（既存inkのalphaとopacity .8を合成しcontrast.mjsで計測）。
+
+再実行（このMacのPlaywrightを使用）:
+
+```sh
+python3 -m http.server 8984 --bind 127.0.0.1
+# 別ターミナル、同じリポジトリで実行
+export NODE_PATH="/Users/arata/Library/Mobile Documents/com~apple~CloudDocs/claude code files/show-creative-ideas/stage-sketch-gamma/node_modules"
+node < design/lines-verification/verify-main.txt
+node < design/lines-verification/verify-extra.txt
+node < design/lines-verification/verify-data.txt
+```
+
+未確認: 実機Safari/Androidのタッチ感・読みやすさ、VoiceOver等の実読み上げ。仕様から除外した機能はない。
+commit / push / 公開は実行していない。確認URL: `http://127.0.0.1:8984/viewer.html?sample=romeo-juliet`（このMac内）。
+
+変更一覧: 手編集は overridesのJS/CSS、build.mjs、README.md、IMPROVEMENTS.md、design/TOKEN_SHEET.md。
+生成更新は stage-study-phone.js/.css、stage-study-viewer.js、stage-study-continuity.js、preview-adapter.js、
+viewer.html、study-frame.html、index.html、manifest.json。追加証拠は design/lines-verification/。
+
+改善11の最終ビルド: `20261001-1354`。node --check（build・override・全配信JS）、ビルド、生成36ファイルのSHA-256、overrideバイト一致、git diff --check が合格。

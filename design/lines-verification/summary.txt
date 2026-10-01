@@ -1,0 +1,32 @@
+セリフ稽古モード検証（ローカルのみ）
+Build: 20261001-1354
+Source: gamma 0.2.69 / 7af5a27
+Chromium: hasTouch=true, isMobile=true, locale=ja-JP
+Sizes: 390x844, 844x390, 360x740
+
+PASS: node --check build.mjs / overrides/stage-study-phone.js / 全配信JS
+PASS: node build.mjs --source "$HOME/git-repos/gamma-publish-20261001"
+PASS: manifest 36ファイルのSHA-256とoverrideのバイト一致
+PASS: git diff --check
+PASS: ロミオで入口表示、four-outlinesとfeature-testで非表示
+PASS: 全84行の送り、先頭/末尾disabled、1/84と2/84の本文・話者・合図
+PASS: 場面3→4でframeのsceneIdも変更、同じ場面内ではscene送信なし
+PASS: 再読込でlineIdと場面復帰、終了時に両方へ復元
+PASS: 空の場面から前後へ、同一場面では現在行を維持
+PASS: 既存回転規則、英語、aria-live、メモ保存とペンON/OFF
+PASS: 360px横あふれなし、操作領域40px以上、横帯34%以下
+PASS: ソート境界/atSeconds/null/キューなし/未知scene除外（ブラウザ内fixture）
+PASS: 本文10.93:1、補助7.32:1（既存inkのalpha合成をcontrast.mjsで実測）
+PASS: 全3サイズのpageerror/console errorは0
+
+JSON: results.json / extra-results.json / data-results.json / static-results.json
+PNG: 各サイズのline-1/line-2と英語版。描画後の縦・横を目視確認。
+再実行コード: verify-main.txt / verify-extra.txt / verify-data.txt（nodeの標準入力で実行、README参照）
+
+仕様の補足: 指定のlocalStorageは {on,lineId} のまま。
+同名のsessionStorageに開始前の表示を保存し、同じタブの再読込後も終了時に戻す。
+除外した指定機能: なし。
+未確認: 実機Safari/Android、VoiceOver等の実読み上げ、本人の読みやすさ評価。
+Git add / commit / push / 公開 / 外部送信: 実行なし。
+γ元作業木とsamplesの手編集: なし。
+確認: http://127.0.0.1:8984/viewer.html?sample=romeo-juliet
