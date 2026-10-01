@@ -1,7 +1,7 @@
 {
   "kind": "stage-sketch-gamma-phone-share-preview",
-  "buildId": "20261001-1308",
-  "generatedAt": "2026-10-01T04:08:55.519Z",
+  "buildId": "20261001-1332",
+  "generatedAt": "2026-10-01T04:32:16.976Z",
   "source": {
     "dir": "/Users/arata/git-repos/gamma-publish-20261001",
     "commit": "7af5a27",
@@ -45,7 +45,7 @@
     {
       "file": "stage-study-phone.css",
       "sourceSha256": "e69d639b82673c0f220a2aff5db7e437fb8b1f8d2e87264c6dc0f4c248f5cade",
-      "sha256": "7a2bac842a6d9e2b4082339156055b6a0021aa18f1c36c8c2f6be5273d3c9e83"
+      "sha256": "af78aae31c345caba75d5e2e1cb9f3c5a2ec47b021adec65f80d80d4d2fbcb71"
     },
     {
       "file": "stage-study-phone.js",
@@ -128,16 +128,16 @@
     },
     {
       "file": "viewer.html",
-      "sourceSha256": "6283bd377f7864b7a976701aa4f9e44323ca93d0a0c78e43aea911bbe2060434",
-      "sha256": "2a3f379b4a119a345cc71869f924496f1a1f7538e4aba3a7c839572a0670bdea",
+      "sourceSha256": "8feeaa39d2ffc9bebcf01d732afb4daee74b7279877c0ed1f99d9792d3b1dfd5",
+      "sha256": "f2e2fb4d9185ac24f467f6ce2078bb01c02ec79b1d26ea2e1c8c19d094e4321d",
       "changes": [
         "retired pinned-note UI"
       ]
     },
     {
       "file": "study-frame.html",
-      "sourceSha256": "bcb30abd0dd1b8453cf9c19ecd97000ec938a4d8962ea3c989387f816a49f00b",
-      "sha256": "e0eb7a90a40653b28027296214587b9c079b1596c05d58141befa3ced29f490a",
+      "sourceSha256": "83af38d9ba21f8b7185df4248b90aac839dce88a6b95f54a02a894848b96a273",
+      "sha256": "6b91a7300bd2979b9aaeef25f7bcf0ccb0ef5fe762418e6cc548dc1ada4ed8e2",
       "changes": [
         "lighting model before stage modules",
         "lighting render dependencies in main-app order"
@@ -145,8 +145,8 @@
     },
     {
       "file": "stage-study-viewer.js",
-      "sourceSha256": "2b85579f62d85eb25ee9b4345b3dea8bae1d616aab6926c0aa4c27027845b75b",
-      "sha256": "c7b4b352624aef0ff9f5c0c7f28feb5929825783b3203b3e128a6694051bba0c",
+      "sourceSha256": "d0621e84e88fed5005a86792573c166bac2c1dcf472501896ca7ed32f2637753",
+      "sha256": "e99778c5c5014f72288b71932677d325aa27d0a88886a6e0236081af5d7e16ee",
       "changes": [
         "retire sticky UI while retaining inert compatibility nodes",
         "remove sticky creation editing saving and list handlers",
@@ -176,7 +176,7 @@
     },
     "index.html": {
       "bytes": 3690,
-      "sha256": "e8d17743b663b2e880b957a25c42734d8ccfec569f0cd5d8888640d553afd63c"
+      "sha256": "547229755c53f51ca4e5fa48f658992cab718a08cecb90a5324f8c7c55baa554"
     },
     "light-design/laser-effects.js": {
       "bytes": 8370,
@@ -188,7 +188,7 @@
     },
     "preview-adapter.js": {
       "bytes": 2597,
-      "sha256": "567a2fc1cba72b5373a95cf7b47c7fde441cb646f7b24fbe6acebb29e9ae28ce"
+      "sha256": "812fd4a861c4a930f45bc08e84c99bea268e3780443247c32f0ed2609e65dc06"
     },
     "samples/feature-test.json": {
       "bytes": 328856,
@@ -236,7 +236,7 @@
     },
     "stage-study-continuity.js": {
       "bytes": 12723,
-      "sha256": "d5715c3961be7df995672dae2d9cedcf77afbd46127fff0758ee1ba1666fa6ad"
+      "sha256": "3eaee056d4162b245f4b063d3af7830a5938c364b0abc385f7b852f7a143bc4b"
     },
     "stage-study-frame.js": {
       "bytes": 7313,
@@ -255,8 +255,8 @@
       "sha256": "556c0ee93c076c8507afa9f6de267514ff2c03818bec6629b1400ed65c1a414f"
     },
     "stage-study-phone.css": {
-      "bytes": 11820,
-      "sha256": "7a2bac842a6d9e2b4082339156055b6a0021aa18f1c36c8c2f6be5273d3c9e83"
+      "bytes": 12296,
+      "sha256": "af78aae31c345caba75d5e2e1cb9f3c5a2ec47b021adec65f80d80d4d2fbcb71"
     },
     "stage-study-phone.js": {
       "bytes": 16022,
@@ -276,7 +276,7 @@
     },
     "stage-study-viewer.js": {
       "bytes": 42068,
-      "sha256": "c7b4b352624aef0ff9f5c0c7f28feb5929825783b3203b3e128a6694051bba0c"
+      "sha256": "e99778c5c5014f72288b71932677d325aa27d0a88886a6e0236081af5d7e16ee"
     },
     "stage-study.css": {
       "bytes": 32727,
@@ -292,7 +292,7 @@
     },
     "study-frame.html": {
       "bytes": 315680,
-      "sha256": "e0eb7a90a40653b28027296214587b9c079b1596c05d58141befa3ced29f490a"
+      "sha256": "6b91a7300bd2979b9aaeef25f7bcf0ccb0ef5fe762418e6cc548dc1ada4ed8e2"
     },
     "style.css": {
       "bytes": 511326,
@@ -300,7 +300,7 @@
     },
     "viewer.html": {
       "bytes": 22062,
-      "sha256": "2a3f379b4a119a345cc71869f924496f1a1f7538e4aba3a7c839572a0670bdea"
+      "sha256": "f2e2fb4d9185ac24f467f6ce2078bb01c02ec79b1d26ea2e1c8c19d094e4321d"
     }
   }
 }
