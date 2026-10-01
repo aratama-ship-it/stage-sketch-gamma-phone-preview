@@ -1,0 +1,162 @@
+{
+  "kind": "stage-sketch-gamma-phone-share-preview",
+  "buildId": "20261001-0941",
+  "generatedAt": "2026-10-01T00:41:04.833Z",
+  "source": {
+    "dir": "/Users/arata/git-repos/gamma-publish-20261001",
+    "commit": "7af5a27",
+    "version": "0.2.69"
+  },
+  "defaultSample": "romeo-juliet",
+  "samples": {
+    "romeo-juliet": {
+      "token": "cbf4eb20bbe2f8cd8cee54632f3a68479944936393512ecd",
+      "label": "ロミオとジュリエット（RJセカンド）",
+      "labelEn": "Romeo and Juliet (second draft)",
+      "note": "台詞・メモ・照明つきの実寸見本。冊子の iPhone 図はこの系統",
+      "title": "ロミオとジュリエット｜RJセカンド（受け渡す手）",
+      "scenes": 34,
+      "bytes": 641834,
+      "sourceFile": "stage-samples/romeo-juliet-second.json"
+    },
+    "feature-test": {
+      "token": "8a935ebddbf437f49781d31c830653ec2aa77e639b5b8671",
+      "label": "テスト: 全機能の試験場",
+      "labelEn": "Feature test show",
+      "note": "セクション分けの 48 シーン。駒・小道具・機構・照明の全種類",
+      "title": "テスト: 全機能の試験場",
+      "scenes": 48,
+      "bytes": 328856,
+      "sourceFile": "stage-samples/feature-test-show.json"
+    },
+    "four-outlines": {
+      "token": "23492da45dfb8cc811e5788205a3c49f1962374b8c276e4d",
+      "label": "四つの輪郭（AI用JSONの標準見本）",
+      "labelEn": "Four Outlines (AI JSON sample)",
+      "note": "8 シーンの最小構成。読み込みが軽い",
+      "title": "四つの輪郭",
+      "scenes": 8,
+      "bytes": 7901,
+      "sourceFile": "public/ai-json/samples/sample-standard.json"
+    }
+  },
+  "externalSubmission": false,
+  "files": {
+    "gamma-ui-i18n.js": {
+      "bytes": 15443,
+      "sha256": "bb8f6f51d1b18b3d2c3dd4c7aaa4a93cbd8f12624f153a98ad9c000fb4d9bcd6"
+    },
+    "gamma-ui.js": {
+      "bytes": 12054,
+      "sha256": "a36fe3657e869eea715fab93f223dbfcf387b5d1249a6b4381753113cd9e7bf2"
+    },
+    "index.html": {
+      "bytes": 3624,
+      "sha256": "a541f122c7408a4354b1ff9f4cef82c546017c1eae6386ac9c63fd7c6b748d7d"
+    },
+    "preview-adapter.js": {
+      "bytes": 2597,
+      "sha256": "397dae71015f21c9913e65c08ffde6ee041f44a9bc005285d507fa75ddfa3bc7"
+    },
+    "samples/feature-test.json": {
+      "bytes": 328856,
+      "sha256": "36487564d393177c6fc08c5d0ab1df197516c69b7f132928b3218fd49f01ac21"
+    },
+    "samples/four-outlines.json": {
+      "bytes": 7901,
+      "sha256": "b519e295e96a69b09289e49b6567ba6439f02e41218bd40d629537e8d0843c4a"
+    },
+    "samples/romeo-juliet.json": {
+      "bytes": 641834,
+      "sha256": "e5480265b5df3b3dfcad0babda7c9229df7d901a835e902a49afc70498a329e0"
+    },
+    "stage-data-safety.js": {
+      "bytes": 2213,
+      "sha256": "6578e9d51976ddb2ef6a2e1c806b659b91af1b4b9ba464ded3f1119571427354"
+    },
+    "stage-i18n.js": {
+      "bytes": 243014,
+      "sha256": "ddaf086a32a6e4f0b14c164d84fafd6497670b9a652076e4463305f6a7f0c8b8"
+    },
+    "stage-machinery.js": {
+      "bytes": 11120,
+      "sha256": "3dfd2b935468f84be78fe09eb36750c1a9c1a9144feb44c94c6427eeb08343e6"
+    },
+    "stage-set-model.js": {
+      "bytes": 6244,
+      "sha256": "8a8c1966643451c7555124c67feaed931fb95c35ca771b3e4411df27f6dc2bd7"
+    },
+    "stage-sketch.js": {
+      "bytes": 2275370,
+      "sha256": "3c679754c50b11950e0f0c7de300c26ea76e9e73bdebd114883350b3a3a649e5"
+    },
+    "stage-study-continuity.js": {
+      "bytes": 12723,
+      "sha256": "726694de13493745a41ae576c4ccf92838a63e178c4634fd93126a08241dc6b8"
+    },
+    "stage-study-frame.js": {
+      "bytes": 6920,
+      "sha256": "992c6fe4f93e132dcb7d2d05aa5dadba3c90953fccc8b5609ae283b13e9d5e2e"
+    },
+    "stage-study-navigation.css": {
+      "bytes": 1951,
+      "sha256": "3f9918f31cae4760f23ae4366d3b54e1db51255e4c70acf906fc1807328fde1f"
+    },
+    "stage-study-navigation.js": {
+      "bytes": 7715,
+      "sha256": "5e20a6de48d4f70287cba2655da96cc66d69f7d20d65859f2ece97947b7ed6c0"
+    },
+    "stage-study-pen.js": {
+      "bytes": 7306,
+      "sha256": "556c0ee93c076c8507afa9f6de267514ff2c03818bec6629b1400ed65c1a414f"
+    },
+    "stage-study-phone.css": {
+      "bytes": 7979,
+      "sha256": "e69d639b82673c0f220a2aff5db7e437fb8b1f8d2e87264c6dc0f4c248f5cade"
+    },
+    "stage-study-phone.js": {
+      "bytes": 10035,
+      "sha256": "db40bede4b17a7383da4ec05f01434e7ceecf0abbb83bd31e21a4d8db45b1713"
+    },
+    "stage-study-private.js": {
+      "bytes": 4694,
+      "sha256": "b8cca456054d69bf166dca5954aba5f209d9291a67560a5663cd30a020cfc3e0"
+    },
+    "stage-study-sticky.js": {
+      "bytes": 20766,
+      "sha256": "214b5c346faeb87ae7291f9cf3231dae7554a39e74c9eab6d5e0962b9dd26511"
+    },
+    "stage-study-sync.js": {
+      "bytes": 5662,
+      "sha256": "b5b07eea195e6b6c18549af592480a8e2599eca339fdd89dac862931cdf12452"
+    },
+    "stage-study-viewer.js": {
+      "bytes": 50317,
+      "sha256": "d4fb29328a91913cd3a19501ade383e065482ee72eb4ca6354a9b0dbd67cbcb1"
+    },
+    "stage-study.css": {
+      "bytes": 32727,
+      "sha256": "bfb35e51dea480273ddb206208b0771230bdf17996a7e8e86dda8846d735a519"
+    },
+    "stage-venue-lines.js": {
+      "bytes": 34273,
+      "sha256": "cf56b94644d25f0cd9d90ff54558e4239ca119aacf78cf453504b2a3a3ae04c7"
+    },
+    "stage-venues.js": {
+      "bytes": 131269,
+      "sha256": "2700da09c9207e6e5eb612a795625615eb78705a4c12bc33fc2341baf1f422fd"
+    },
+    "study-frame.html": {
+      "bytes": 315206,
+      "sha256": "b08fe6df71777951d5c962d4b830dbd87a3fe3ff25eeba1eebf6fd7a75284fb7"
+    },
+    "style.css": {
+      "bytes": 511326,
+      "sha256": "4759bc79224a19ffa3ec71102f1cd88c20edb308a6fecbd63cbdb76614611921"
+    },
+    "viewer.html": {
+      "bytes": 21983,
+      "sha256": "d1f6a69cadc351bce4a17833428345c1fe228c3fac098746504e8a64ba86f6a2"
+    }
+  }
+}
