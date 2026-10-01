@@ -202,7 +202,7 @@ await patchAsset("stage-sketch.js", [
 await patchAsset("stage-study-navigation.js", [
   [
     "    const views = {}, pointers = new Map();",
-    "    const views = {}, pointers = new Map();\n    let stageFill = .8, fullFit = false; const defaultZoom = view => view === 'plan' && !fullFit ? 1.2 : 1;\n    document.body.classList.toggle('viewer-phone', navigator.maxTouchPoints > 0 && Math.min(screen.width, screen.height) <= 600);",
+    "    const views = {}, pointers = new Map();\n    let fullFit = false; const stageFill = view => (view === 'front' && document.body.classList.contains('viewer-phone')) || fullFit ? 1 : .8; const defaultZoom = view => view === 'plan' && !fullFit ? 1.2 : 1;\n    document.body.classList.toggle('viewer-phone', navigator.maxTouchPoints > 0 && Math.min(screen.width, screen.height) <= 600);",
     "phone detection and zoom defaults"
   ],
   [
@@ -232,7 +232,7 @@ await patchAsset("stage-study-navigation.js", [
   ],
   [
     "        Object.assign(v.surface.style,",
-    "        const bounds = engine.stageBounds(v.view);\n        v.base = bounds ? Math.min(stageFill * w / (bounds.width * v.width), stageFill * h / (bounds.height * v.height)) : 1;\n        v.cx = bounds ? (.5 - bounds.x - bounds.width / 2) * v.width * v.base : 0;\n        v.cy = bounds ? (.5 - bounds.y - bounds.height / 2) * v.height * v.base : 0;\n        v.surface.dataset.fit = bounds ? 'main-stage' : 'full-scene-fallback';\n        Object.assign(v.surface.style,",
+    "        const bounds = engine.stageBounds(v.view);\n        v.base = bounds ? Math.min(stageFill(v.view) * w / (bounds.width * v.width), stageFill(v.view) * h / (bounds.height * v.height)) : 1;\n        v.cx = bounds ? (.5 - bounds.x - bounds.width / 2) * v.width * v.base : 0;\n        v.cy = bounds ? (.5 - bounds.y - bounds.height / 2) * v.height * v.base : 0;\n        v.surface.dataset.fit = bounds ? 'main-stage' : 'full-scene-fallback';\n        Object.assign(v.surface.style,",
     "fit main stage into eighty percent"
   ],
   [
@@ -242,7 +242,7 @@ await patchAsset("stage-study-navigation.js", [
   ],
   [
     "      central() { camera('center'); },",
-    "      central() { camera('center'); },\n      fill(full) { stageFill = full ? 1 : .8; fullFit = full; this.reset(); },",
+    "      central() { camera('center'); },\n      fill(full) { fullFit = full; this.reset(); },",
     "full-width fit switch for line rehearsal"
   ],
   [

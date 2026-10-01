@@ -4,7 +4,7 @@
   const phone = navigator.maxTouchPoints > 0 && Math.min(screen.width, screen.height) <= 600;
   if (!phone) return;
   const $ = id => document.getElementById(id), shell = document.querySelector('.study-shell'), orientation = matchMedia('(orientation: portrait)');
-  const words = { lines: ['稽古', 'Lines'], linesMode: ['セリフ稽古', 'Line rehearsal'], linesExit: ['稽古を終える', 'End rehearsal'], linePrev: ['前のセリフ', 'Previous line'], lineNext: ['次のセリフ', 'Next line'], upNext: ['次のセリフ', 'Up next'], lineCount: ['セリフ', 'Line'], noLines: ['この場面にセリフはありません', 'No lines in this scene'], cueMemo: ['合図', 'Cue'], linesHint: ['下の前／次ボタンでセリフのある場面へ進めます。', 'Use the previous / next buttons below to reach a scene with lines.'], menu: ['メニュー', 'Menu'], light: ['照明のみ（作業灯なし）', 'Show lighting only (work light off)'], info: ['ショー情報', 'Show information'], settings: ['設定', 'Settings'], sceneInfo: ['場面情報', 'Scene information'], scenes: ['場面一覧', 'Scenes'], tools: ['書き込み', 'Draw'], memo: ['自分用メモ', 'My notes'], memoShort: ['メモ', 'Notes'], close: ['閉じる', 'Close'], view: ['舞台図を切り替える', 'Switch stage view'], both: ['両方', 'Both'], front: ['正面', 'Front'], plan: ['平面', 'Plan'], play: ['転換再生', 'Replay'], stop: ['停止', 'Stop'], share: ['オーナーへ共有', 'Share with owner'] };
+  const words = { lines: ['稽古', 'Lines'], sceneMode: ['シーン', 'Scene'], linesMode: ['セリフ稽古', 'Line rehearsal'], linePrev: ['前のセリフ', 'Previous line'], lineNext: ['次のセリフ', 'Next line'], upNext: ['次のセリフ', 'Up next'], lineCount: ['セリフ', 'Line'], noLines: ['この場面にセリフはありません', 'No lines in this scene'], cueMemo: ['合図', 'Cue'], linesHint: ['下の前／次ボタンでセリフのある場面へ進めます。', 'Use the previous / next buttons below to reach a scene with lines.'], menu: ['メニュー', 'Menu'], light: ['照明のみ（作業灯なし）', 'Show lighting only (work light off)'], info: ['ショー情報', 'Show information'], settings: ['設定', 'Settings'], sceneInfo: ['場面情報', 'Scene information'], scenes: ['場面一覧', 'Scenes'], tools: ['書き込み', 'Draw'], memo: ['自分用メモ', 'My notes'], memoShort: ['メモ', 'Notes'], close: ['閉じる', 'Close'], view: ['舞台図を切り替える', 'Switch stage view'], both: ['両方', 'Both'], front: ['正面', 'Front'], plan: ['平面', 'Plan'], play: ['転換再生', 'Replay'], stop: ['停止', 'Stop'], share: ['オーナーへ共有', 'Share with owner'] };
   const t = key => words[key][document.documentElement.lang === 'en' ? 1 : 0], make = (tag, className) => Object.assign(document.createElement(tag), { className });
   const paths = { lines: 'M2 2h12v9H7l-4 3v-3H2Z', lineNext: 'm11 4 4 4-4 4 M1 2h7v7H5l-3 3V9H1Z', light: 'M12 3v4 M5.6 5.6l2.8 2.8 M18.4 5.6l-2.8 2.8 m-7.4 .9 7.6 0 3.5 10.2h-14.6z', close: 'm3 3 10 10 M13 3 3 13', info: 'M8 7v5 M8 4v.1 M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1', both: 'M1 2h14v5H1Z M1 9h14v5H1Z', front: 'M1 3h14v10H1Z M4 3v10 M12 3v10', plan: 'M2 2h12v12H2Z M2 11h12', scenes: 'M5 3h10 M5 8h10 M5 13h10 M1 3h1 M1 8h1 M1 13h1' };
   const gearMarkup = '<circle cx="8" cy="8" r="4.2" stroke-width="1.3"/><circle cx="8" cy="8" r="1.4" stroke-width="1.3"/><path stroke-width="2.3" d="M8 3.10V1.90M11.94 5.55l1.04-.60M11.94 10.45l1.04.60M8 12.90v1.20M4.06 10.45l-1.04.60M4.06 5.55l-1.04-.60"/>';
@@ -69,13 +69,12 @@
   const linesKey = 'stage-study-phone-lines:' + location.hash.slice(1);
   let rehearsalLines = [], sceneOrder = new Map(), linesOn = false, lineId = '', pendingLines = null;
   let beforeLinesView = '', renderedLine = '';
-  const linesToggle = button('phone-lines', 'lines', () => setLines(!linesOn));
-  linesToggle.hidden = true; linesToggle.append(make('span', '')); nav.append(linesToggle);
+  const linesToggle = button('phone-lines', null, () => setLines(!linesOn));
+  linesToggle.hidden = true; linesToggle.append(make('span', 'phone-mode-scene'), make('span', 'phone-mode-lines')); nav.append(linesToggle);
   const linesRegion = make('section', 'phone-lines'); linesRegion.id = 'phone-lines-region';
   linesRegion.hidden = true; linesRegion.setAttribute('role', 'region');
   const linesHead = make('div', 'phone-lines-head'), linesMeta = make('span', 'phone-lines-meta');
-  const linesExit = button('phone-lines-exit', null, () => { setLines(false); (orientation.matches ? linesToggle : menu).focus(); });
-  linesHead.append(linesMeta, linesExit);
+  linesHead.append(linesMeta);
   const lineLive = make('div', 'phone-line-live'); lineLive.setAttribute('aria-live', 'polite'); lineLive.setAttribute('aria-atomic', 'true');
   const lineSpeaker = make('p', 'phone-line-speaker'), lineText = make('p', 'phone-line-text study-note-text');
   lineLive.append(lineSpeaker, lineText);
@@ -170,9 +169,9 @@
     nav.classList.toggle('has-lines', !linesToggle.hidden);
     linesToggle.disabled = !ready; linesToggle.setAttribute('aria-pressed', String(linesOn));
     linesToggle.setAttribute('aria-label', t('linesMode')); linesToggle.title = t('linesMode');
-    setText(linesToggle.querySelector('span'), t('lines'));
+    setText(linesToggle.querySelector('.phone-mode-scene'), t('sceneMode')); setText(linesToggle.querySelector('.phone-mode-lines'), t('lines'));
     linesRegion.hidden = !ready || !linesOn;
-    linesRegion.setAttribute('aria-label', t('linesMode')); setText(linesExit, t('linesExit'));
+    linesRegion.setAttribute('aria-label', t('linesMode'));
     shell.classList.toggle('phone-lines-on', linesOn && ready);
     if (fitFull !== (linesOn && ready)) { fitFull = linesOn && ready; applyFit(); }
     steps.classList.toggle('phone-lines-steps', linesOn);
@@ -212,7 +211,7 @@
     const renderKey = lineId || $('study-scenes').value;
     if (renderedLine !== renderKey) { renderedLine = renderKey; linesRegion.scrollTop = 0; }
     if (ghost) {
-      const timing = { duration: 260, easing: 'cubic-bezier(.2,.7,.2,1)', fill: 'both' }, dir = slideDir > 0 ? 1 : -1;
+      const timing = { duration: 560, easing: 'cubic-bezier(.2,.7,.2,1)', fill: 'both' }, dir = slideDir > 0 ? 1 : -1;
       const done = ghost.animate([{ transform: 'translateY(0)', opacity: 1 }, { transform: `translateY(${-dir * ghost.offsetHeight}px)`, opacity: 0 }], timing);
       done.onfinish = done.oncancel = () => ghost.remove();
       for (const el of [lineLive, lineMemo]) if (!el.hidden) el.animate([{ transform: `translateY(${dir * pushed}px)`, opacity: .2 }, { transform: 'translateY(0)', opacity: 1 }], timing);
