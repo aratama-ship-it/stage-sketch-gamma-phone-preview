@@ -85,7 +85,6 @@
     light.setAttribute('aria-label', t('light')); light.title = t('light');
     views.setAttribute('aria-label', t('view'));
     for (const [key, b] of Object.entries(viewButtons)) {
-      b.hidden = key === 'both' && orientation.matches;
       b.disabled = !ready || $('study-view').disabled;
       b.setAttribute('aria-label', t(key)); b.title = t(key);
       b.setAttribute('aria-pressed', String($('study-view').value === key));
