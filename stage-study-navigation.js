@@ -3,7 +3,7 @@
   'use strict';
   window.SHOSAI_STUDY_NAVIGATION = ({ engine, canvases, cancelAnnotations }) => {
     const views = {}, pointers = new Map();
-    const STAGE_FILL = .8, defaultZoom = view => view === 'plan' ? 1.2 : 1;
+    let stageFill = .8, fullFit = false; const defaultZoom = view => view === 'plan' && !fullFit ? 1.2 : 1;
     document.body.classList.toggle('viewer-phone', navigator.maxTouchPoints > 0 && Math.min(screen.width, screen.height) <= 600);
     let language = 'ja', gesture = null, penOn = false, stickyOn = false, suppressed = false, selectedSeat = 'center';
     const text = (ja, en) => language === 'en' ? en : ja;
@@ -39,7 +39,7 @@
         if (!w || !h) continue;
         v.width = Math.min(w, h * 16 / 9); v.height = v.width * 9 / 16;
         const bounds = engine.stageBounds(v.view);
-        v.base = bounds ? Math.min(STAGE_FILL * w / (bounds.width * v.width), STAGE_FILL * h / (bounds.height * v.height)) : 1;
+        v.base = bounds ? Math.min(stageFill * w / (bounds.width * v.width), stageFill * h / (bounds.height * v.height)) : 1;
         v.cx = bounds ? (.5 - bounds.x - bounds.width / 2) * v.width * v.base : 0;
         v.cy = bounds ? (.5 - bounds.y - bounds.height / 2) * v.height * v.base : 0;
         v.surface.dataset.fit = bounds ? 'main-stage' : 'full-scene-fallback';
@@ -123,6 +123,7 @@
       loaded(lang) { relabel(lang); camera(selectedSeat); this.reset(); },
       mode(kind, enabled) { if (kind === 'pen') penOn = enabled; else stickyOn = enabled; if (enabled) camera('center'); },
       central() { camera('center'); },
+      fill(full) { stageFill = full ? 1 : .8; fullFit = full; this.reset(); },
       crop(view, source) {
         const v = views[view], out = document.createElement('canvas');
         const ratio = Math.min(1, 960 / v.viewport.clientWidth, 960 / v.viewport.clientHeight);

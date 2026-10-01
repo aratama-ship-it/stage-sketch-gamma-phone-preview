@@ -4,7 +4,7 @@
   const phone = navigator.maxTouchPoints > 0 && Math.min(screen.width, screen.height) <= 600;
   if (!phone) return;
   const $ = id => document.getElementById(id), shell = document.querySelector('.study-shell'), orientation = matchMedia('(orientation: portrait)');
-  const words = { lines: ['稽古', 'Lines'], linesMode: ['セリフ稽古', 'Line rehearsal'], linesExit: ['稽古を終える', 'End rehearsal'], linePrev: ['前のセリフ', 'Previous line'], lineNext: ['次のセリフ', 'Next line'], lineCount: ['セリフ', 'Line'], noLines: ['この場面にセリフはありません', 'No lines in this scene'], cueMemo: ['合図', 'Cue'], linesHint: ['下の前／次ボタンでセリフのある場面へ進めます。', 'Use the previous / next buttons below to reach a scene with lines.'], menu: ['メニュー', 'Menu'], light: ['照明のみ（作業灯なし）', 'Show lighting only (work light off)'], info: ['ショー情報', 'Show information'], settings: ['設定', 'Settings'], sceneInfo: ['場面情報', 'Scene information'], scenes: ['場面一覧', 'Scenes'], tools: ['書き込み', 'Draw'], memo: ['自分用メモ', 'My notes'], memoShort: ['メモ', 'Notes'], close: ['閉じる', 'Close'], view: ['舞台図を切り替える', 'Switch stage view'], both: ['両方', 'Both'], front: ['正面', 'Front'], plan: ['平面', 'Plan'], play: ['転換再生', 'Replay'], stop: ['停止', 'Stop'], share: ['オーナーへ共有', 'Share with owner'] };
+  const words = { lines: ['稽古', 'Lines'], linesMode: ['セリフ稽古', 'Line rehearsal'], linesExit: ['稽古を終える', 'End rehearsal'], linePrev: ['前のセリフ', 'Previous line'], lineNext: ['次のセリフ', 'Next line'], upNext: ['次のセリフ', 'Up next'], lineCount: ['セリフ', 'Line'], noLines: ['この場面にセリフはありません', 'No lines in this scene'], cueMemo: ['合図', 'Cue'], linesHint: ['下の前／次ボタンでセリフのある場面へ進めます。', 'Use the previous / next buttons below to reach a scene with lines.'], menu: ['メニュー', 'Menu'], light: ['照明のみ（作業灯なし）', 'Show lighting only (work light off)'], info: ['ショー情報', 'Show information'], settings: ['設定', 'Settings'], sceneInfo: ['場面情報', 'Scene information'], scenes: ['場面一覧', 'Scenes'], tools: ['書き込み', 'Draw'], memo: ['自分用メモ', 'My notes'], memoShort: ['メモ', 'Notes'], close: ['閉じる', 'Close'], view: ['舞台図を切り替える', 'Switch stage view'], both: ['両方', 'Both'], front: ['正面', 'Front'], plan: ['平面', 'Plan'], play: ['転換再生', 'Replay'], stop: ['停止', 'Stop'], share: ['オーナーへ共有', 'Share with owner'] };
   const t = key => words[key][document.documentElement.lang === 'en' ? 1 : 0], make = (tag, className) => Object.assign(document.createElement(tag), { className });
   const paths = { lines: 'M2 2h12v9H7l-4 3v-3H2Z', lineNext: 'm11 4 4 4-4 4 M1 2h7v7H5l-3 3V9H1Z', light: 'M12 3v4 M5.6 5.6l2.8 2.8 M18.4 5.6l-2.8 2.8 m-7.4 .9 7.6 0 3.5 10.2h-14.6z', close: 'm3 3 10 10 M13 3 3 13', info: 'M8 7v5 M8 4v.1 M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1', both: 'M1 2h14v5H1Z M1 9h14v5H1Z', front: 'M1 3h14v10H1Z M4 3v10 M12 3v10', plan: 'M2 2h12v12H2Z M2 11h12', scenes: 'M5 3h10 M5 8h10 M5 13h10 M1 3h1 M1 8h1 M1 13h1' };
   const gearMarkup = '<circle cx="8" cy="8" r="4.2" stroke-width="1.3"/><circle cx="8" cy="8" r="1.4" stroke-width="1.3"/><path stroke-width="2.3" d="M8 3.10V1.90M11.94 5.55l1.04-.60M11.94 10.45l1.04.60M8 12.90v1.20M4.06 10.45l-1.04.60M4.06 5.55l-1.04-.60"/>';
@@ -36,12 +36,14 @@
     applyLight(); sync();
   });
   light.hidden = true;
+  let fitFull = false;
+  const applyFit = () => lightFrame()?.contentWindow?.postMessage({ channel: 'stage-study', action: 'fit', full: fitFull }, '*');
   window.addEventListener('message', event => {
     const frame = lightFrame();
     if (!frame || event.source !== frame.contentWindow || event.origin !== 'null' || event.data?.channel !== 'stage-study') return;
     if (event.data.action === 'ready') { hasLights = false; sync(); }
     if (event.data.action === 'light-capability') { hasLights = event.data.hasLights === true; applyLight(); sync(); }
-    if (event.data.action === 'loaded') applyLight();
+    if (event.data.action === 'loaded') { applyLight(); applyFit(); }
   });
   // A replacement frame must not inherit the old show's capability while loading.
   new MutationObserver(() => { hasLights = false; sync(); }).observe($('study-frame-host'), { childList: true });
@@ -73,12 +75,13 @@
   const linesHead = make('div', 'phone-lines-head'), linesMeta = make('span', 'phone-lines-meta');
   const linesExit = button('phone-lines-exit', null, () => { setLines(false); (orientation.matches ? linesToggle : menu).focus(); });
   linesHead.append(linesMeta, linesExit);
-  const linePrevious = make('p', 'phone-line-previous');
   const lineLive = make('div', 'phone-line-live'); lineLive.setAttribute('aria-live', 'polite'); lineLive.setAttribute('aria-atomic', 'true');
   const lineSpeaker = make('p', 'phone-line-speaker'), lineText = make('p', 'phone-line-text study-note-text');
   lineLive.append(lineSpeaker, lineText);
   const lineMemo = make('p', 'phone-line-memo study-note-text'), linesEmpty = make('p', 'phone-lines-empty');
-  linesRegion.append(linesHead, linePrevious, lineLive, lineMemo, linesEmpty); shell.append(linesRegion);
+  const upcoming = make('section', 'phone-line-next'), upcomingLabel = make('p', 'phone-line-next-label'), upcomingSpeaker = make('p', 'phone-line-next-speaker'), upcomingText = make('p', 'phone-line-next-text study-note-text');
+  upcoming.append(upcomingLabel, upcomingSpeaker, upcomingText);
+  linesRegion.append(linesHead, lineLive, lineMemo, upcoming, linesEmpty); shell.append(linesRegion);
   const setText = (el, value) => { if (el.textContent !== value) el.textContent = value; };
   // Safari lacks `word-break: auto-phrase`; approximate phrase breaks with Intl.Segmenter + <wbr> and `keep-all`.
   const phraseWrap = typeof Intl !== 'undefined' && Intl.Segmenter && !(window.CSS && CSS.supports && CSS.supports('word-break', 'auto-phrase'));
@@ -170,6 +173,7 @@
     linesRegion.hidden = !ready || !linesOn;
     linesRegion.setAttribute('aria-label', t('linesMode')); setText(linesExit, t('linesExit'));
     shell.classList.toggle('phone-lines-on', linesOn && ready);
+    if (fitFull !== (linesOn && ready)) { fitFull = linesOn && ready; applyFit(); }
     steps.classList.toggle('phone-lines-steps', linesOn);
     for (const [b, direction, original] of [[previous, -1, 'study-prev'], [next, 1, 'study-next']]) {
       const glyph = linesOn ? 'lineNext' : original;
@@ -183,13 +187,14 @@
       const nextId = rehearsalLines[index]?.id || '';
       if (lineId !== nextId) { lineId = nextId; saveLines(); }
     }
-    const line = rehearsalLines[index], preceding = rehearsalLines[index - 1];
+    const line = rehearsalLines[index], following = rehearsalLines[index + 1];
     const seconds = line?.seconds;
     const time = seconds == null ? '' : `${Math.floor(seconds / 60)}:${String(Math.floor(seconds % 60)).padStart(2, '0')}`;
     setText(linesMeta, [line ? `${t('lineCount')} ${index + 1} / ${rehearsalLines.length}` : t('linesMode'), $('study-scene-heading').textContent.split(' · ')[0], time].filter(Boolean).join(' · '));
-    lineLive.hidden = !line; linePrevious.hidden = !line || !preceding; lineMemo.hidden = !line?.memo; linesEmpty.hidden = Boolean(line);
+    lineLive.hidden = !line; upcoming.hidden = !line || !following; lineMemo.hidden = !line?.memo; linesEmpty.hidden = Boolean(line);
     setText(linesEmpty, `${t('noLines')}。${t('linesHint')}`);
-    setText(linePrevious, preceding ? `${preceding.speaker}: ${preceding.text}` : '');
+    setText(upcomingLabel, t('upNext')); setText(upcomingSpeaker, following?.speaker || ''); upcomingSpeaker.style.borderLeftColor = following?.color || 'var(--study-accent)';
+    setPhrased(upcomingText, following?.text || '');
     setText(lineSpeaker, line?.speaker || ''); lineSpeaker.style.borderLeftColor = line?.color || 'var(--study-accent)';
     setPhrased(lineText, line?.text || ''); setPhrased(lineMemo, line?.memo ? `${t('cueMemo')}: ${line.memo.replace(/^(?:合図|Cue)[:：]\s*/, '')}` : '');
     // Only changing lines resets the scroll; status/language updates do not.

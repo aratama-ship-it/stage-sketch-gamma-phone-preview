@@ -271,3 +271,5 @@ viewer.html、study-frame.html、index.html、manifest.json。追加証拠は de
 Safari折り返し補正（build `20261001-1638`）: `overrides/stage-study-phone.js` の `phraseParts`/`setPhrased`（`auto-phrase` 非対応時のみ有効）と `overrides/stage-study-phone.css` の `.phrase-wrap`。場面メモ `#study-scene-note` はMutationObserverで再描画（disconnect→描画→observeでループ回避）。WebKitは Playwright に `maxTouchPoints=5` の init script を足して検証（テスト専用・アプリ側は変更なし）。
 
 セリフエリア高さ固定（build `20261001-2223`）: `overrides/stage-study-phone.css` の `.phone-lines-on` グリッドを「セリフ=1fr／図=min(--phone-figure-height, 画面高50%)」に変更し、`.phone-lines` の max-height を廃止。横は帯を `画面高×--phone-lines-ratio` の固定行高に。WebKit(375×667・430×932・667×375)とChromiumで確認。
+
+稽古モードの図の全幅化・次のセリフ（build `20261001-2235`）: build.mjs に `stage-study-navigation.js` の `fill(full)`（stageFill 1.0／平面既定1.0）と `stage-study-frame.js` の `fit` メッセージを追加。親側は `overrides/stage-study-phone.js` の `applyFit`（稽古ON/OFFとiframe再読込の `loaded` で送信）。CSSは `.phone-line-next*`・`--phone-figure-height: 75vw`。確認: Chromium(375×667・393×852・360×740・844×390)・WebKit(375×667・844×390)。

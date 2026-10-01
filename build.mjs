@@ -122,7 +122,7 @@ await patchAsset('stage-sketch.js', [[
   'read-only work-light mask, lit pieces and beams',
 ]]);
 await patchAsset('stage-study-frame.js', [
-  ["        else if (message.action === 'replay')", "        else if (message.action === 'light') { engine.light(message.mode); }\n        else if (message.action === 'replay')", 'light message'],
+  ["        else if (message.action === 'replay')", "        else if (message.action === 'light') { engine.light(message.mode); }\n        else if (message.action === 'fit') { navigation?.fill(Boolean(message.full)); }\n        else if (message.action === 'replay')", 'light message'],
   ["        if (message.action === 'load') window.parent.postMessage({ channel: 'stage-study', action: 'loaded' }, location.origin);",
    `        if (message.action === 'load') {
           window.parent.postMessage({ channel: 'stage-study', action: 'light-capability', hasLights: engine.lightInfo() }, location.origin);
@@ -142,7 +142,7 @@ await patchAsset("stage-sketch.js", [
 await patchAsset("stage-study-navigation.js", [
   [
     "    const views = {}, pointers = new Map();",
-    "    const views = {}, pointers = new Map();\n    const STAGE_FILL = .8, defaultZoom = view => view === 'plan' ? 1.2 : 1;\n    document.body.classList.toggle('viewer-phone', navigator.maxTouchPoints > 0 && Math.min(screen.width, screen.height) <= 600);",
+    "    const views = {}, pointers = new Map();\n    let stageFill = .8, fullFit = false; const defaultZoom = view => view === 'plan' && !fullFit ? 1.2 : 1;\n    document.body.classList.toggle('viewer-phone', navigator.maxTouchPoints > 0 && Math.min(screen.width, screen.height) <= 600);",
     "phone detection and zoom defaults"
   ],
   [
@@ -172,13 +172,18 @@ await patchAsset("stage-study-navigation.js", [
   ],
   [
     "        Object.assign(v.surface.style,",
-    "        const bounds = engine.stageBounds(v.view);\n        v.base = bounds ? Math.min(STAGE_FILL * w / (bounds.width * v.width), STAGE_FILL * h / (bounds.height * v.height)) : 1;\n        v.cx = bounds ? (.5 - bounds.x - bounds.width / 2) * v.width * v.base : 0;\n        v.cy = bounds ? (.5 - bounds.y - bounds.height / 2) * v.height * v.base : 0;\n        v.surface.dataset.fit = bounds ? 'main-stage' : 'full-scene-fallback';\n        Object.assign(v.surface.style,",
+    "        const bounds = engine.stageBounds(v.view);\n        v.base = bounds ? Math.min(stageFill * w / (bounds.width * v.width), stageFill * h / (bounds.height * v.height)) : 1;\n        v.cx = bounds ? (.5 - bounds.x - bounds.width / 2) * v.width * v.base : 0;\n        v.cy = bounds ? (.5 - bounds.y - bounds.height / 2) * v.height * v.base : 0;\n        v.surface.dataset.fit = bounds ? 'main-stage' : 'full-scene-fallback';\n        Object.assign(v.surface.style,",
     "fit main stage into eighty percent"
   ],
   [
     "      Object.values(views).forEach(update);",
     "      for (const v of Object.values(views)) { v.toggle.textContent = text(v.view === 'front' ? '正面 操作' : '平面 操作', v.view === 'front' ? 'Front controls' : 'Plan controls'); update(v); }",
     "disclosure labels"
+  ],
+  [
+    "      central() { camera('center'); },",
+    "      central() { camera('center'); },\n      fill(full) { stageFill = full ? 1 : .8; fullFit = full; this.reset(); },",
+    "full-width fit switch for line rehearsal"
   ],
   [
     "      views.front.hint.hidden = !alternate;",

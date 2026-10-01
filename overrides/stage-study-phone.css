@@ -123,7 +123,7 @@ body.study-phone {
 }
 
 /* Line rehearsal: the existing detail row in portrait, a band above the drawing in landscape. */
-body.study-phone { --phone-lines-ratio: .4; --phone-line-size: 1.2rem; --phone-line-leading: 1.7; --phone-figure-height: calc(50vw + 56px); }
+body.study-phone { --phone-lines-ratio: .4; --phone-line-size: 1.2rem; --phone-line-leading: 1.7; --phone-figure-height: 75vw; }
 .study-phone .study-shell.phone-lines-on { grid-template-rows: var(--phone-header) var(--phone-scenes) minmax(0,1fr) min(var(--phone-figure-height), calc(var(--phone-height, 100dvh) * .5)) var(--phone-tools); }
 .study-phone .phone-scenes.has-lines { grid-template-columns: minmax(0,1fr) repeat(3,44px); }
 .study-phone #phone-lines { flex-direction: column; gap: 0; }
@@ -138,14 +138,23 @@ body.study-phone { --phone-lines-ratio: .4; --phone-line-size: 1.2rem; --phone-l
 .study-phone #phone-lines-exit { flex: 0 0 auto; min-width: var(--phone-hit); min-height: var(--phone-hit); padding: var(--study-s1) var(--study-s2); font-size: var(--phone-control); color: var(--study-accent-strong); background: var(--study-identity-bg); border: 1px solid var(--study-accent); }
 .study-phone .phone-line-speaker { margin: var(--study-s1) 0; padding-left: var(--study-s2); border-left: 4px solid var(--study-accent); color: var(--study-ink); }
 .study-phone .phone-line-text { margin: var(--study-s1) 0; font-size: var(--phone-line-size); line-height: var(--phone-line-leading); }
-.study-phone .phone-line-previous, .study-phone .phone-line-memo { margin: var(--study-s1) 0; font-size: var(--phone-control); opacity: .8; }
-.study-phone .phone-line-previous { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.study-phone .phone-line-memo { margin: var(--study-s1) 0; font-size: var(--phone-control); opacity: .8; }
+.study-phone .phone-line-next { margin-top: var(--study-s3); padding-top: var(--study-s2); border-top: 1px solid var(--study-accent); opacity: .85; }
+.study-phone .phone-line-next-label { margin: 0 0 var(--study-s1); font-size: var(--phone-control); letter-spacing: .08em; color: var(--study-accent-strong); }
+.study-phone .phone-line-next-speaker { margin: var(--study-s1) 0; padding-left: var(--study-s2); border-left: 3px solid var(--study-accent); font-size: var(--phone-control); }
+.study-phone .phone-line-next-text { margin: var(--study-s1) 0; font-size: var(--phone-control-text, .95rem); line-height: 1.6; }
 .study-phone .phone-lines-empty { font-size: var(--phone-heading); overflow-wrap: anywhere; }
 .study-phone .phone-lines-steps { box-shadow: inset 0 2px var(--study-accent); }
 .study-phone .phone-lines-steps button { border-top: 2px solid var(--study-accent); }
 .study-phone .phone-line-back svg { transform: scaleX(-1); }
 @media (orientation: landscape) {
-  body.study-phone { --phone-lines-ratio: .34; }
+  body.study-phone { --phone-lines-ratio: .4; }
+  .study-phone .phone-lines { display: grid; grid-template-columns: minmax(0,3fr) minmax(0,2fr); column-gap: var(--study-s3); align-content: start; }
+  .study-phone .phone-lines[hidden] { display: none; }
+  .study-phone .phone-lines-head, .study-phone .phone-lines-empty { grid-column: 1 / -1; }
+  .study-phone .phone-line-live { grid-column: 1; grid-row: 2; }
+  .study-phone .phone-line-memo { grid-column: 1; grid-row: 3; }
+  .study-phone .phone-line-next { grid-column: 2; grid-row: 2 / span 2; margin-top: var(--study-s1); padding: 0 0 0 var(--study-s3); border-top: 0; border-left: 1px solid var(--study-accent); }
   .study-phone .study-shell.phone-lines-on { grid-template-rows: calc(var(--phone-height, 100dvh) * var(--phone-lines-ratio)) minmax(0,1fr); }
   .study-phone .phone-lines { grid-row: 1; }
   .study-phone .phone-lines-on .study-workspace { grid-row: 2; }
