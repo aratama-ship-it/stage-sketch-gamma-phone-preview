@@ -277,3 +277,5 @@ Safari折り返し補正（build `20261001-1638`）: `overrides/stage-study-phon
 セリフ送りの押し出し演出と話者の吹き出し（build ``）: `overrides/stage-study-phone.js` の `stepLine` が `slideDir` を立て、`syncLines` で旧セリフを複製（`.phone-line-ghost`）して上（戻りは下）へ流しつつ新セリフ・合図・次のセリフを入れる。吹き出しは `rehearsalLines` に `castId` を持たせ、`applySpeaker`（稽古ON/OFF・行変更・iframe再読込の `loaded` で送信）→ build.mjs の `speaker` メッセージ → stage-sketch.js パッチの `drawStudySpeakerMark`（正面・平面の主キャンバスのみ）。
 
 モード切替トグルほか（build `20261002-0803`）: `#phone-lines` は `.phone-mode-scene`/`.phone-mode-lines` の2スパン。WebKitの `:hover` 固定でも `stage-study.css` の aria-pressed 塗りつぶしが出ないよう CSS で上書き。`linesExit` は削除。build.mjs の navigation パッチは `stageFill` を関数化（`fill(full)` は平面の全幅化だけを切り替える）。押し出し演出の長さは `syncLines` の `duration: 560`。
+
+正面図の下詰め・縦書き（build `20261002-0812`）: build.mjs の navigation レイアウトパッチで、`viewer-phone` かつ正面のとき `v.cy` を「主舞台の下端＝viewport下端−4px」に（それ以外は従来の中央寄せ）。縦書きは `overrides/stage-study-phone.js` の設定ペイン `.phone-setting` チェックボックス→`verticalOn`、`syncLines` が `.phone-lines.is-vertical` を付け替え。セリフ3要素は `.phone-lines-flow`（横書き時は `display: contents`、縦書き時は `direction: rtl` の横スクロール flex）に入れ、各要素は `writing-mode: vertical-rl`。押し出し演出は縦書き時のみ X 軸（`syncLines` の `axis`/`sign`）。
