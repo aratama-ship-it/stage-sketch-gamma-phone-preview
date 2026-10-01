@@ -1,7 +1,7 @@
 {
   "kind": "stage-sketch-gamma-phone-share-preview",
-  "buildId": "20261001-1243",
-  "generatedAt": "2026-10-01T03:43:34.135Z",
+  "buildId": "20261001-1308",
+  "generatedAt": "2026-10-01T04:08:55.519Z",
   "source": {
     "dir": "/Users/arata/git-repos/gamma-publish-20261001",
     "commit": "7af5a27",
@@ -45,12 +45,12 @@
     {
       "file": "stage-study-phone.css",
       "sourceSha256": "e69d639b82673c0f220a2aff5db7e437fb8b1f8d2e87264c6dc0f4c248f5cade",
-      "sha256": "1e1d12785d4e32524039ffc1b222d9f9336e6d6da3a6899c59e9aa4ccbeffe29"
+      "sha256": "7a2bac842a6d9e2b4082339156055b6a0021aa18f1c36c8c2f6be5273d3c9e83"
     },
     {
       "file": "stage-study-phone.js",
       "sourceSha256": "db40bede4b17a7383da4ec05f01434e7ceecf0abbb83bd31e21a4d8db45b1713",
-      "sha256": "b79bf5f59c408e0cee33ef1462acb9c147fab9e41eb42f5cae50a38c875bf2e7"
+      "sha256": "4b6738ef658c0d2d6232571fd736e9abad8dfc3b14a60851ddf259b11187b063"
     }
   ],
   "patches": [
@@ -74,12 +74,86 @@
       ]
     },
     {
+      "file": "stage-sketch.js",
+      "sourceSha256": "afdeb76af7678d7b416a506a0385a879329b7c181d268923cb14d88d71b095e4",
+      "sha256": "7388ba7beb3cad0e7f1524244163e7d9bcbeb3b45af3d1e0cfa1550f91e3aaa5",
+      "changes": [
+        "main stage bounds without editor or storage access"
+      ]
+    },
+    {
+      "file": "stage-study-navigation.js",
+      "sourceSha256": "5e20a6de48d4f70287cba2655da96cc66d69f7d20d65859f2ece97947b7ed6c0",
+      "sha256": "f15a8f5e7c9c9af2f57716a661f1244aae1f4b694ec72c42817d4519b2d8886a",
+      "changes": [
+        "phone detection and zoom defaults",
+        "overlay control disclosure",
+        "relative viewport zoom state",
+        "horizontal pan range",
+        "vertical pan range",
+        "isotropic stage centred zoom",
+        "fit main stage into eighty percent",
+        "disclosure labels",
+        "reframe changed seat",
+        "disclosure native event path",
+        "reset to front100 plan120",
+        "pinch anchor includes stage centring",
+        "preserve pinch anchor",
+        "scene zoom reset",
+        "load zoom reset",
+        "capture horizontal crop",
+        "capture vertical crop",
+        "capture isotropic scale"
+      ]
+    },
+    {
+      "file": "stage-study-navigation.css",
+      "sourceSha256": "3f9918f31cae4760f23ae4366d3b54e1db51255e4c70acf906fc1807328fde1f",
+      "sha256": "e526729de6b234f29071d34904a50145086b4bca9335a35ca48fbc4ae5fc72c8",
+      "changes": [
+        "landscape controls overlay no layout row"
+      ]
+    },
+    {
+      "file": "stage-study-frame.js",
+      "sourceSha256": "39bb813e72f9ae3de66ce9b4387349607d9d5569a8da5c5fa6f0e96d0a214906",
+      "sha256": "8d2652a1d6105cdf6af3955cab6789532c21cd62abad896a16b09be006d4aafe",
+      "changes": [
+        "block all sticky interaction",
+        "ignore retired sticky commands",
+        "load stickies read only",
+        "pen cannot enable sticky editing",
+        "scene defaults"
+      ]
+    },
+    {
+      "file": "viewer.html",
+      "sourceSha256": "6283bd377f7864b7a976701aa4f9e44323ca93d0a0c78e43aea911bbe2060434",
+      "sha256": "2a3f379b4a119a345cc71869f924496f1a1f7538e4aba3a7c839572a0670bdea",
+      "changes": [
+        "retired pinned-note UI"
+      ]
+    },
+    {
       "file": "study-frame.html",
-      "sourceSha256": "bf0c796010bd64aada7bf1799a7c7b2d75ea3f76990972cc2aaf22f49c4dde49",
-      "sha256": "360d09dd38dbbaace72897970cd14708d45fa3cb9f989a6185ddac5c056edaad",
+      "sourceSha256": "bcb30abd0dd1b8453cf9c19ecd97000ec938a4d8962ea3c989387f816a49f00b",
+      "sha256": "e0eb7a90a40653b28027296214587b9c079b1596c05d58141befa3ced29f490a",
       "changes": [
         "lighting model before stage modules",
         "lighting render dependencies in main-app order"
+      ]
+    },
+    {
+      "file": "stage-study-viewer.js",
+      "sourceSha256": "2b85579f62d85eb25ee9b4345b3dea8bae1d616aab6926c0aa4c27027845b75b",
+      "sha256": "c7b4b352624aef0ff9f5c0c7f28feb5929825783b3203b3e128a6694051bba0c",
+      "changes": [
+        "retire sticky UI while retaining inert compatibility nodes",
+        "remove sticky creation editing saving and list handlers",
+        "remove sticky mutation and persistence messages",
+        "prevent sticky mode activation",
+        "remove sticky selection and focus",
+        "remove sticky publish path"
       ]
     }
   ],
@@ -101,8 +175,8 @@
       "sha256": "a36fe3657e869eea715fab93f223dbfcf387b5d1249a6b4381753113cd9e7bf2"
     },
     "index.html": {
-      "bytes": 3624,
-      "sha256": "e61929aef1c0f29996dfef61cd22a6993addad8dc7252847f0eda56aea84d2d7"
+      "bytes": 3690,
+      "sha256": "e8d17743b663b2e880b957a25c42734d8ccfec569f0cd5d8888640d553afd63c"
     },
     "light-design/laser-effects.js": {
       "bytes": 8370,
@@ -114,7 +188,7 @@
     },
     "preview-adapter.js": {
       "bytes": 2597,
-      "sha256": "10f13d80c14763a4f0840228c03abf18e6dab042264ade17fb375870b6cf8444"
+      "sha256": "567a2fc1cba72b5373a95cf7b47c7fde441cb646f7b24fbe6acebb29e9ae28ce"
     },
     "samples/feature-test.json": {
       "bytes": 328856,
@@ -157,36 +231,36 @@
       "sha256": "8a8c1966643451c7555124c67feaed931fb95c35ca771b3e4411df27f6dc2bd7"
     },
     "stage-sketch.js": {
-      "bytes": 2276016,
-      "sha256": "afdeb76af7678d7b416a506a0385a879329b7c181d268923cb14d88d71b095e4"
+      "bytes": 2277070,
+      "sha256": "7388ba7beb3cad0e7f1524244163e7d9bcbeb3b45af3d1e0cfa1550f91e3aaa5"
     },
     "stage-study-continuity.js": {
       "bytes": 12723,
-      "sha256": "39fea47bdfda047455e54f2fb194c3f42f05840cfb814fb98de723f70a7e6a12"
+      "sha256": "d5715c3961be7df995672dae2d9cedcf77afbd46127fff0758ee1ba1666fa6ad"
     },
     "stage-study-frame.js": {
-      "bytes": 7160,
-      "sha256": "39bb813e72f9ae3de66ce9b4387349607d9d5569a8da5c5fa6f0e96d0a214906"
+      "bytes": 7313,
+      "sha256": "8d2652a1d6105cdf6af3955cab6789532c21cd62abad896a16b09be006d4aafe"
     },
     "stage-study-navigation.css": {
-      "bytes": 1951,
-      "sha256": "3f9918f31cae4760f23ae4366d3b54e1db51255e4c70acf906fc1807328fde1f"
+      "bytes": 2877,
+      "sha256": "e526729de6b234f29071d34904a50145086b4bca9335a35ca48fbc4ae5fc72c8"
     },
     "stage-study-navigation.js": {
-      "bytes": 7715,
-      "sha256": "5e20a6de48d4f70287cba2655da96cc66d69f7d20d65859f2ece97947b7ed6c0"
+      "bytes": 9396,
+      "sha256": "f15a8f5e7c9c9af2f57716a661f1244aae1f4b694ec72c42817d4519b2d8886a"
     },
     "stage-study-pen.js": {
       "bytes": 7306,
       "sha256": "556c0ee93c076c8507afa9f6de267514ff2c03818bec6629b1400ed65c1a414f"
     },
     "stage-study-phone.css": {
-      "bytes": 10778,
-      "sha256": "1e1d12785d4e32524039ffc1b222d9f9336e6d6da3a6899c59e9aa4ccbeffe29"
+      "bytes": 11820,
+      "sha256": "7a2bac842a6d9e2b4082339156055b6a0021aa18f1c36c8c2f6be5273d3c9e83"
     },
     "stage-study-phone.js": {
-      "bytes": 15701,
-      "sha256": "b79bf5f59c408e0cee33ef1462acb9c147fab9e41eb42f5cae50a38c875bf2e7"
+      "bytes": 16022,
+      "sha256": "4b6738ef658c0d2d6232571fd736e9abad8dfc3b14a60851ddf259b11187b063"
     },
     "stage-study-private.js": {
       "bytes": 4694,
@@ -201,8 +275,8 @@
       "sha256": "b5b07eea195e6b6c18549af592480a8e2599eca339fdd89dac862931cdf12452"
     },
     "stage-study-viewer.js": {
-      "bytes": 50317,
-      "sha256": "9efab39a9d26ab4c480b5985d332869d27543d3433806420f925e0772944f41c"
+      "bytes": 42068,
+      "sha256": "c7b4b352624aef0ff9f5c0c7f28feb5929825783b3203b3e128a6694051bba0c"
     },
     "stage-study.css": {
       "bytes": 32727,
@@ -218,15 +292,15 @@
     },
     "study-frame.html": {
       "bytes": 315680,
-      "sha256": "360d09dd38dbbaace72897970cd14708d45fa3cb9f989a6185ddac5c056edaad"
+      "sha256": "e0eb7a90a40653b28027296214587b9c079b1596c05d58141befa3ced29f490a"
     },
     "style.css": {
       "bytes": 511326,
       "sha256": "4759bc79224a19ffa3ec71102f1cd88c20edb308a6fecbd63cbdb76614611921"
     },
     "viewer.html": {
-      "bytes": 21983,
-      "sha256": "f2f639e1f72b13d0f93db69931efc95eed1016cd216d189f28a9c21018824ffb"
+      "bytes": 22062,
+      "sha256": "2a3f379b4a119a345cc71869f924496f1a1f7538e4aba3a7c839572a0670bdea"
     }
   }
 }

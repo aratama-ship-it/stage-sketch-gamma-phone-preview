@@ -42085,6 +42085,21 @@ html, body { margin: 0; padding: 0; color: #1c1a17; background: #fff; font-famil
         applyFeatureFlags();
         render();
       },
+      stageBounds(view) {
+        const L = layout(view), size = L.size;
+        if (![size.width, size.depth].every(n => Number.isFinite(n) && n > 0)) return null;
+        // Same main-stage bounds as the painter, excluding wings and audience.
+        const points = L.plan
+          ? [[L.stage.x, L.stage.y], [L.stage.x + L.stage.w, L.stage.y + L.stage.h]]
+          : [[L.centerX - L.frontW / 2, L.bottomY], [L.centerX + L.frontW / 2, L.bottomY],
+             [L.centerX + L.shift - L.backW / 2, L.backY], [L.centerX + L.shift + L.backW / 2, L.backY]];
+        const xs = points.map(p => p[0]), ys = points.map(p => p[1]);
+        const x = Math.min(...xs) / W, y = Math.min(...ys) / H;
+        const width = (Math.max(...xs) - Math.min(...xs)) / W;
+        const height = (Math.max(...ys) - Math.min(...ys)) / H;
+        return [x,y,width,height].every(Number.isFinite) && width > 0 && height > 0
+          ? { x, y, width, height, metres: { width: size.width, depth: size.depth, height: size.height }, venue: state.project.venue } : null;
+      },
       lightInfo() {
         // Same rig, cue model and stage-dimension guard as the actual painter.
         // Unset/off cues still have a rig: show mode correctly leaves it dark.

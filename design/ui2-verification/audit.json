@@ -1,0 +1,231 @@
+[
+  {
+    "viewport": [
+      844,
+      390
+    ],
+    "controls": [
+      {
+        "id": "phone-prev",
+        "label": "前の場面",
+        "w": 44,
+        "h": 44
+      },
+      {
+        "id": "phone-next",
+        "label": "次の場面",
+        "w": 44,
+        "h": 44
+      },
+      {
+        "id": "phone-close",
+        "label": "閉じる",
+        "w": 44,
+        "h": 44
+      },
+      {
+        "id": "phone-light",
+        "label": "照明のみ（作業灯なし）",
+        "w": 40,
+        "h": 40
+      },
+      {
+        "id": "phone-view-front",
+        "label": "正面",
+        "w": 40,
+        "h": 40
+      },
+      {
+        "id": "phone-view-plan",
+        "label": "平面",
+        "w": 40,
+        "h": 40
+      },
+      {
+        "id": "phone-view-both",
+        "label": "両方",
+        "w": 40,
+        "h": 40
+      },
+      {
+        "id": "phone-info",
+        "label": "ショー情報",
+        "w": 40,
+        "h": 40
+      },
+      {
+        "id": "phone-settings",
+        "label": "設定",
+        "w": 40,
+        "h": 40
+      },
+      {
+        "id": "phone-current",
+        "label": "場面一覧 · 1 / 48 · 0-1 このショーは機能の試験場",
+        "w": 246,
+        "h": 44
+      },
+      {
+        "id": "phone-scene-list",
+        "label": "場面一覧",
+        "w": 44,
+        "h": 44
+      },
+      {
+        "id": "phone-scene-info",
+        "label": "場面情報",
+        "w": 44,
+        "h": 44
+      },
+      {
+        "id": "phone-menu",
+        "label": "メニュー",
+        "w": 64,
+        "h": 97.5
+      },
+      {
+        "id": "phone-play",
+        "label": "転換を再生",
+        "w": 64,
+        "h": 97.5
+      },
+      {
+        "id": "phone-tools",
+        "label": "書き込み",
+        "w": 64,
+        "h": 97.5
+      },
+      {
+        "id": "phone-memo",
+        "label": "自分用メモ",
+        "w": 64,
+        "h": 97.5
+      },
+      {
+        "w": 68,
+        "h": 44
+      },
+      {
+        "w": 108,
+        "h": 44
+      },
+      {
+        "w": 64,
+        "h": 44
+      },
+      {
+        "w": 68,
+        "h": 44
+      }
+    ],
+    "canvasRatios": [
+      1.7777777777777777,
+      1.7777777214092079
+    ],
+    "reportOverflow": false
+  },
+  {
+    "viewport": [
+      390,
+      844
+    ],
+    "controls": [
+      {
+        "id": "phone-light",
+        "label": "照明のみ（作業灯なし）",
+        "w": 40,
+        "h": 40
+      },
+      {
+        "id": "phone-view-front",
+        "label": "正面",
+        "w": 40,
+        "h": 40
+      },
+      {
+        "id": "phone-view-plan",
+        "label": "平面",
+        "w": 40,
+        "h": 40
+      },
+      {
+        "id": "phone-view-both",
+        "label": "両方",
+        "w": 40,
+        "h": 40
+      },
+      {
+        "id": "phone-info",
+        "label": "ショー情報",
+        "w": 40,
+        "h": 40
+      },
+      {
+        "id": "phone-settings",
+        "label": "設定",
+        "w": 40,
+        "h": 40
+      },
+      {
+        "id": "phone-prev",
+        "label": "前の場面",
+        "w": 44,
+        "h": 48
+      },
+      {
+        "id": "phone-next",
+        "label": "次の場面",
+        "w": 44,
+        "h": 48
+      },
+      {
+        "id": "phone-play",
+        "label": "転換を再生",
+        "w": 100.65625,
+        "h": 48
+      },
+      {
+        "id": "phone-tools",
+        "label": "書き込み",
+        "w": 100.671875,
+        "h": 48
+      },
+      {
+        "id": "phone-memo",
+        "label": "自分用メモ",
+        "w": 100.65625,
+        "h": 48
+      },
+      {
+        "id": "phone-current",
+        "label": "場面一覧 · 1 / 48 · 0-1 このショーは機能の試験場",
+        "w": 302,
+        "h": 44
+      },
+      {
+        "id": "phone-scene-list",
+        "label": "場面一覧",
+        "w": 44,
+        "h": 44
+      },
+      {
+        "id": "phone-scene-info",
+        "label": "場面情報",
+        "w": 44,
+        "h": 44
+      },
+      {
+        "w": 200,
+        "h": 44
+      },
+      {
+        "w": 64,
+        "h": 44
+      }
+    ],
+    "canvasRatios": [
+      1.7777779957190878
+    ],
+    "reportOverflow": false
+  }
+]

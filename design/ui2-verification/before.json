@@ -1,0 +1,22 @@
+[
+  {
+    "class": "viewer-viewport",
+    "width": 388,
+    "height": 258
+  },
+  {
+    "class": "viewer-surface",
+    "width": 388,
+    "height": 218.25
+  },
+  {
+    "class": "viewer-viewport",
+    "width": 388,
+    "height": 257
+  },
+  {
+    "class": "viewer-surface",
+    "width": 388,
+    "height": 218.25
+  }
+]

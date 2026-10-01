@@ -1,0 +1,834 @@
+{
+  "cases": [
+    {
+      "sample": "romeo-juliet",
+      "orientation": "landscape",
+      "scene": 1,
+      "initial": [
+        {
+          "view": "front",
+          "viewport": {
+            "width": 517.328125,
+            "height": 390
+          },
+          "canvas": {
+            "width": 440,
+            "height": 247.5
+          },
+          "bounds": {
+            "x": 0.030000000000000072,
+            "y": 0.13055555555555556,
+            "width": 0.9399999999999998,
+            "height": 0.7,
+            "metres": {
+              "width": 12,
+              "depth": 9,
+              "height": 7.2
+            },
+            "venue": "proscenium"
+          },
+          "zoom": 1,
+          "fit": "main-stage",
+          "stage": {
+            "x": 51.85625000000003,
+            "y": 108.375,
+            "width": 413.5999999999999,
+            "height": 173.25
+          },
+          "ratio": 0.7994925850977074
+        },
+        {
+          "view": "plan",
+          "viewport": {
+            "width": 258.65625,
+            "height": 389
+          },
+          "canvas": {
+            "width": 414.4000244140625,
+            "height": 233.10000610351562
+          },
+          "bounds": {
+            "x": 0.2,
+            "y": 0.03333333333333333,
+            "width": 0.6,
+            "height": 0.8,
+            "metres": {
+              "width": 12,
+              "depth": 9,
+              "height": 7.2
+            },
+            "venue": "proscenium"
+          },
+          "zoom": 1.2,
+          "fit": "main-stage",
+          "stage": {
+            "x": 526.3362426757812,
+            "y": 102.25999806722005,
+            "width": 248.6400146484375,
+            "height": 186.48000488281252
+          },
+          "ratio": 0.9612758812069591
+        }
+      ],
+      "views": [
+        {
+          "view": "front",
+          "viewport": {
+            "width": 780,
+            "height": 390
+          },
+          "canvas": {
+            "width": 663.8248291015625,
+            "height": 373.4042663574219
+          },
+          "bounds": {
+            "x": 0.030000000000000072,
+            "y": 0.13055555555555556,
+            "width": 0.9399999999999998,
+            "height": 0.7,
+            "metres": {
+              "width": 12,
+              "depth": 9,
+              "height": 7.2
+            },
+            "venue": "proscenium"
+          },
+          "zoom": 1,
+          "fit": "main-stage",
+          "stage": {
+            "x": 77.99451782226568,
+            "y": 64.30850363837348,
+            "width": 623.9953393554687,
+            "height": 261.3829864501953
+          },
+          "ratio": 0.7999940248147034
+        },
+        {
+          "view": "plan",
+          "viewport": {
+            "width": 780,
+            "height": 390
+          },
+          "canvas": {
+            "width": 693.328125,
+            "height": 390
+          },
+          "bounds": {
+            "x": 0.2,
+            "y": 0.03333333333333333,
+            "width": 0.6,
+            "height": 0.8,
+            "metres": {
+              "width": 12,
+              "depth": 9,
+              "height": 7.2
+            },
+            "venue": "proscenium"
+          },
+          "zoom": 1,
+          "fit": "main-stage",
+          "stage": {
+            "x": 181.99375,
+            "y": 39,
+            "width": 415.996875,
+            "height": 312
+          },
+          "ratio": 0.8
+        }
+      ],
+      "regression": "passed"
+    },
+    {
+      "sample": "romeo-juliet",
+      "orientation": "portrait",
+      "scene": 1,
+      "initial": [
+        {
+          "view": "front",
+          "viewport": {
+            "width": 390,
+            "height": 403
+          },
+          "canvas": {
+            "width": 331.9149169921875,
+            "height": 186.70213317871094
+          },
+          "bounds": {
+            "x": 0.030000000000000072,
+            "y": 0.13055555555555556,
+            "width": 0.9399999999999998,
+            "height": 0.7,
+            "metres": {
+              "width": 12,
+              "depth": 9,
+              "height": 7.2
+            },
+            "venue": "proscenium"
+          },
+          "zoom": 1,
+          "fit": "main-stage",
+          "stage": {
+            "x": 39.00000427246096,
+            "y": 180.15425181918675,
+            "width": 312.0000219726562,
+            "height": 130.69149322509764
+          },
+          "ratio": 0.8000000563401442
+        },
+        {
+          "view": "plan",
+          "viewport": {
+            "width": 0,
+            "height": 0
+          },
+          "canvas": {
+            "width": 0,
+            "height": 0
+          },
+          "bounds": {
+            "x": 0.2,
+            "y": 0.03333333333333333,
+            "width": 0.6,
+            "height": 0.8,
+            "metres": {
+              "width": 12,
+              "depth": 9,
+              "height": 7.2
+            },
+            "venue": "proscenium"
+          },
+          "zoom": 1.2,
+          "fit": "main-stage",
+          "stage": {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          "ratio": NaN
+        }
+      ],
+      "views": [
+        {
+          "view": "front",
+          "viewport": {
+            "width": 390,
+            "height": 403
+          },
+          "canvas": {
+            "width": 331.9149169921875,
+            "height": 186.70213317871094
+          },
+          "bounds": {
+            "x": 0.030000000000000072,
+            "y": 0.13055555555555556,
+            "width": 0.9399999999999998,
+            "height": 0.7,
+            "metres": {
+              "width": 12,
+              "depth": 9,
+              "height": 7.2
+            },
+            "venue": "proscenium"
+          },
+          "zoom": 1,
+          "fit": "main-stage",
+          "stage": {
+            "x": 39.00000427246096,
+            "y": 180.15425181918675,
+            "width": 312.0000219726562,
+            "height": 130.69149322509764
+          },
+          "ratio": 0.8000000563401442
+        },
+        {
+          "view": "plan",
+          "viewport": {
+            "width": 390,
+            "height": 403
+          },
+          "canvas": {
+            "width": 520,
+            "height": 292.5
+          },
+          "bounds": {
+            "x": 0.2,
+            "y": 0.03333333333333333,
+            "width": 0.6,
+            "height": 0.8,
+            "metres": {
+              "width": 12,
+              "depth": 9,
+              "height": 7.2
+            },
+            "venue": "proscenium"
+          },
+          "zoom": 1,
+          "fit": "main-stage",
+          "stage": {
+            "x": 39,
+            "y": 128.5,
+            "width": 312,
+            "height": 234
+          },
+          "ratio": 0.8
+        }
+      ],
+      "regression": "passed"
+    },
+    {
+      "sample": "feature-test",
+      "orientation": "landscape",
+      "scene": 1,
+      "initial": [
+        {
+          "view": "front",
+          "viewport": {
+            "width": 517.328125,
+            "height": 390
+          },
+          "canvas": {
+            "width": 440,
+            "height": 247.5
+          },
+          "bounds": {
+            "x": 0.030000000000000072,
+            "y": 0.14775985663082444,
+            "width": 0.9399999999999998,
+            "height": 0.6827956989247311,
+            "metres": {
+              "width": 12.4,
+              "depth": 9.6,
+              "height": 7.2
+            },
+            "venue": "proscenium"
+          },
+          "zoom": 1,
+          "fit": "main-stage",
+          "stage": {
+            "x": 51.85625000000003,
+            "y": 110.50403619581655,
+            "width": 413.5999999999999,
+            "height": 168.99193548387095
+          },
+          "ratio": 0.7994925850977074
+        },
+        {
+          "view": "plan",
+          "viewport": {
+            "width": 258.65625,
+            "height": 389
+          },
+          "canvas": {
+            "width": 427.7677001953125,
+            "height": 240.6193389892578
+          },
+          "bounds": {
+            "x": 0.209375,
+            "y": 0.03333333333333333,
+            "width": 0.58125,
+            "height": 0.8,
+            "metres": {
+              "width": 12.4,
+              "depth": 9.6,
+              "height": 7.2
+            },
+            "venue": "proscenium"
+          },
+          "zoom": 1.2,
+          "fit": "main-stage",
+          "stage": {
+            "x": 526.3362621307373,
+            "y": 99.25225779215495,
+            "width": 248.6399757385254,
+            "height": 192.49547119140627
+          },
+          "ratio": 0.9612757307759832
+        }
+      ],
+      "views": [
+        {
+          "view": "front",
+          "viewport": {
+            "width": 780,
+            "height": 390
+          },
+          "canvas": {
+            "width": 663.8248291015625,
+            "height": 373.40423583984375
+          },
+          "bounds": {
+            "x": 0.030000000000000072,
+            "y": 0.14775985663082444,
+            "width": 0.9399999999999998,
+            "height": 0.6827956989247311,
+            "metres": {
+              "width": 12.4,
+              "depth": 9.6,
+              "height": 7.2
+            },
+            "venue": "proscenium"
+          },
+          "zoom": 1,
+          "fit": "main-stage",
+          "stage": {
+            "x": 77.99451782226568,
+            "y": 67.52057664112381,
+            "width": 623.9953393554687,
+            "height": 254.95880619172124
+          },
+          "ratio": 0.7999940248147034
+        },
+        {
+          "view": "plan",
+          "viewport": {
+            "width": 780,
+            "height": 390
+          },
+          "canvas": {
+            "width": 693.328125,
+            "height": 390
+          },
+          "bounds": {
+            "x": 0.209375,
+            "y": 0.03333333333333333,
+            "width": 0.58125,
+            "height": 0.8,
+            "metres": {
+              "width": 12.4,
+              "depth": 9.6,
+              "height": 7.2
+            },
+            "venue": "proscenium"
+          },
+          "zoom": 1,
+          "fit": "main-stage",
+          "stage": {
+            "x": 188.49370117187502,
+            "y": 39,
+            "width": 402.99697265625,
+            "height": 312
+          },
+          "ratio": 0.8
+        }
+      ],
+      "regression": "passed"
+    },
+    {
+      "sample": "feature-test",
+      "orientation": "portrait",
+      "scene": 1,
+      "initial": [
+        {
+          "view": "front",
+          "viewport": {
+            "width": 390,
+            "height": 403
+          },
+          "canvas": {
+            "width": 331.9149169921875,
+            "height": 186.70211791992188
+          },
+          "bounds": {
+            "x": 0.030000000000000072,
+            "y": 0.14775985663082444,
+            "width": 0.9399999999999998,
+            "height": 0.6827956989247311,
+            "metres": {
+              "width": 12.4,
+              "depth": 9.6,
+              "height": 7.2
+            },
+            "venue": "proscenium"
+          },
+          "zoom": 1,
+          "fit": "main-stage",
+          "stage": {
+            "x": 39.00000427246096,
+            "y": 181.76029594995643,
+            "width": 312.0000219726562,
+            "height": 127.47940309586062
+          },
+          "ratio": 0.8000000563401442
+        },
+        {
+          "view": "plan",
+          "viewport": {
+            "width": 0,
+            "height": 0
+          },
+          "canvas": {
+            "width": 0,
+            "height": 0
+          },
+          "bounds": {
+            "x": 0.209375,
+            "y": 0.03333333333333333,
+            "width": 0.58125,
+            "height": 0.8,
+            "metres": {
+              "width": 12.4,
+              "depth": 9.6,
+              "height": 7.2
+            },
+            "venue": "proscenium"
+          },
+          "zoom": 1.2,
+          "fit": "main-stage",
+          "stage": {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          "ratio": NaN
+        }
+      ],
+      "views": [
+        {
+          "view": "front",
+          "viewport": {
+            "width": 390,
+            "height": 403
+          },
+          "canvas": {
+            "width": 331.9149169921875,
+            "height": 186.70211791992188
+          },
+          "bounds": {
+            "x": 0.030000000000000072,
+            "y": 0.14775985663082444,
+            "width": 0.9399999999999998,
+            "height": 0.6827956989247311,
+            "metres": {
+              "width": 12.4,
+              "depth": 9.6,
+              "height": 7.2
+            },
+            "venue": "proscenium"
+          },
+          "zoom": 1,
+          "fit": "main-stage",
+          "stage": {
+            "x": 39.00000427246096,
+            "y": 181.76029594995643,
+            "width": 312.0000219726562,
+            "height": 127.47940309586062
+          },
+          "ratio": 0.8000000563401442
+        },
+        {
+          "view": "plan",
+          "viewport": {
+            "width": 390,
+            "height": 403
+          },
+          "canvas": {
+            "width": 536.774169921875,
+            "height": 301.93548583984375
+          },
+          "bounds": {
+            "x": 0.209375,
+            "y": 0.03333333333333333,
+            "width": 0.58125,
+            "height": 0.8,
+            "metres": {
+              "width": 12.4,
+              "depth": 9.6,
+              "height": 7.2
+            },
+            "venue": "proscenium"
+          },
+          "zoom": 1,
+          "fit": "main-stage",
+          "stage": {
+            "x": 39.00000686645508,
+            "y": 124.72580159505208,
+            "width": 311.99998626708987,
+            "height": 241.54838867187502
+          },
+          "ratio": 0.7999999647874099
+        }
+      ],
+      "regression": "passed"
+    },
+    {
+      "sample": "four-outlines",
+      "orientation": "landscape",
+      "scene": 1,
+      "initial": [
+        {
+          "view": "front",
+          "viewport": {
+            "width": 517.328125,
+            "height": 390
+          },
+          "canvas": {
+            "width": 604.58837890625,
+            "height": 340.08099365234375
+          },
+          "bounds": {
+            "x": 0.15794910714285715,
+            "y": 0.030555555555555555,
+            "width": 0.6841017857142858,
+            "height": 0.8,
+            "metres": {
+              "width": 7.15,
+              "depth": 4.55,
+              "height": 7
+            },
+            "venue": "blackbox"
+          },
+          "zoom": 1,
+          "fit": "main-stage",
+          "stage": {
+            "x": 51.85622466648647,
+            "y": 58.96759660508897,
+            "width": 413.59998963187087,
+            "height": 272.06479492187503
+          },
+          "ratio": 0.7994925650560191
+        },
+        {
+          "view": "plan",
+          "viewport": {
+            "width": 258.65625,
+            "height": 389
+          },
+          "canvas": {
+            "width": 438.9757080078125,
+            "height": 246.92385864257812
+          },
+          "bounds": {
+            "x": 0.21679526748971192,
+            "y": 0.11294010059442157,
+            "width": 0.5664094650205762,
+            "height": 0.6407864654778236,
+            "metres": {
+              "width": 7.15,
+              "depth": 4.55,
+              "height": 7
+            },
+            "venue": "blackbox"
+          },
+          "zoom": 1.2,
+          "fit": "main-stage",
+          "stage": {
+            "x": 526.3362520351332,
+            "y": 116.38727737029066,
+            "width": 248.63999592973374,
+            "height": 158.22546662172337
+          },
+          "ratio": 0.961275808837922
+        }
+      ],
+      "views": [
+        {
+          "view": "front",
+          "viewport": {
+            "width": 780,
+            "height": 390
+          },
+          "canvas": {
+            "width": 693.328125,
+            "height": 390
+          },
+          "bounds": {
+            "x": 0.15794910714285715,
+            "y": 0.030555555555555555,
+            "width": 0.6841017857142858,
+            "height": 0.8,
+            "metres": {
+              "width": 7.15,
+              "depth": 4.55,
+              "height": 7
+            },
+            "venue": "blackbox"
+          },
+          "zoom": 1,
+          "fit": "main-stage",
+          "stage": {
+            "x": 152.83868330078127,
+            "y": 38.99999491373698,
+            "width": 474.3070083984376,
+            "height": 312
+          },
+          "ratio": 0.8
+        },
+        {
+          "view": "plan",
+          "viewport": {
+            "width": 780,
+            "height": 390
+          },
+          "canvas": {
+            "width": 865.596435546875,
+            "height": 486.90167236328125
+          },
+          "bounds": {
+            "x": 0.21679526748971192,
+            "y": 0.11294010059442157,
+            "width": 0.5664094650205762,
+            "height": 0.6407864654778236,
+            "metres": {
+              "width": 7.15,
+              "depth": 4.55,
+              "height": 7
+            },
+            "venue": "blackbox"
+          },
+          "zoom": 1,
+          "fit": "main-stage",
+          "stage": {
+            "x": 144.85118050908846,
+            "y": 39.000016458840136,
+            "width": 490.2820139818231,
+            "height": 312.0000016689083
+          },
+          "ratio": 0.800000004279252
+        }
+      ],
+      "regression": "passed"
+    },
+    {
+      "sample": "four-outlines",
+      "orientation": "portrait",
+      "scene": 1,
+      "initial": [
+        {
+          "view": "front",
+          "viewport": {
+            "width": 390,
+            "height": 591
+          },
+          "canvas": {
+            "width": 456.072509765625,
+            "height": 256.540771484375
+          },
+          "bounds": {
+            "x": 0.15794910714285715,
+            "y": 0.030555555555555555,
+            "width": 0.6841017857142858,
+            "height": 0.8,
+            "metres": {
+              "width": 7.15,
+              "depth": 4.55,
+              "height": 7
+            },
+            "venue": "blackbox"
+          },
+          "zoom": 1,
+          "fit": "main-stage",
+          "stage": {
+            "x": 38.999990827069965,
+            "y": 236.88369818793402,
+            "width": 312.0000183458601,
+            "height": 205.2326171875
+          },
+          "ratio": 0.800000047040667
+        },
+        {
+          "view": "plan",
+          "viewport": {
+            "width": 0,
+            "height": 0
+          },
+          "canvas": {
+            "width": 0,
+            "height": 0
+          },
+          "bounds": {
+            "x": 0.21679526748971192,
+            "y": 0.11294010059442157,
+            "width": 0.5664094650205762,
+            "height": 0.6407864654778236,
+            "metres": {
+              "width": 7.15,
+              "depth": 4.55,
+              "height": 7
+            },
+            "venue": "blackbox"
+          },
+          "zoom": 1.2,
+          "fit": "main-stage",
+          "stage": {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          "ratio": NaN
+        }
+      ],
+      "views": [
+        {
+          "view": "front",
+          "viewport": {
+            "width": 390,
+            "height": 591
+          },
+          "canvas": {
+            "width": 456.072509765625,
+            "height": 256.540771484375
+          },
+          "bounds": {
+            "x": 0.15794910714285715,
+            "y": 0.030555555555555555,
+            "width": 0.6841017857142858,
+            "height": 0.8,
+            "metres": {
+              "width": 7.15,
+              "depth": 4.55,
+              "height": 7
+            },
+            "venue": "blackbox"
+          },
+          "zoom": 1,
+          "fit": "main-stage",
+          "stage": {
+            "x": 38.999990827069965,
+            "y": 236.88369818793402,
+            "width": 312.0000183458601,
+            "height": 205.2326171875
+          },
+          "ratio": 0.800000047040667
+        },
+        {
+          "view": "plan",
+          "viewport": {
+            "width": 390,
+            "height": 591
+          },
+          "canvas": {
+            "width": 550.8382568359375,
+            "height": 309.8465270996094
+          },
+          "bounds": {
+            "x": 0.21679526748971192,
+            "y": 0.11294010059442157,
+            "width": 0.5664094650205762,
+            "height": 0.6407864654778236,
+            "metres": {
+              "width": 7.15,
+              "depth": 4.55,
+              "height": 7
+            },
+            "venue": "blackbox"
+          },
+          "zoom": 1,
+          "fit": "main-stage",
+          "stage": {
+            "x": 38.999998816344956,
+            "y": 240.22728275391518,
+            "width": 312.0000023673101,
+            "height": 198.54546094073737
+          },
+          "ratio": 0.800000006070026
+        }
+      ],
+      "regression": "passed"
+    }
+  ],
+  "consoleErrors": [],
+  "requests": 432
+}

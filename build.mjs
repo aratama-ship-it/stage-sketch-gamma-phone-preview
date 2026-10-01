@@ -130,6 +130,142 @@ await patchAsset('stage-study-frame.js', [
         }`, 'light capability after load'],
 ]);
 
+
+// UI2: presentation-only fit, landscape overlays, and retired pinned-note editing.
+await patchAsset("stage-sketch.js", [
+  [
+    "      lightInfo() {",
+    "      stageBounds(view) {\n        const L = layout(view), size = L.size;\n        if (![size.width, size.depth].every(n => Number.isFinite(n) && n > 0)) return null;\n        // Same main-stage bounds as the painter, excluding wings and audience.\n        const points = L.plan\n          ? [[L.stage.x, L.stage.y], [L.stage.x + L.stage.w, L.stage.y + L.stage.h]]\n          : [[L.centerX - L.frontW / 2, L.bottomY], [L.centerX + L.frontW / 2, L.bottomY],\n             [L.centerX + L.shift - L.backW / 2, L.backY], [L.centerX + L.shift + L.backW / 2, L.backY]];\n        const xs = points.map(p => p[0]), ys = points.map(p => p[1]);\n        const x = Math.min(...xs) / W, y = Math.min(...ys) / H;\n        const width = (Math.max(...xs) - Math.min(...xs)) / W;\n        const height = (Math.max(...ys) - Math.min(...ys)) / H;\n        return [x,y,width,height].every(Number.isFinite) && width > 0 && height > 0\n          ? { x, y, width, height, metres: { width: size.width, depth: size.depth, height: size.height }, venue: state.project.venue } : null;\n      },\n      lightInfo() {",
+    "main stage bounds without editor or storage access"
+  ]
+]);
+await patchAsset("stage-study-navigation.js", [
+  [
+    "    const views = {}, pointers = new Map();",
+    "    const views = {}, pointers = new Map();\n    const STAGE_FILL = .8, defaultZoom = view => view === 'plan' ? 1.2 : 1;\n    document.body.classList.toggle('viewer-phone', navigator.maxTouchPoints > 0 && Math.min(screen.width, screen.height) <= 600);",
+    "phone detection and zoom defaults"
+  ],
+  [
+    "      bar.append(reset);",
+    "      bar.append(reset);\n      const toggle = make('button', 'viewer-controls-toggle'); toggle.type = 'button'; toggle.dataset.viewerControls = view; toggle.setAttribute('aria-expanded', 'false'); bar.prepend(toggle);",
+    "overlay control disclosure"
+  ],
+  [
+    "hint, z: 1, x: 0",
+    "hint, toggle, base: 1, cx: 0, cy: 0, z: defaultZoom(view), x: 0",
+    "relative viewport zoom state"
+  ],
+  [
+    "(v.width * v.z - v.viewport.clientWidth)",
+    "(v.width * v.base * v.z - v.viewport.clientWidth)",
+    "horizontal pan range"
+  ],
+  [
+    "(v.height * v.z - v.viewport.clientHeight)",
+    "(v.height * v.base * v.z - v.viewport.clientHeight)",
+    "vertical pan range"
+  ],
+  [
+    "      v.surface.style.transform = `translate(${v.x}px, ${v.y}px) scale(${v.z})`;",
+    "      v.surface.style.transform = `translate(${v.x + v.cx * v.z}px, ${v.y + v.cy * v.z}px) scale(${v.base * v.z})`;",
+    "isotropic stage centred zoom"
+  ],
+  [
+    "        Object.assign(v.surface.style,",
+    "        const bounds = engine.stageBounds(v.view);\n        v.base = bounds ? Math.min(STAGE_FILL * w / (bounds.width * v.width), STAGE_FILL * h / (bounds.height * v.height)) : 1;\n        v.cx = bounds ? (.5 - bounds.x - bounds.width / 2) * v.width * v.base : 0;\n        v.cy = bounds ? (.5 - bounds.y - bounds.height / 2) * v.height * v.base : 0;\n        v.surface.dataset.fit = bounds ? 'main-stage' : 'full-scene-fallback';\n        Object.assign(v.surface.style,",
+    "fit main stage into eighty percent"
+  ],
+  [
+    "      Object.values(views).forEach(update);",
+    "      for (const v of Object.values(views)) { v.toggle.textContent = text(v.view === 'front' ? '正面 操作' : '平面 操作', v.view === 'front' ? 'Front controls' : 'Plan controls'); update(v); }",
+    "disclosure labels"
+  ],
+  [
+    "      views.front.hint.hidden = !alternate;",
+    "      views.front.hint.hidden = !alternate; layout();",
+    "reframe changed seat"
+  ],
+  [
+    "      if (event.target.closest?.('.viewer-drawing-bar')) {",
+    "      if (event.target.closest?.('.viewer-drawing-bar')) {\n        if (event.type === 'click' && event.target.closest('[data-viewer-controls]')) {\n          const v = views[event.target.closest('[data-viewer-controls]').dataset.viewerControls];\n          const open = v.bar.dataset.open !== 'true'; v.bar.dataset.open = String(open); v.toggle.setAttribute('aria-expanded', String(open));\n        }",
+    "disclosure native event path"
+  ],
+  [
+    "v.z = 1; v.x = v.y = 0; update(v);",
+    "v.z = defaultZoom(v.view); v.x = v.y = 0; layout();",
+    "reset to front100 plan120"
+  ],
+  [
+    "anchorX: (center.x - v.x) / v.z, anchorY: (center.y - v.y) / v.z",
+    "anchorX: (center.x - v.x - v.cx * v.z) / v.z, anchorY: (center.y - v.y - v.cy * v.z) / v.z",
+    "pinch anchor includes stage centring"
+  ],
+  [
+    "target.x = center.x - gesture.anchorX * target.z; target.y = center.y - gesture.anchorY * target.z;",
+    "target.x = center.x - (gesture.anchorX + target.cx) * target.z; target.y = center.y - (gesture.anchorY + target.cy) * target.z;",
+    "preserve pinch anchor"
+  ],
+  [
+    "      handleEvent, layout,",
+    "      handleEvent, layout,\n      reset() { for (const v of Object.values(views)) { v.z = defaultZoom(v.view); v.x = v.y = 0; } layout(); },",
+    "scene zoom reset"
+  ],
+  [
+    "      loaded(lang) { relabel(lang); camera(selectedSeat); layout(); },",
+    "      loaded(lang) { relabel(lang); camera(selectedSeat); this.reset(); },",
+    "load zoom reset"
+  ],
+  [
+    "(v.viewport.clientWidth / 2 - v.width * v.z / 2 + v.x)",
+    "(v.viewport.clientWidth / 2 - v.width * v.base * v.z / 2 + v.x + v.cx * v.z)",
+    "capture horizontal crop"
+  ],
+  [
+    "(v.viewport.clientHeight / 2 - v.height * v.z / 2 + v.y)",
+    "(v.viewport.clientHeight / 2 - v.height * v.base * v.z / 2 + v.y + v.cy * v.z)",
+    "capture vertical crop"
+  ],
+  [
+    "v.width * v.z * ratio, v.height * v.z * ratio",
+    "v.width * v.base * v.z * ratio, v.height * v.base * v.z * ratio",
+    "capture isotropic scale"
+  ]
+]);
+await patchAsset("stage-study-navigation.css", [
+  [
+    ".study-frame { --viewer-blue:",
+    "\n.viewer-controls-toggle { display: none; }\n@media (orientation: landscape) {\n  .viewer-phone.study-frame[data-view=\"both\"] .study-drawings { grid-template-columns: minmax(0,2fr) minmax(0,1fr); grid-template-rows: 1fr; }\n  .viewer-phone.study-frame .study-drawing { grid-template-rows: minmax(0,1fr); }\n  .viewer-phone .viewer-drawing-bar { position: absolute; right: 4px; top: 4px; z-index: 5; max-width: calc(100% - 8px); padding: 0; gap: 0; background: color-mix(in srgb, var(--viewer-bar) 90%, transparent); }\n  .viewer-phone .viewer-drawing-bar .viewer-controls-toggle { display: block; min-width: 44px; }\n  .viewer-phone .viewer-drawing-bar:not([data-open=\"true\"]) > :not(.viewer-controls-toggle) { display: none; }\n  .viewer-phone .viewer-drawing-bar[data-open=\"true\"] { flex-wrap: wrap; }\n  .viewer-phone .viewer-drawing-bar label { display: none; }\n  .viewer-phone .viewer-drawing-bar select { max-width: 150px; }\n}\n\n.study-frame { --viewer-blue:",
+    "landscape controls overlay no layout row"
+  ]
+]);
+await patchAsset("stage-study-frame.js", [
+  [
+    "      const nativeNoteInput = sticky?.handleEvent(event);",
+    "      const nativeNoteInput = false; // Retired pinned-note editor: stored notes are display-only.",
+    "block all sticky interaction"
+  ],
+  [
+    "      const message = event.data;",
+    "      const message = event.data;\n      if (['sticky-mode', 'sticky-focus', 'sticky-add', 'sticky-select', 'annotation-permission'].includes(message.action)) return;",
+    "ignore retired sticky commands"
+  ],
+  [
+    "sticky.configure({ editable: canAnnotate && !message.penEnabled, enabled: Boolean(message.stickyEnabled), lang: message.lang })",
+    "sticky.configure({ editable: false, enabled: false, lang: message.lang })",
+    "load stickies read only"
+  ],
+  [
+    "sticky.configure({ editable: canAnnotate && !message.enabled, enabled: false })",
+    "sticky.configure({ editable: false, enabled: false })",
+    "pen cannot enable sticky editing"
+  ],
+  [
+    "        navigation.layout();",
+    "        if (message.action === 'scene') navigation.reset();\n        navigation.layout();",
+    "scene defaults"
+  ]
+]);
+
 // ---- 見本（γ 同梱データから複製） -------------------------------------------
 const SAMPLES = [
   { key: 'romeo-juliet', file: 'stage-samples/romeo-juliet-second.json', label: 'ロミオとジュリエット（RJセカンド）', labelEn: 'Romeo and Juliet (second draft)', note: '台詞・メモ・照明つきの実寸見本。冊子の iPhone 図はこの系統' },
@@ -215,6 +351,11 @@ viewerHtml = replaceOnce(viewerHtml, '<span data-text="noteAllowed">自分用メ
   `<span data-text="noteAllowed">自分用メモは書き込み可</span><span data-no-i18n>${previewBadge}</span>`, 'kicker badge');
 viewerHtml = replaceOnce(viewerHtml, '<div id="study-name-field">',
   '<p class="study-muted"><strong>UI確認用：</strong>共有ボタンは成功表示まで確認できますが、入力内容はどこにも送信されません。</p><div id="study-name-field">', 'share note');
+{
+  const before = sha256(viewerHtml);
+  viewerHtml = replaceOnce(viewerHtml, '</head>', '<style>#study-sticky, #study-sticky-panel { display: none !important; }</style></head>', 'retired pinned-note UI');
+  patches.push({ file: 'viewer.html', sourceSha256: before, sha256: sha256(viewerHtml), changes: ['retired pinned-note UI'] });
+}
 assertRelative(viewerHtml, 'viewer.html');
 await write('viewer.html', viewerHtml);
 
@@ -243,6 +384,39 @@ let viewerJs = await read('stage-study-viewer.js');
     "private: ['本番では舞台図・線・図上メモ・メモ・表示名をオーナーへ共有します。このUI確認用ページでは送信しません。', 'The live feature shares the stage views, drawings, notes and display name with the owner. This UI preview sends nothing.']", 'private text');
 }
 await write('stage-study-viewer.js', viewerJs);
+await patchAsset("stage-study-viewer.js", [
+  [
+    "  function syncSticky() {\n    const notes = currentStickies(), selected = notes.find(n => n.id === selectedSticky);\n    $('study-sticky').disabled = !live || pendingNote || historyBlocked;\n    $('study-sticky').setAttribute('aria-pressed', String(stickyEnabled));\n    $('study-sticky-panel').hidden = !live || (!stickyEnabled && !selected);\n    $('study-sticky-editor').hidden = !selected;\n    $('study-sticky-text').disabled = pendingNote || historyBlocked;\n    $('study-sticky-front').disabled = $('study-sticky-plan').disabled = !live || pendingNote || historyBlocked || notes.length >= stickyModel.MAX_NOTES;\n    $('study-sticky-list').disabled = pendingNote || !notes.length;\n    const option = (value, text) => { const el = document.createElement('option'); el.value = value; el.textContent = text; return el; };\n    $('study-sticky-list').replaceChildren(option('', t('stickyChoose')), ...notes.map((n,i) => option(n.id, `${i + 1}. ${t(n.view)} · ${n.text.replace(/\\s+/g,' ').slice(0,40) || t('stickyBlank')}`)));\n    $('study-sticky-list').value = selectedSticky;\n    if (!selected) $('study-sticky-text').value = '';\n    if (selected && $('study-sticky-text').value !== selected.text) $('study-sticky-text').value = selected.text;\n    $('study-sticky-count').textContent = `${selected?.text.length || 0} / 200`;\n    for (const el of document.querySelectorAll('[data-sticky-shape], [data-sticky-color]')) {\n      const key = el.dataset.stickyShape ? 'shape' : 'color', value = el.dataset.stickyShape || el.dataset.stickyColor;\n      el.setAttribute('aria-pressed', String((selected?.[key] || (key === 'shape' ? 'rect' : 'desk')) === value));\n      el.disabled = !selected || pendingNote || historyBlocked;\n    }\n    for (const key of ['width','height']) {\n      const el = $('study-sticky-' + key); el.disabled = !selected || pendingNote || historyBlocked;\n      if (document.activeElement !== el) el.value = selected?.[key] || (key === 'width' ? 188 : '');\n    }\n    $('study-sticky-auto').disabled = !selected || pendingNote || historyBlocked;\n    const transparency = Math.round((1 - (selected?.backgroundOpacity ?? 1)) * 100);\n    $('study-sticky-transparency').disabled = !selected || pendingNote || historyBlocked;\n    $('study-sticky-transparency').value = transparency;\n    $('study-sticky-transparency').setAttribute('aria-valuetext', `${transparency}%`);\n    $('study-sticky-transparency-value').textContent = `${transparency}%`;\n    $('study-sticky-status').textContent = stickyLimit ? t('stickyLimit') : notes.length ? `${notes.length} / ${stickyModel.MAX_NOTES}` : t('stickyEmpty');\n    for (const id of ['study-sticky-position','study-sticky-done','study-sticky-remove','study-sticky-remove-yes']) $(id).disabled = pendingNote || historyBlocked;\n  }\n",
+    "  function syncSticky() {\n    $('study-sticky').hidden = true; $('study-sticky-panel').hidden = true;\n    $('study-sticky').inert = true; $('study-sticky-panel').inert = true;\n  }\n",
+    "retire sticky UI while retaining inert compatibility nodes"
+  ],
+  [
+    "  $('study-sticky').onclick = () => setSticky(!stickyEnabled);\n  for (const view of ['front','plan']) $('study-sticky-' + view).onclick = () => {\n    if (!live || pendingNote || historyBlocked) return;\n    savePrivate(); setSticky(true); chooseSticky('');\n    if ($('study-view').value !== 'both' && $('study-view').value !== view) { $('study-view').value = view; post({ action: 'view', view }); }\n    post({ action: 'sticky-add', view });\n  };\n  $('study-sticky-list').onchange = event => chooseSticky(event.target.value, true);\n  function styleSticky(key, value) {\n    const note = currentStickies().find(n => n.id === selectedSticky);\n    if (!note || pendingNote || !live || historyBlocked || !stickyModel.validStyle({ ...note, [key]: value }) || !edited()) return;\n    const target = draft.stickies.find(n => n.id === selectedSticky);\n    if (value === undefined) delete target[key]; else target[key] = value;\n    publishStickies(); savePrivate();\n  }\n  document.querySelectorAll('[data-sticky-shape]').forEach(el => { el.onclick = () => styleSticky('shape', el.dataset.stickyShape); });\n  document.querySelectorAll('[data-sticky-color]').forEach(el => {\n    el.style.setProperty('--study-swatch', stickyModel.COLORS[el.dataset.stickyColor]);\n    el.onclick = () => styleSticky('color', el.dataset.stickyColor);\n  });\n  for (const key of ['width','height']) $('study-sticky-' + key).onchange = event => {\n    const value = event.target.value === '' ? undefined : event.target.valueAsNumber;\n    const [min, max] = stickyModel.dimensions[key];\n    styleSticky(key, Number.isFinite(value) ? Math.max(min, Math.min(max, value)) : undefined);\n    event.target.value = currentStickies().find(n => n.id === selectedSticky)?.[key] || (key === 'width' ? 188 : '');\n  };\n  $('study-sticky-auto').onclick = () => styleSticky('height', undefined);\n  $('study-sticky-transparency').oninput = event => styleSticky('backgroundOpacity', (100 - event.target.valueAsNumber) / 100);\n  $('study-sticky-text').oninput = event => {\n    const note = currentStickies().find(n => n.id === selectedSticky);\n    if (!note || pendingNote || !live || !edited()) return;\n    draft.stickies.find(n => n.id === selectedSticky).text = event.target.value.slice(0, stickyModel.MAX_TEXT);\n    publishStickies(); clearTimeout(saveTimer); saveTimer = setTimeout(savePrivate, 300);\n  };\n  $('study-sticky-position').onclick = () => { savePrivate(); post({ action: 'sticky-focus', id: selectedSticky }); };\n  $('study-sticky-done').onclick = () => { savePrivate(); chooseSticky(''); $('study-sticky-list').focus(); };\n  $('study-sticky-remove').onclick = () => { $('study-sticky-confirm').hidden = false; $('study-sticky-remove-no').focus(); };\n  $('study-sticky-remove-no').onclick = () => { $('study-sticky-confirm').hidden = true; $('study-sticky-remove').focus(); };\n  $('study-sticky-remove-yes').onclick = () => {\n    if (!live || pendingNote || !selectedSticky || !edited()) return;\n    draft.stickies = currentStickies().filter(n => n.id !== selectedSticky); selectedSticky = ''; stickyLimit = '';\n    $('study-sticky-confirm').hidden = true; publishStickies(); savePrivate(); $('study-sticky-list').focus();\n  };\n",
+    "",
+    "remove sticky creation editing saving and list handlers"
+  ],
+  [
+    "    if (['stickies','sticky-selected'].includes(event.data.action) && live && !pendingNote && !historyBlocked\n      && data && event.data.revision === data.revision && event.data.sceneId === scenes[at]?.id) {\n      if (event.data.action === 'stickies') {\n        if (!stickyModel.valid(event.data.stickies)) return;\n        stickyLimit = event.data.limit || '';\n        const change = event.data.change, changedNote = event.data.stickies.find(n => n.id === change?.id);\n        if (!change || !changedNote) { syncSticky(); return; }\n        const existing = currentStickies().find(n => n.id === change.id);\n        if (change.kind === 'add' && (existing || currentStickies().length >= stickyModel.MAX_NOTES)) { publishStickies(); return; }\n        if (['move','text'].includes(change.kind) && !existing) { publishStickies(); return; }\n        if (!['add','move','resize','text'].includes(change.kind) || (change.kind === 'text' && (!Number.isSafeInteger(change.sequence) || change.sequence < 1)) || (change.kind === 'resize' && (!existing || !Number.isFinite(changedNote.width) || !Number.isFinite(changedNote.height))) || !edited()) { loadFrame(); return; }\n        // Merge only the requested personal field. A frame reply cannot replace\n        // newer style/position/text changes made through the other editor.\n        draft.stickies ||= [];\n        if (change.kind === 'add') draft.stickies.push(structuredClone(changedNote));\n        else Object.assign(draft.stickies.find(n => n.id === change.id), change.kind === 'text' ? { text: changedNote.text } : change.kind === 'resize' ? { width: changedNote.width, height: changedNote.height } : { x: changedNote.x, y: changedNote.y });\n        publishStickies(change.kind === 'text' ? { id: change.id, sequence: change.sequence } : undefined); savePrivate();\n      } else chooseSticky(event.data.id, event.data.focus === true);\n    }\n",
+    "",
+    "remove sticky mutation and persistence messages"
+  ],
+  [
+    "    setPen(false); stickyEnabled = Boolean(value); stickyLimit = '';",
+    "    setPen(false); stickyEnabled = false; stickyLimit = '';",
+    "prevent sticky mode activation"
+  ],
+  [
+    "  function chooseSticky(id, focus = false) {\n    if (pendingNote || historyBlocked || !live) return;\n    selectedSticky = currentStickies().some(n => n.id === id) ? id : '';\n    $('study-sticky-confirm').hidden = true;\n    post({ action: 'sticky-select', id: selectedSticky }); syncSticky();\n    if (focus && selectedSticky) $('study-sticky-text').focus();\n  }\n",
+    "",
+    "remove sticky selection and focus"
+  ],
+  [
+    "  function publishStickies(changeAck) {\n    post({ action: 'stickies', sceneId: scenes[at].id, revision: data.revision, stickies: currentStickies(), selectedId: selectedSticky, changeAck });\n    syncSticky();\n  }\n",
+    "",
+    "remove sticky publish path"
+  ]
+]);
+
 let continuityJs = await read('stage-study-continuity.js');
 {
   const before = continuityJs;
@@ -286,10 +460,10 @@ const indexHtml = `<!doctype html>
 <div class="ver" aria-label="版">build ${buildId} · γ ${esc(sourceVersion)} ${esc(sourceCommit)}</div>
 <main>
   <h1>舞台スケッチγ 共有画面（スマホ）UI確認用</h1>
-  <p class="kicker">演者用リンクで開く Viewer を、共有サーバーなしで同梱見本から表示します。スマホで開くと手元用の画面（横帯＋道具列）になります。</p>
+  <p class="kicker">演者用リンクで開く Viewer を、共有サーバーなしで同梱見本から表示します。スマホの横画面では右側メニューから操作でき、縦画面では上部に情報を表示します。</p>
   <ul>${sampleRows}
   </ul>
-  <p class="note"><strong>送信なし。</strong>「オーナーへ共有」は成功表示だけで、どこにも送られません。自分用メモ・線・図上メモはこの端末のブラウザにだけ残ります（<code>stage-study-*</code> キー）。本物の共有は <a class="plain" href="https://stage-sketch-gamma-share.juggler-arata.workers.dev/stage.html">γ 共有ホスト</a>、本体は <a class="plain" href="https://aratama-ship-it.github.io/stage-sketch-gamma/">γ（GitHub Pages）</a>。</p>
+  <p class="note"><strong>送信なし。</strong>「オーナーへ共有」は成功表示だけで、どこにも送られません。自分用メモと線はこの端末のブラウザにだけ残ります。既存の図上メモは表示のみです（<code>stage-study-*</code> キー）。本物の共有は <a class="plain" href="https://stage-sketch-gamma-share.juggler-arata.workers.dev/stage.html">γ 共有ホスト</a>、本体は <a class="plain" href="https://aratama-ship-it.github.io/stage-sketch-gamma/">γ（GitHub Pages）</a>。</p>
 </main>
 </body></html>
 `;

@@ -1,0 +1,58 @@
+{
+  "before": {
+    "both": [
+      {
+        "view": "front",
+        "viewportHeight": 258,
+        "viewportWidth": 388,
+        "stageWidth": 364.7199999999999,
+        "stageHeight": 149.02016129032256,
+        "ratio": 0.9399999999999997
+      },
+      {
+        "view": "plan",
+        "viewportHeight": 257,
+        "viewportWidth": 388,
+        "stageWidth": 225.525,
+        "stageHeight": 174.60000000000002,
+        "ratio": 0.6793774319066149
+      }
+    ],
+    "front": {
+      "view": "front",
+      "viewportHeight": 258,
+      "viewportWidth": 780,
+      "stageWidth": 431.1368749999999,
+      "stageHeight": 176.16129032258064,
+      "ratio": 0.6827956989247311
+    }
+  },
+  "after": {
+    "both": [
+      {
+        "view": "front",
+        "viewportHeight": 390,
+        "viewportWidth": 517.328125,
+        "stageWidth": 413.5999999999999,
+        "stageHeight": 168.99193548387095,
+        "ratio": 0.7994925850977074
+      },
+      {
+        "view": "plan",
+        "viewportHeight": 389,
+        "viewportWidth": 258.65625,
+        "stageWidth": 248.6399757385254,
+        "stageHeight": 192.49547119140627,
+        "ratio": 0.9612757307759832
+      }
+    ],
+    "front": {
+      "view": "front",
+      "viewportHeight": 390,
+      "viewportWidth": 780,
+      "stageWidth": 623.9953393554687,
+      "stageHeight": 254.95880619172124,
+      "ratio": 0.7999940248147034
+    }
+  }
+}

@@ -103,3 +103,19 @@ body.study-phone {
   .study-phone .phone-panel:not(.phone-modal) { top: calc(var(--phone-header) + env(safe-area-inset-top)); right: calc(var(--phone-rail) + env(safe-area-inset-right)); bottom: env(safe-area-inset-bottom); max-height: none; width: min(var(--phone-panel), calc(100% - var(--phone-rail) - env(safe-area-inset-left) - env(safe-area-inset-right))); }
   .study-phone .phone-alert { right: calc(var(--phone-rail) + var(--study-s2) + env(safe-area-inset-right)); bottom: var(--study-s2); }
 }
+
+/* UI2: landscape gives every vertical pixel to the drawings. */
+.study-phone #phone-menu { display: none; }
+@media (orientation: landscape) {
+  body.study-phone { --phone-menu-gap: 8px; }
+  .study-phone .study-shell { grid-template-rows: minmax(0,1fr); }
+  .study-phone .study-workspace { grid-row: 1; }
+  .study-phone .phone-tools { top: env(safe-area-inset-top); grid-template-rows: repeat(4,minmax(var(--study-hit),1fr)); }
+  .study-phone #phone-menu { display: flex; }
+  .study-phone .phone-panel:not(.phone-modal) { top: env(safe-area-inset-top); }
+  .study-phone .phone-panel .study-header { display: flex; flex-direction: column; align-items: stretch; padding: 0; gap: var(--phone-menu-gap); }
+  .study-phone .phone-panel .study-header h1 { white-space: normal; overflow-wrap: anywhere; }
+  .study-phone .phone-panel .phone-header-actions { flex-wrap: wrap; gap: var(--study-s1); }
+  .study-phone .phone-panel .phone-scenes { margin-top: var(--phone-menu-gap); }
+  .study-phone .phone-panel .phone-current { white-space: normal; }
+}

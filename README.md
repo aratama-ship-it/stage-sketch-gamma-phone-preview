@@ -24,11 +24,11 @@
 
 ```sh
 # γ の origin/main を checkout した作業木を --source に渡す（iCloud の stage-sketch-gamma/ は古いので使わない）
-cd "$HOME/git-repos/gamma-publish-20261001" && git fetch origin && git checkout --detach origin/main
+# 元γ作業木は読み取り専用。この作業では fetch / checkout / 編集をしない。
 cd "/Users/arata/Library/Mobile Documents/com~apple~CloudDocs/claude code files/show-creative-ideas/stage-sketch-gamma-phone-preview"
 node build.mjs --source "$HOME/git-repos/gamma-publish-20261001"
 git status --short   # 対象を確認し、明示パスで git add
-git commit -m "rebuild from γ vX.Y.Z <commit>" && git push
+# commit / push / 公開は別途明示指示がある場合だけ。
 ```
 
 `manifest.json` に元の版（γ の版番号とコミット）と各ファイルの SHA-256 が残る。入口 `index.html` と Viewer の情報パネルにも build 番号と元の版が出る。
@@ -140,3 +140,72 @@ Chromium、build `20261001-1134`、横844×390。各Canvas 640×360（230,400画
 
 確認する場合は本ディレクトリで `python3 -m http.server 8977 --bind 127.0.0.1` を起動し、
 `http://127.0.0.1:8977/viewer.html?sample=feature-test` を開く（他サーバーが同ポートを使用していないことを確認）。
+
+
+## UI2: 改善8〜10（2026-10-01、実装済み・実機未確認）
+
+今回はローカルのみ。γ元作業木・βは変更せず、commit / push / add は実行していない。
+[画像付き検証結果](design/ui2-verification/index.html)／[機械計測](design/ui2-verification/results.json)。
+
+- **8 / A**: 横のヘッダーと場面行を右64pxレールの「メニュー」に移動。図の階・倍率・リセットは各図右上の開閉操作へ重ねる。すべて40px以上（図操作44px）。常設の上部3段をなくす。横「両方」は正面:平面=2:1にし、正面を優先。初期の両方表示、下左の前後、縦の配置は維持。
+- **9 / B**: 読み取り専用API `stageBounds(view)` とnavigation側の等方拡大で、メインステージの幅か高さが表示枠の80%を占める状態を100%とした。操作倍率はこの基準から1〜4倍。正面は100%、平面は120%（占有率96%）を初期・場面送り・リセットに適用。ピンチで平面も100%へ戻せる。画像キャプチャのcropにも同じ変換を使用。
+- **10 / C**: 「メモ用紙」は図上付箋と解釈。`#study-sticky` とパネルを非表示＋inertにし、生成JSから作成・選択・編集・移動・保存のハンドラーと付箋変更message処理を除去。iframeは既存付箋を表示専用に固定。互換参照用の非表示DOMとデータ読込は残す。キー・保存データの掃除なし。`#phone-memo` / `.study-memo` / `#study-note-form` は維持。
+
+### 寸法の根拠と測定
+
+`venueSize()` が `VENUES.sizeById(venue(), project.venueSize)` に `project.venueDims` を重ねた寸法を使う。
+`layout('plan').stage` は舞台演技エリア（主輪郭の外接）、正面は同じlayoutの舞台開口（奥壁上端〜床前端）の外接を使用。客席・袖は含めない。正面の透視投影と16:9 Canvasは変更せず、同じ倍率で縦横を拡大する。
+
+| 見本（場面1） | 幅×奥行×高さ m | 正面100%占有率（横/縦） | 平面100%占有率（横/縦） |
+|---|---|---|---|
+| ロミオ | 12×9×7.2 | 80.00% / 80.00% | 80.00% / 80.00% |
+| 試験場 v26 | 12.4×9.6×7.2 | 80.00% / 80.00% | 80.00% / 80.00% |
+| 四つの輪郭 | 7.15×4.55×7 | 80.00% / 80.00% | 80.00% / 80.00% |
+
+占有率 = max(舞台の表示幅/viewport幅, 舞台の表示高/viewport高)。Canvas全景ではなく、切り抜いて見せる表示枠を分母にする。`stageBounds` の正規化座標と実際のCanvas DOM矩形から計測し、PNGも保存。±8%の許容内。平面既定120%は全6条件で96.00%。端数はCSSピクセル丸めあり。
+
+横844×390、試験場の場面1での前後比較:
+
+| 項目 | 前 | 後 |
+|---|---:|---:|
+| 正面viewport高さ | 258px | 390px（+132px） |
+| 平面viewport高さ | 257px | 389px（+132px） |
+| 両方表示の正面舞台幅 | 364.72px | 413.60px（+13.4%） |
+| 正面単独の舞台幅 | 431.14px | 624.00px（+44.7%） |
+
+3見本とも寸法取得でき、全景フォールバックは発生していない。未知寸法／無効な外接では基準倍率1・中央寄せの従来全景へフォールバックする。非矩形舞台・別の客席位置の80%見た目は実機未評価。
+
+### γへ統合するとき
+
+overrides 2ファイルの差分統合に加え、build.mjs の `UI2` / viewerパッチを以下へ移植する（全パッチはreplaceOnceで1件一致必須・manifest.patchesに記録）:
+
+| 対象 | 統合内容 |
+|---|---|
+| stage-sketch.js | 読み取り専用 `stageBounds()`（照明追加APIは前回分） |
+| stage-study-navigation.js | 基準fit・相対zoom・平面120%・場面reset・pinch/capture座標・図操作の開閉 |
+| stage-study-navigation.css | タッチスマホ横だけの図操作overlay・正面2:平面1 |
+| stage-study-frame.js | 場面ごとのnavigation reset・既存付箋の表示専用化 |
+| stage-study-viewer.js | 付箋UI・イベント・変更message経路の廃止。自分用メモは保存 |
+| study.html等Viewer生成元 | 付箋UIを常時非表示（互換DOM参照を残す場合はinertも維持） |
+
+sandbox=`allow-scripts`、親/子の送信元チェック、編集イベント遮断は変更しない。旧照明パッチも引き続き必要。
+
+### 再検証
+
+```sh
+python3 -m http.server 8981 --bind 127.0.0.1
+# 別ターミナル。Python playwrightが必要。このMacの実行環境:
+/Users/arata/.venvs/design-lint/bin/python design/ui2-verification/verify.py
+/Users/arata/.venvs/design-lint/bin/python design/ui2-verification/persistence.py
+```
+
+hasTouch/isMobile相当をともに有効にしたChromium、844×390・390×844、3見本の場面1（場面2への送りと戻りも確認）。
+照明の往復画像一致、表示切替、階選択、詳細の単一DOM/自動表示、回転マッピング、中央モーダル、付箋非表示、自分用メモ保存と再読込、ペン入力と1本戻す、保存済み付箋の保持を確認。既存付箋検証は隔離ブラウザ内の検証用データのみ。
+通信はローカルGETのみ、コンソールエラー0。実機Safari/Androidのタッチ感・読める大きさは未確認。検証サーバーは作業終了時に停止。
+
+
+UI2の変更ファイル一覧:
+- 手編集: `overrides/stage-study-phone.js`、`overrides/stage-study-phone.css`、`build.mjs`、`README.md`、`IMPROVEMENTS.md`、`design/TOKEN_SHEET.md`。
+- 追加証跡: `design/ui2-verification/`（画像、比較HTML、計測JSON、再実行用verify.py/persistence.py）。
+- 再生成: `index.html`、`viewer.html`、`study-frame.html`、`preview-adapter.js`、`manifest.json`、`stage-sketch.js`、`stage-study-frame.js`、`stage-study-navigation.js/.css`、`stage-study-phone.js/.css`、`stage-study-viewer.js`、`stage-study-continuity.js`。
+- 最終ビルド `20261001-1308`。全JS構文、manifest 36ファイルのSHA-256、override一致、replaceOnce 0件/複数件拒否、git diff --check が合格。

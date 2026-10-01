@@ -7,7 +7,7 @@
     window.addEventListener(name, event => {
       const navigated = navigation?.handleEvent(event);
       if (navigated) { if (navigated !== 'native') event.preventDefault(); event.stopImmediatePropagation(); return; }
-      const nativeNoteInput = sticky?.handleEvent(event);
+      const nativeNoteInput = false; // Retired pinned-note editor: stored notes are display-only.
       pen?.handleEvent(event);
       // Read-only still blocks editor handlers. Outside the active pen layer,
       // touch scrolling is a safe native browsing action.
@@ -37,13 +37,14 @@
     window.addEventListener('message', event => {
       if (event.source !== window.parent || event.origin !== location.origin || !event.data || event.data.channel !== 'stage-study') return;
       const message = event.data;
+      if (['sticky-mode', 'sticky-focus', 'sticky-add', 'sticky-select', 'annotation-permission'].includes(message.action)) return;
       try {
-        if (message.action === 'load') { canAnnotate = Boolean(message.annotationsEditable); engine.load(message.document, message.lang); sceneId = message.sceneId; revision = message.revision; engine.scene(sceneId); pen.load(message.strokes); pen.mode(message.penEnabled); sticky.load(message.stickies); sticky.configure({ editable: canAnnotate && !message.penEnabled, enabled: Boolean(message.stickyEnabled), lang: message.lang }); }
+        if (message.action === 'load') { canAnnotate = Boolean(message.annotationsEditable); engine.load(message.document, message.lang); sceneId = message.sceneId; revision = message.revision; engine.scene(sceneId); pen.load(message.strokes); pen.mode(message.penEnabled); sticky.load(message.stickies); sticky.configure({ editable: false, enabled: false, lang: message.lang }); }
         else if (message.action === 'scene') { sceneId = message.sceneId; engine.scene(sceneId); pen.load(message.strokes); pen.show(true); sticky.load(message.stickies); sticky.show(true); }
         else if (message.action === 'light') { engine.light(message.mode); }
         else if (message.action === 'replay') { pen.mode(false); pen.show(false); sticky.show(false); engine.replay(); }
         else if (message.action === 'stop') { engine.stop(); engine.scene(sceneId); pen.show(true); sticky.show(true); }
-        else if (message.action === 'pen-mode') { engine.stop(); engine.scene(sceneId); pen.mode(message.enabled); sticky.configure({ editable: canAnnotate && !message.enabled, enabled: false }); }
+        else if (message.action === 'pen-mode') { engine.stop(); engine.scene(sceneId); pen.mode(message.enabled); sticky.configure({ editable: false, enabled: false }); }
         else if (message.action === 'sticky-mode') { engine.stop(); engine.scene(sceneId); pen.mode(false); sticky.configure({ editable: canAnnotate && message.editable !== false, enabled: Boolean(message.enabled) }); }
         else if (message.action === 'annotation-permission') sticky.configure({ editable: canAnnotate && Boolean(message.editable) });
         else if (message.action === 'sticky-focus') sticky.focus(message.id);
@@ -67,6 +68,7 @@
         if (message.action === 'sticky-mode') { navigation.mode('pen', false); navigation.mode('sticky', Boolean(message.enabled)); }
         if (message.action === 'replay') { navigation.mode('pen', false); navigation.mode('sticky', false); }
         if (['sticky-add', 'sticky-focus'].includes(message.action)) navigation.central();
+        if (message.action === 'scene') navigation.reset();
         navigation.layout();
         if (message.action === 'load') {
           window.parent.postMessage({ channel: 'stage-study', action: 'light-capability', hasLights: engine.lightInfo() }, location.origin);

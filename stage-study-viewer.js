@@ -236,54 +236,14 @@
     syncScene(); syncPrivate(); syncPanelWidth();
   }
   function syncSticky() {
-    const notes = currentStickies(), selected = notes.find(n => n.id === selectedSticky);
-    $('study-sticky').disabled = !live || pendingNote || historyBlocked;
-    $('study-sticky').setAttribute('aria-pressed', String(stickyEnabled));
-    $('study-sticky-panel').hidden = !live || (!stickyEnabled && !selected);
-    $('study-sticky-editor').hidden = !selected;
-    $('study-sticky-text').disabled = pendingNote || historyBlocked;
-    $('study-sticky-front').disabled = $('study-sticky-plan').disabled = !live || pendingNote || historyBlocked || notes.length >= stickyModel.MAX_NOTES;
-    $('study-sticky-list').disabled = pendingNote || !notes.length;
-    const option = (value, text) => { const el = document.createElement('option'); el.value = value; el.textContent = text; return el; };
-    $('study-sticky-list').replaceChildren(option('', t('stickyChoose')), ...notes.map((n,i) => option(n.id, `${i + 1}. ${t(n.view)} · ${n.text.replace(/\s+/g,' ').slice(0,40) || t('stickyBlank')}`)));
-    $('study-sticky-list').value = selectedSticky;
-    if (!selected) $('study-sticky-text').value = '';
-    if (selected && $('study-sticky-text').value !== selected.text) $('study-sticky-text').value = selected.text;
-    $('study-sticky-count').textContent = `${selected?.text.length || 0} / 200`;
-    for (const el of document.querySelectorAll('[data-sticky-shape], [data-sticky-color]')) {
-      const key = el.dataset.stickyShape ? 'shape' : 'color', value = el.dataset.stickyShape || el.dataset.stickyColor;
-      el.setAttribute('aria-pressed', String((selected?.[key] || (key === 'shape' ? 'rect' : 'desk')) === value));
-      el.disabled = !selected || pendingNote || historyBlocked;
-    }
-    for (const key of ['width','height']) {
-      const el = $('study-sticky-' + key); el.disabled = !selected || pendingNote || historyBlocked;
-      if (document.activeElement !== el) el.value = selected?.[key] || (key === 'width' ? 188 : '');
-    }
-    $('study-sticky-auto').disabled = !selected || pendingNote || historyBlocked;
-    const transparency = Math.round((1 - (selected?.backgroundOpacity ?? 1)) * 100);
-    $('study-sticky-transparency').disabled = !selected || pendingNote || historyBlocked;
-    $('study-sticky-transparency').value = transparency;
-    $('study-sticky-transparency').setAttribute('aria-valuetext', `${transparency}%`);
-    $('study-sticky-transparency-value').textContent = `${transparency}%`;
-    $('study-sticky-status').textContent = stickyLimit ? t('stickyLimit') : notes.length ? `${notes.length} / ${stickyModel.MAX_NOTES}` : t('stickyEmpty');
-    for (const id of ['study-sticky-position','study-sticky-done','study-sticky-remove','study-sticky-remove-yes']) $(id).disabled = pendingNote || historyBlocked;
-  }
-  function chooseSticky(id, focus = false) {
-    if (pendingNote || historyBlocked || !live) return;
-    selectedSticky = currentStickies().some(n => n.id === id) ? id : '';
-    $('study-sticky-confirm').hidden = true;
-    post({ action: 'sticky-select', id: selectedSticky }); syncSticky();
-    if (focus && selectedSticky) $('study-sticky-text').focus();
+    $('study-sticky').hidden = true; $('study-sticky-panel').hidden = true;
+    $('study-sticky').inert = true; $('study-sticky-panel').inert = true;
   }
   function setSticky(value) {
-    setPen(false); stickyEnabled = Boolean(value); stickyLimit = '';
+    setPen(false); stickyEnabled = false; stickyLimit = '';
     if (!stickyEnabled) selectedSticky = '';
     $('study-sticky-confirm').hidden = true;
     post({ action: 'sticky-mode', enabled: stickyEnabled, editable: !pendingNote && !historyBlocked }); syncSticky();
-  }
-  function publishStickies(changeAck) {
-    post({ action: 'stickies', sceneId: scenes[at].id, revision: data.revision, stickies: currentStickies(), selectedId: selectedSticky, changeAck });
-    syncSticky();
   }
   function syncPen() {
     syncSticky();
@@ -376,7 +336,7 @@
       $('study-name-field').hidden = Boolean(result.displayName); $('study-verified-name').hidden = !result.displayName;
       $('study-verified-name').textContent = result.displayName || '';
       $('study-name').required = !result.displayName;
-      frame = document.createElement('iframe'); frame.title = t('both'); frame.setAttribute('sandbox', 'allow-scripts'); frame.referrerPolicy = 'no-referrer'; frame.src = './study-frame.html?b=20261001-1243';
+      frame = document.createElement('iframe'); frame.title = t('both'); frame.setAttribute('sandbox', 'allow-scripts'); frame.referrerPolicy = 'no-referrer'; frame.src = './study-frame.html?b=20261001-1308';
       $('study-frame-host').replaceChildren(frame); $('study-workspace').hidden = false;
       relabel();
     } catch (error) { if (current === epoch) conceal(error.status === 401 ? 'loginRequired' : error.status === 404 ? 'unavailable' : 'network'); }
@@ -388,25 +348,6 @@
       if (pendingNote) return;
       if (!edited()) { loadFrame(); return; }
       draft.strokes = event.data.strokes; savePrivate(); penLimit = event.data.limit; syncPen();
-    }
-    if (['stickies','sticky-selected'].includes(event.data.action) && live && !pendingNote && !historyBlocked
-      && data && event.data.revision === data.revision && event.data.sceneId === scenes[at]?.id) {
-      if (event.data.action === 'stickies') {
-        if (!stickyModel.valid(event.data.stickies)) return;
-        stickyLimit = event.data.limit || '';
-        const change = event.data.change, changedNote = event.data.stickies.find(n => n.id === change?.id);
-        if (!change || !changedNote) { syncSticky(); return; }
-        const existing = currentStickies().find(n => n.id === change.id);
-        if (change.kind === 'add' && (existing || currentStickies().length >= stickyModel.MAX_NOTES)) { publishStickies(); return; }
-        if (['move','text'].includes(change.kind) && !existing) { publishStickies(); return; }
-        if (!['add','move','resize','text'].includes(change.kind) || (change.kind === 'text' && (!Number.isSafeInteger(change.sequence) || change.sequence < 1)) || (change.kind === 'resize' && (!existing || !Number.isFinite(changedNote.width) || !Number.isFinite(changedNote.height))) || !edited()) { loadFrame(); return; }
-        // Merge only the requested personal field. A frame reply cannot replace
-        // newer style/position/text changes made through the other editor.
-        draft.stickies ||= [];
-        if (change.kind === 'add') draft.stickies.push(structuredClone(changedNote));
-        else Object.assign(draft.stickies.find(n => n.id === change.id), change.kind === 'text' ? { text: changedNote.text } : change.kind === 'resize' ? { width: changedNote.width, height: changedNote.height } : { x: changedNote.x, y: changedNote.y });
-        publishStickies(change.kind === 'text' ? { id: change.id, sequence: change.sequence } : undefined); savePrivate();
-      } else chooseSticky(event.data.id, event.data.focus === true);
     }
     if (event.data.action === 'loaded') { live = true; pageState = 'ready'; $('study-note-fields').disabled = false; relabel(); post({ action: 'view', view: $('study-view').value }); }
     if (captureWait && event.data.requestId === captureWait.requestId) {
@@ -465,49 +406,6 @@
   $('study-use-remote').onclick = () => privateStore?.resolve(scenes[at].id, false);
   $('study-use-mine').onclick = () => { savePrivate(); privateStore?.resolve(scenes[at].id, true); };
   $('study-import-button').onclick = () => { const legacy = legacyStore?.get(scenes[at].id); if (!legacy || draft.text || draft.strokes.length || draft.stickies?.length) return; draft = legacy; draft.publication = token; $('study-note').value = draft.text; dirty = true; savePrivate(); post({ action: 'scene', sceneId: scenes[at].id, strokes: currentInk(), stickies: currentStickies() }); syncPen(); };
-  $('study-sticky').onclick = () => setSticky(!stickyEnabled);
-  for (const view of ['front','plan']) $('study-sticky-' + view).onclick = () => {
-    if (!live || pendingNote || historyBlocked) return;
-    savePrivate(); setSticky(true); chooseSticky('');
-    if ($('study-view').value !== 'both' && $('study-view').value !== view) { $('study-view').value = view; post({ action: 'view', view }); }
-    post({ action: 'sticky-add', view });
-  };
-  $('study-sticky-list').onchange = event => chooseSticky(event.target.value, true);
-  function styleSticky(key, value) {
-    const note = currentStickies().find(n => n.id === selectedSticky);
-    if (!note || pendingNote || !live || historyBlocked || !stickyModel.validStyle({ ...note, [key]: value }) || !edited()) return;
-    const target = draft.stickies.find(n => n.id === selectedSticky);
-    if (value === undefined) delete target[key]; else target[key] = value;
-    publishStickies(); savePrivate();
-  }
-  document.querySelectorAll('[data-sticky-shape]').forEach(el => { el.onclick = () => styleSticky('shape', el.dataset.stickyShape); });
-  document.querySelectorAll('[data-sticky-color]').forEach(el => {
-    el.style.setProperty('--study-swatch', stickyModel.COLORS[el.dataset.stickyColor]);
-    el.onclick = () => styleSticky('color', el.dataset.stickyColor);
-  });
-  for (const key of ['width','height']) $('study-sticky-' + key).onchange = event => {
-    const value = event.target.value === '' ? undefined : event.target.valueAsNumber;
-    const [min, max] = stickyModel.dimensions[key];
-    styleSticky(key, Number.isFinite(value) ? Math.max(min, Math.min(max, value)) : undefined);
-    event.target.value = currentStickies().find(n => n.id === selectedSticky)?.[key] || (key === 'width' ? 188 : '');
-  };
-  $('study-sticky-auto').onclick = () => styleSticky('height', undefined);
-  $('study-sticky-transparency').oninput = event => styleSticky('backgroundOpacity', (100 - event.target.valueAsNumber) / 100);
-  $('study-sticky-text').oninput = event => {
-    const note = currentStickies().find(n => n.id === selectedSticky);
-    if (!note || pendingNote || !live || !edited()) return;
-    draft.stickies.find(n => n.id === selectedSticky).text = event.target.value.slice(0, stickyModel.MAX_TEXT);
-    publishStickies(); clearTimeout(saveTimer); saveTimer = setTimeout(savePrivate, 300);
-  };
-  $('study-sticky-position').onclick = () => { savePrivate(); post({ action: 'sticky-focus', id: selectedSticky }); };
-  $('study-sticky-done').onclick = () => { savePrivate(); chooseSticky(''); $('study-sticky-list').focus(); };
-  $('study-sticky-remove').onclick = () => { $('study-sticky-confirm').hidden = false; $('study-sticky-remove-no').focus(); };
-  $('study-sticky-remove-no').onclick = () => { $('study-sticky-confirm').hidden = true; $('study-sticky-remove').focus(); };
-  $('study-sticky-remove-yes').onclick = () => {
-    if (!live || pendingNote || !selectedSticky || !edited()) return;
-    draft.stickies = currentStickies().filter(n => n.id !== selectedSticky); selectedSticky = ''; stickyLimit = '';
-    $('study-sticky-confirm').hidden = true; publishStickies(); savePrivate(); $('study-sticky-list').focus();
-  };
   $('study-retry').onclick = load;
   $('study-language').onchange = event => { lang = event.target.value; replaying = false; relabel(); if (data) loadFrame(); else if (account && !token) void showLibrary(); };
   $('study-note').oninput = () => { if (!draft) return; if (!edited()) { $('study-note').value = draft.text; return; } clearTimeout(saveTimer); saveTimer = setTimeout(savePrivate, 300); };
