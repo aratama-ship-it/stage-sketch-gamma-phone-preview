@@ -147,6 +147,11 @@ body.study-phone { --phone-lines-ratio: .4; --phone-line-size: 1.2rem; --phone-l
 .study-phone .phone-line-next-text { margin: var(--study-s1) 0; font-size: var(--phone-control-text, .95rem); line-height: 1.6; }
 .study-phone .phone-lines-empty { font-size: var(--phone-heading); overflow-wrap: anywhere; }
 .study-phone .phone-line-ghost { position: absolute; margin: 0; pointer-events: none; }
+.study-phone .phone-lines-flow { display: contents; }
+.study-phone .phone-setting { display: flex; align-items: flex-start; gap: var(--study-s2); min-height: var(--phone-hit); padding: var(--study-s2) 0; }
+.study-phone .phone-setting input { flex: none; width: 24px; height: 24px; min-width: 24px; min-height: 24px; padding: 0; margin: 2px 0 0; accent-color: var(--study-accent-strong); }
+.study-phone .phone-setting-body { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.study-phone .phone-setting-hint { opacity: .75; }
 .study-phone .phone-lines-steps { box-shadow: inset 0 2px var(--study-accent); }
 .study-phone .phone-lines-steps button { border-top: 2px solid var(--study-accent); }
 .study-phone .phone-line-back svg { transform: scaleX(-1); }
@@ -162,3 +167,16 @@ body.study-phone { --phone-lines-ratio: .4; --phone-line-size: 1.2rem; --phone-l
   .study-phone .phone-lines { grid-row: 1; }
   .study-phone .phone-lines-on .study-workspace { grid-row: 2; }
 }
+
+/* Vertical writing: the current line, its cue and the next line run in columns from right to left. */
+.study-phone .phone-lines.is-vertical { display: flex; flex-direction: column; overflow: hidden; padding-bottom: var(--study-s2); }
+.study-phone .phone-lines.is-vertical .phone-lines-head { position: static; flex: none; }
+.study-phone .phone-lines.is-vertical .phone-lines-flow { display: flex; direction: rtl; flex: 1 1 0; min-height: 0; gap: var(--study-s3); align-items: stretch; overflow-x: auto; overflow-y: hidden; overscroll-behavior: contain; position: relative; }
+.study-phone .phone-lines.is-vertical .phone-lines-flow > * { direction: ltr; writing-mode: vertical-rl; flex: none; max-height: 100%; margin: 0; box-sizing: border-box; grid-column: auto; grid-row: auto; text-combine-upright: digits 2; }
+.study-phone .phone-lines.is-vertical .phone-line-speaker { margin: 0 0 0 var(--study-s2); padding: 0 0 0 var(--study-s2); }
+.study-phone .phone-lines.is-vertical .phone-line-memo { margin: 0; }
+.study-phone .phone-lines.is-vertical .phone-line-text, .study-phone .phone-lines.is-vertical .phone-line-next-text { margin: 0 0 0 var(--study-s2); }
+.study-phone .phone-lines.is-vertical .phone-line-next { padding: 0 var(--study-s3) 0 0; border: 0; border-right: 1px solid var(--study-accent); }
+.study-phone .phone-lines.is-vertical .phone-line-next-label { margin: 0 0 0 var(--study-s2); }
+.study-phone .phone-lines.is-vertical .phone-line-next-speaker { margin: 0 0 0 var(--study-s2); padding: 0 0 0 var(--study-s2); }
+.study-phone .phone-lines.is-vertical .phone-line-ghost { direction: ltr; writing-mode: vertical-rl; }

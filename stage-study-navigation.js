@@ -41,7 +41,7 @@
         const bounds = engine.stageBounds(v.view);
         v.base = bounds ? Math.min(stageFill(v.view) * w / (bounds.width * v.width), stageFill(v.view) * h / (bounds.height * v.height)) : 1;
         v.cx = bounds ? (.5 - bounds.x - bounds.width / 2) * v.width * v.base : 0;
-        v.cy = bounds ? (.5 - bounds.y - bounds.height / 2) * v.height * v.base : 0;
+        v.cy = bounds ? (v.view === 'front' && document.body.classList.contains('viewer-phone') ? h / 2 - 4 - (bounds.y + bounds.height - .5) * v.height * v.base : (.5 - bounds.y - bounds.height / 2) * v.height * v.base) : 0;
         v.surface.dataset.fit = bounds ? 'main-stage' : 'full-scene-fallback';
         Object.assign(v.surface.style, { width: `${v.width}px`, height: `${v.height}px` }); update(v);
       }
