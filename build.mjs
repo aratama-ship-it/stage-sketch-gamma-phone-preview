@@ -106,6 +106,10 @@ await patchAsset('stage-sketch.js', [[
         applyFeatureFlags();
         render();
       },
+      speaker(castId) {
+        studySpeakerCast = castId ? String(castId) : "";
+        render();
+      },
       lightInfo() {
         // Same rig, cue model and stage-dimension guard as the actual painter.
         // Unset/off cues still have a rig: show mode correctly leaves it dark.
@@ -120,9 +124,65 @@ await patchAsset('stage-sketch.js', [[
   '    if (showSelection && ((L.plan && target === planCtx) || (!L.plan && target === ctx))) {\n      if (drawLightCueWorkLight(target, L)) {',
   '    if ((showSelection || STUDY_READ_ONLY) && ((L.plan && target === planCtx) || (!L.plan && target === ctx))) {\n      if (drawLightCueWorkLight(target, L)) {',
   'read-only work-light mask, lit pieces and beams',
+], [
+  '  let voxBubbleLine = null;\n',
+  '  let voxBubbleLine = null;\n  let studySpeakerCast = "";\n',
+  'speaker mark state',
+], [
+  '  function drawVoxBubble(target, L, shown) {',
+  [
+    '  function drawStudySpeakerMark(target, L, shown) {',
+    '    const piece = shown.find((item) => item.type === "performer" && !item.heldBy && item.castId === studySpeakerCast);',
+    '    if (!piece) return;',
+    '    const visualPiece = effectivelyPlacedPiece(piece);',
+    '    const pos = placePiece(visualPiece, L);',
+    '    const bounds = selectionBounds(visualPiece, L);',
+    '    const color = piece.color || "#d6be84";',
+    '    const bw = 104, bh = 66, tail = 16;',
+    '    const anchorY = bounds.y - (state.showNames ? 26 : 8);',
+    '    const left = clamp(pos.x - bw / 2, 4, Math.max(4, W - bw - 4));',
+    '    const top = Math.max(4, anchorY - tail - bh);',
+    '    const tipX = clamp(pos.x, left + 22, left + bw - 22);',
+    '    const r = bh / 2;',
+    '    target.save();',
+    '    target.shadowColor = "rgba(0,0,0,0.5)";',
+    '    target.shadowBlur = 8;',
+    '    target.shadowOffsetY = 2;',
+    '    target.fillStyle = "rgba(239,231,214,0.97)";',
+    '    target.strokeStyle = color;',
+    '    target.lineWidth = 6;',
+    '    target.beginPath();',
+    '    target.moveTo(left + r, top);',
+    '    target.lineTo(left + bw - r, top);',
+    '    target.arc(left + bw - r, top + r, r, -Math.PI / 2, Math.PI / 2);',
+    '    target.lineTo(tipX + 12, top + bh);',
+    '    target.lineTo(tipX, Math.min(anchorY, top + bh + tail));',
+    '    target.lineTo(tipX - 12, top + bh);',
+    '    target.lineTo(left + r, top + bh);',
+    '    target.arc(left + r, top + r, r, Math.PI / 2, Math.PI * 1.5);',
+    '    target.closePath();',
+    '    target.fill();',
+    '    target.shadowColor = "transparent";',
+    '    target.stroke();',
+    '    target.fillStyle = color;',
+    '    [-1, 0, 1].forEach((step) => {',
+    '      target.beginPath();',
+    '      target.arc(left + bw / 2 + step * 22, top + bh / 2, 6.5, 0, Math.PI * 2);',
+    '      target.fill();',
+    '    });',
+    '    target.restore();',
+    '  }',
+    '',
+    '  function drawVoxBubble(target, L, shown) {',
+  ].join('\n'),
+  'speaker mark painter',
+], [
+  '    if (!pitchStyle && !L.plan && target === ctx && featureOn("voxBubble")) drawVoxBubble(target, L, shown);\n',
+  '    if (!pitchStyle && !L.plan && target === ctx && featureOn("voxBubble")) drawVoxBubble(target, L, shown);\n    if (!pitchStyle && studySpeakerCast && ((L.plan && target === planCtx) || (!L.plan && target === ctx))) drawStudySpeakerMark(target, L, shown);\n',
+  'speaker mark call',
 ]]);
 await patchAsset('stage-study-frame.js', [
-  ["        else if (message.action === 'replay')", "        else if (message.action === 'light') { engine.light(message.mode); }\n        else if (message.action === 'fit') { navigation?.fill(Boolean(message.full)); }\n        else if (message.action === 'replay')", 'light message'],
+  ["        else if (message.action === 'replay')", "        else if (message.action === 'light') { engine.light(message.mode); }\n        else if (message.action === 'fit') { navigation?.fill(Boolean(message.full)); }\n        else if (message.action === 'speaker') { engine.speaker(message.castId); }\n        else if (message.action === 'replay')", 'light message'],
   ["        if (message.action === 'load') window.parent.postMessage({ channel: 'stage-study', action: 'loaded' }, location.origin);",
    `        if (message.action === 'load') {
           window.parent.postMessage({ channel: 'stage-study', action: 'light-capability', hasLights: engine.lightInfo() }, location.origin);

@@ -9143,6 +9143,7 @@
   ];
   /* U-03 吹き出しの状態と縦書きの字の扱い。描画（drawVoxBubble）より前に宣言しておく（起動直後の描画で未初期化にならないように）。 */
   let voxBubbleLine = null;
+  let studySpeakerCast = "";
   const VERTICAL_ROTATE = new Set([..."ー―─…‥〜～-—()（）「」『』［］[]【】〈〉《》｛｝{}<>＜＞=＝"]);
   const VERTICAL_SHIFT = new Set([..."、。，．,."]);
   const VERTICAL_SMALL = new Set([..."ぁぃぅぇぉっゃゅょゎァィゥェォッャュョヮヵヶ"]);
@@ -20710,6 +20711,48 @@
     return columns;
   }
 
+  function drawStudySpeakerMark(target, L, shown) {
+    const piece = shown.find((item) => item.type === "performer" && !item.heldBy && item.castId === studySpeakerCast);
+    if (!piece) return;
+    const visualPiece = effectivelyPlacedPiece(piece);
+    const pos = placePiece(visualPiece, L);
+    const bounds = selectionBounds(visualPiece, L);
+    const color = piece.color || "#d6be84";
+    const bw = 104, bh = 66, tail = 16;
+    const anchorY = bounds.y - (state.showNames ? 26 : 8);
+    const left = clamp(pos.x - bw / 2, 4, Math.max(4, W - bw - 4));
+    const top = Math.max(4, anchorY - tail - bh);
+    const tipX = clamp(pos.x, left + 22, left + bw - 22);
+    const r = bh / 2;
+    target.save();
+    target.shadowColor = "rgba(0,0,0,0.5)";
+    target.shadowBlur = 8;
+    target.shadowOffsetY = 2;
+    target.fillStyle = "rgba(239,231,214,0.97)";
+    target.strokeStyle = color;
+    target.lineWidth = 6;
+    target.beginPath();
+    target.moveTo(left + r, top);
+    target.lineTo(left + bw - r, top);
+    target.arc(left + bw - r, top + r, r, -Math.PI / 2, Math.PI / 2);
+    target.lineTo(tipX + 12, top + bh);
+    target.lineTo(tipX, Math.min(anchorY, top + bh + tail));
+    target.lineTo(tipX - 12, top + bh);
+    target.lineTo(left + r, top + bh);
+    target.arc(left + r, top + r, r, Math.PI / 2, Math.PI * 1.5);
+    target.closePath();
+    target.fill();
+    target.shadowColor = "transparent";
+    target.stroke();
+    target.fillStyle = color;
+    [-1, 0, 1].forEach((step) => {
+      target.beginPath();
+      target.arc(left + bw / 2 + step * 22, top + bh / 2, 6.5, 0, Math.PI * 2);
+      target.fill();
+    });
+    target.restore();
+  }
+
   function drawVoxBubble(target, L, shown) {
     const piece = voxBubbleSpeakerPiece(shown);
     if (!piece) return;
@@ -21682,6 +21725,7 @@
     }
     // U-03: いまのセリフの吹き出し（正面図だけ・環境設定で入のときだけ）
     if (!pitchStyle && !L.plan && target === ctx && featureOn("voxBubble")) drawVoxBubble(target, L, shown);
+    if (!pitchStyle && studySpeakerCast && ((L.plan && target === planCtx) || (!L.plan && target === ctx))) drawStudySpeakerMark(target, L, shown);
 
     /* 動線は平面図だけ。上から見た床の上の道筋なので、正面図には出しようがない。
        ★転換アニメの最中は出さない（本人指定）。動いている駒の足元に
@@ -42083,6 +42127,10 @@ html, body { margin: 0; padding: 0; color: #1c1a17; background: #fff; font-famil
         prefs.lightBeam = step.beam;
         prefs.workLightOff = step.work;
         applyFeatureFlags();
+        render();
+      },
+      speaker(castId) {
+        studySpeakerCast = castId ? String(castId) : "";
         render();
       },
       stageBounds(view) {

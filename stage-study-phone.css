@@ -130,7 +130,7 @@ body.study-phone { --phone-lines-ratio: .4; --phone-line-size: 1.2rem; --phone-l
 .study-phone #phone-lines[aria-pressed="true"] { background: var(--study-accent-strong); color: var(--study-bg); }
 .study-phone .phone-lines {
   grid-row: 3; grid-column: 1; min-width: 0; min-height: 0; box-sizing: border-box;
-  overflow: auto; overscroll-behavior: contain; padding: 0 var(--study-s3) var(--study-s2);
+  position: relative; overflow: auto; overscroll-behavior: contain; padding: 0 var(--study-s3) var(--study-s2);
   background: var(--study-bg); color: var(--study-ink);
 }
 .study-phone .phone-lines-head { position: sticky; top: 0; display: flex; align-items: center; gap: var(--study-s2); background: var(--study-bg); z-index: 1; }
@@ -144,6 +144,7 @@ body.study-phone { --phone-lines-ratio: .4; --phone-line-size: 1.2rem; --phone-l
 .study-phone .phone-line-next-speaker { margin: var(--study-s1) 0; padding-left: var(--study-s2); border-left: 3px solid var(--study-accent); font-size: var(--phone-control); }
 .study-phone .phone-line-next-text { margin: var(--study-s1) 0; font-size: var(--phone-control-text, .95rem); line-height: 1.6; }
 .study-phone .phone-lines-empty { font-size: var(--phone-heading); overflow-wrap: anywhere; }
+.study-phone .phone-line-ghost { position: absolute; margin: 0; pointer-events: none; }
 .study-phone .phone-lines-steps { box-shadow: inset 0 2px var(--study-accent); }
 .study-phone .phone-lines-steps button { border-top: 2px solid var(--study-accent); }
 .study-phone .phone-line-back svg { transform: scaleX(-1); }

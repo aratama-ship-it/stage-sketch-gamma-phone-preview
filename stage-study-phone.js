@@ -36,14 +36,15 @@
     applyLight(); sync();
   });
   light.hidden = true;
-  let fitFull = false;
+  let fitFull = false, speakerCast = '', slideDir = 0;
+  const applySpeaker = () => lightFrame()?.contentWindow?.postMessage({ channel: 'stage-study', action: 'speaker', castId: speakerCast }, '*');
   const applyFit = () => lightFrame()?.contentWindow?.postMessage({ channel: 'stage-study', action: 'fit', full: fitFull }, '*');
   window.addEventListener('message', event => {
     const frame = lightFrame();
     if (!frame || event.source !== frame.contentWindow || event.origin !== 'null' || event.data?.channel !== 'stage-study') return;
     if (event.data.action === 'ready') { hasLights = false; sync(); }
     if (event.data.action === 'light-capability') { hasLights = event.data.hasLights === true; applyLight(); sync(); }
-    if (event.data.action === 'loaded') { applyLight(); applyFit(); }
+    if (event.data.action === 'loaded') { applyLight(); applyFit(); applySpeaker(); }
   });
   // A replacement frame must not inherit the old show's capability while loading.
   new MutationObserver(() => { hasLights = false; sync(); }).observe($('study-frame-host'), { childList: true });
@@ -163,7 +164,7 @@
     for (let i = rehearsalLines.length - 1; i >= 0; i--) if (sceneOrder.get(rehearsalLines[i].sceneId) < sceneIndex) return i;
     return -1;
   }
-  function stepLine(direction) { goLine(lineStepIndex(direction)); sync(); }
+  function stepLine(direction) { slideDir = direction; goLine(lineStepIndex(direction)); sync(); slideDir = 0; }
   function syncLines(ready) {
     linesToggle.hidden = !ready || !rehearsalLines.length;
     nav.classList.toggle('has-lines', !linesToggle.hidden);
@@ -175,6 +176,8 @@
     shell.classList.toggle('phone-lines-on', linesOn && ready);
     if (fitFull !== (linesOn && ready)) { fitFull = linesOn && ready; applyFit(); }
     steps.classList.toggle('phone-lines-steps', linesOn);
+    const wantedSpeaker = linesOn && ready ? rehearsalLines.find(item => item.id === lineId && item.sceneId === $('study-scenes').value)?.castId || '' : '';
+    if (speakerCast !== wantedSpeaker) { speakerCast = wantedSpeaker; applySpeaker(); }
     for (const [b, direction, original] of [[previous, -1, 'study-prev'], [next, 1, 'study-next']]) {
       const glyph = linesOn ? 'lineNext' : original;
       if (b.dataset.glyph !== glyph) { b.replaceChildren(icon(glyph)); b.dataset.glyph = glyph; }
@@ -188,6 +191,14 @@
       if (lineId !== nextId) { lineId = nextId; saveLines(); }
     }
     const line = rehearsalLines[index], following = rehearsalLines[index + 1];
+    const sliding = slideDir && renderedLine && renderedLine !== (lineId || $('study-scenes').value) && !lineLive.hidden && !matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let ghost = null, pushed = 0;
+    if (sliding) {
+      pushed = upcoming.hidden ? lineLive.offsetHeight : Math.max(lineLive.offsetHeight, upcoming.offsetTop - lineLive.offsetTop);
+      ghost = lineLive.cloneNode(true); ghost.removeAttribute('aria-live'); ghost.setAttribute('aria-hidden', 'true'); ghost.classList.add('phone-line-ghost');
+      Object.assign(ghost.style, { top: `${lineLive.offsetTop}px`, left: `${lineLive.offsetLeft}px`, width: `${lineLive.offsetWidth}px` });
+      linesRegion.append(ghost);
+    }
     const seconds = line?.seconds;
     const time = seconds == null ? '' : `${Math.floor(seconds / 60)}:${String(Math.floor(seconds % 60)).padStart(2, '0')}`;
     setText(linesMeta, [line ? `${t('lineCount')} ${index + 1} / ${rehearsalLines.length}` : t('linesMode'), $('study-scene-heading').textContent.split(' · ')[0], time].filter(Boolean).join(' · '));
@@ -200,6 +211,13 @@
     // Only changing lines resets the scroll; status/language updates do not.
     const renderKey = lineId || $('study-scenes').value;
     if (renderedLine !== renderKey) { renderedLine = renderKey; linesRegion.scrollTop = 0; }
+    if (ghost) {
+      const timing = { duration: 260, easing: 'cubic-bezier(.2,.7,.2,1)', fill: 'both' }, dir = slideDir > 0 ? 1 : -1;
+      const done = ghost.animate([{ transform: 'translateY(0)', opacity: 1 }, { transform: `translateY(${-dir * ghost.offsetHeight}px)`, opacity: 0 }], timing);
+      done.onfinish = done.oncancel = () => ghost.remove();
+      for (const el of [lineLive, lineMemo]) if (!el.hidden) el.animate([{ transform: `translateY(${dir * pushed}px)`, opacity: .2 }, { transform: 'translateY(0)', opacity: 1 }], timing);
+      if (!upcoming.hidden) upcoming.animate([{ opacity: 0, transform: `translateY(${dir * 28}px)` }, { opacity: .85, transform: 'translateY(0)' }], timing);
+    }
     previous.setAttribute('aria-label', t('linePrev')); next.setAttribute('aria-label', t('lineNext'));
     previous.disabled = lineStepIndex(-1) < 0;
     const nextIndex = lineStepIndex(1); next.disabled = nextIndex < 0 || nextIndex >= rehearsalLines.length;
@@ -214,7 +232,7 @@
       const seconds = Number.isFinite(cue?.offsetSeconds) ? cue.offsetSeconds : Number.isFinite(cue?.atSeconds) ? cue.atSeconds : null;
       const text = String(line.text || ''), memo = String(cue?.memo || '').split('\n');
       if (text.trim() && memo[0].includes(text.trim())) memo.shift();
-      return { id: line.id, sceneId: line.sceneId, order, seconds, text, memo: memo.join('\n').trim(), speaker: line.speaker?.trim() || person?.name || '', color: person?.color || '' };
+      return { id: line.id, sceneId: line.sceneId, order, seconds, text, memo: memo.join('\n').trim(), speaker: line.speaker?.trim() || person?.name || '', color: person?.color || '', castId: line.castId || '' };
     }).sort((a, b) => sceneOrder.get(a.sceneId) - sceneOrder.get(b.sceneId) || (a.seconds ?? Infinity) - (b.seconds ?? Infinity) || a.order - b.order);
     let saved = null;
     try { saved = JSON.parse(localStorage.getItem(linesKey)); } catch { /* Ignore invalid storage. */ }

@@ -12,10 +12,10 @@
   });
   const originalFetch = window.fetch.bind(window);
   let payloadPromise = null;
-  const payload = () => payloadPromise ||= originalFetch('./samples/' + sample + '.json?b=20261001-2235', { cache: 'no-store' }).then(r => {
+  const payload = () => payloadPromise ||= originalFetch('./samples/' + sample + '.json?b=20261002-0749', { cache: 'no-store' }).then(r => {
     if (!r.ok) throw new Error('sample-missing'); return r.json();
   });
-  window.__STAGE_SKETCH_PHONE_PREVIEW__ = { build: "20261001-2235", source: "0.2.69 7af5a27", sample, submissions: 0 };
+  window.__STAGE_SKETCH_PHONE_PREVIEW__ = { build: "20261002-0749", source: "0.2.69 7af5a27", sample, submissions: 0 };
   window.fetch = async (input, options = {}) => {
     const url = new URL(input instanceof Request ? input.url : String(input), location.href);
     const method = String(options.method || (input instanceof Request ? input.method : 'GET')).toUpperCase();
