@@ -9,7 +9,7 @@
 | --phone-modal-width | 420px | 中央モーダル幅上限 |
 | --phone-modal-vw | 92vw | 中央モーダル幅 |
 | --phone-modal-ratio | .8 | 画面高さ上限の比率 |
-| --phone-detail-ratio | .22 | 常設詳細の高さ上限比率 |
+| --phone-detail-ratio | .3 | 常設詳細の高さ上限比率 |
 | --phone-dot | 5px | 詳細ありの印 |
 | --phone-overlay-opacity | .8 | 背景の暗さ・浮遊ボタンの面 |
 

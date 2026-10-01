@@ -3,7 +3,7 @@ html.study-phone, html.study-phone body { width: 100%; height: 100%; overflow: h
 body.study-phone {
   --phone-header: 52px; --phone-scenes: 44px; --phone-tools: 48px; --phone-rail: 64px;
   --phone-hit: 40px; --phone-icon: 18px; --phone-modal-width: 420px; --phone-modal-vw: 92vw;
-  --phone-modal-ratio: .8; --phone-detail-ratio: .22; --phone-dot: 5px; --phone-overlay-opacity: .8;
+  --phone-modal-ratio: .8; --phone-detail-ratio: .3; --phone-dot: 5px; --phone-overlay-opacity: .8;
   --phone-brand: 18px; --phone-control: 12px; --phone-heading: 14px; --phone-panel: 360px;
   position: fixed; inset: 0; padding: 0; touch-action: manipulation;
 }
@@ -80,6 +80,8 @@ body.study-phone {
 .study-phone #phone-scene-info.has-note::after { content: ''; position: absolute; right: var(--study-s2); top: var(--study-s2); width: var(--phone-dot); height: var(--phone-dot); border-radius: 50%; background: currentColor; }
 .study-phone .phone-detail { grid-row: 3; grid-column: 1; min-height: 0; max-height: calc(var(--phone-height, 100dvh) * var(--phone-detail-ratio)); overflow: auto; overscroll-behavior: contain; padding: var(--study-s2) var(--study-s3); background: var(--study-bg); }
 .study-phone .phone-detail .study-note-text { margin: 0; }
+.study-phone .study-note-text { line-height: 1.8; letter-spacing: .02em; line-break: strict; word-break: auto-phrase; text-wrap: pretty; }
+.study-phone .phone-detail { padding-block: var(--study-s3); }
 .study-phone .phone-backdrop { position: absolute; inset: 0; z-index: 39; background: var(--study-bg); opacity: var(--phone-overlay-opacity); }
 .study-phone .phone-panel.phone-modal {
   top: calc(env(safe-area-inset-top) + (100% - env(safe-area-inset-top) - env(safe-area-inset-bottom)) / 2);
