@@ -22,7 +22,8 @@
     const front = document.getElementById('stage-canvas'); const plan = document.getElementById('stage-plan-canvas');
     front.removeAttribute('tabindex'); plan.removeAttribute('tabindex');
     document.querySelector('.study-front').append(front); document.querySelector('.study-plan').append(plan);
-    navigation = window.SHOSAI_STUDY_NAVIGATION({ engine, canvases: { front, plan }, cancelAnnotations(pointer) {
+    let controlsQueued = false; const postControls = () => { if (controlsQueued) return; controlsQueued = true; requestAnimationFrame(() => { controlsQueued = false; if (navigation) window.parent.postMessage({ channel: 'stage-study', action: 'controls-state', state: navigation.state() }, location.origin); }); };
+    navigation = window.SHOSAI_STUDY_NAVIGATION({ engine, canvases: { front, plan }, onState: postControls, cancelAnnotations(pointer) {
       const event = { type: 'pointercancel', pointerId: pointer.pointerId, target: pointer.target };
       pen?.handleEvent(event); sticky?.handleEvent(event);
     } });
@@ -43,7 +44,8 @@
         else if (message.action === 'scene') { sceneId = message.sceneId; engine.scene(sceneId); pen.load(message.strokes); pen.show(true); sticky.load(message.stickies); sticky.show(true); }
         else if (message.action === 'light') { engine.light(message.mode); }
         else if (message.action === 'fit') { navigation?.fill(Boolean(message.full)); }
-        else if (message.action === 'controls') { navigation?.controls(Boolean(message.open)); }
+        else if (message.action === 'seat') { navigation?.seat(String(message.id)); }
+        else if (message.action === 'reset-view') { navigation?.resetView(message.view); }
         else if (message.action === 'speaker') { engine.speaker(message.castId); }
         else if (message.action === 'replay') { pen.mode(false); pen.show(false); sticky.show(false); engine.replay(); }
         else if (message.action === 'stop') { engine.stop(); engine.scene(sceneId); pen.show(true); sticky.show(true); }

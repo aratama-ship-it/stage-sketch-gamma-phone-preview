@@ -186,3 +186,7 @@ body.study-phone { --phone-lines-ratio: .4; --phone-line-size: 1.2rem; --phone-l
 .study-phone .phone-dots { position: absolute; left: 0; right: 0; bottom: 4px; display: flex; justify-content: center; gap: 4px; pointer-events: none; }
 .study-phone .phone-dots i { width: 5px; height: 5px; box-sizing: border-box; border-radius: 50%; border: 1px solid currentColor; }
 .study-phone .phone-dots i[data-on="true"] { background: currentColor; }
+.study-phone .phone-controls-pane { display: grid; gap: var(--study-s2); }
+.study-phone .phone-controls-pane[hidden] { display: none; }
+.study-phone .phone-zoom-row { display: flex; flex-wrap: wrap; gap: var(--study-s2); }
+.study-phone .phone-zoom-row button { min-height: 44px; flex: 1 1 120px; }

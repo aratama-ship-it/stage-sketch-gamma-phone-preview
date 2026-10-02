@@ -182,12 +182,15 @@ await patchAsset('stage-sketch.js', [[
   'speaker mark call',
 ]]);
 await patchAsset('stage-study-frame.js', [
-  ["        else if (message.action === 'replay')", "        else if (message.action === 'light') { engine.light(message.mode); }\n        else if (message.action === 'fit') { navigation?.fill(Boolean(message.full)); }\n        else if (message.action === 'controls') { navigation?.controls(Boolean(message.open)); }\n        else if (message.action === 'speaker') { engine.speaker(message.castId); }\n        else if (message.action === 'replay')", 'light message'],
+  ["        else if (message.action === 'replay')", "        else if (message.action === 'light') { engine.light(message.mode); }\n        else if (message.action === 'fit') { navigation?.fill(Boolean(message.full)); }\n        else if (message.action === 'seat') { navigation?.seat(String(message.id)); }\n        else if (message.action === 'reset-view') { navigation?.resetView(message.view); }\n        else if (message.action === 'speaker') { engine.speaker(message.castId); }\n        else if (message.action === 'replay')", 'light message'],
   ["        if (message.action === 'load') window.parent.postMessage({ channel: 'stage-study', action: 'loaded' }, location.origin);",
    `        if (message.action === 'load') {
           window.parent.postMessage({ channel: 'stage-study', action: 'light-capability', hasLights: engine.lightInfo() }, location.origin);
           window.parent.postMessage({ channel: 'stage-study', action: 'loaded' }, location.origin);
         }`, 'light capability after load'],
+  ["    navigation = window.SHOSAI_STUDY_NAVIGATION({ engine, canvases: { front, plan }, cancelAnnotations(pointer) {",
+   "    let controlsQueued = false; const postControls = () => { if (controlsQueued) return; controlsQueued = true; requestAnimationFrame(() => { controlsQueued = false; if (navigation) window.parent.postMessage({ channel: 'stage-study', action: 'controls-state', state: navigation.state() }, location.origin); }); };\n    navigation = window.SHOSAI_STUDY_NAVIGATION({ engine, canvases: { front, plan }, onState: postControls, cancelAnnotations(pointer) {",
+   'report view controls state to the parent shell'],
 ]);
 
 
@@ -200,6 +203,16 @@ await patchAsset("stage-sketch.js", [
   ]
 ]);
 await patchAsset("stage-study-navigation.js", [
+  [
+    "window.SHOSAI_STUDY_NAVIGATION = ({ engine, canvases, cancelAnnotations }) => {",
+    "window.SHOSAI_STUDY_NAVIGATION = ({ engine, canvases, cancelAnnotations, onState }) => {",
+    "state callback"
+  ],
+  [
+    "v.surface.dataset.zoom = String(v.z);",
+    "v.surface.dataset.zoom = String(v.z); onState?.();",
+    "notify zoom changes"
+  ],
   [
     "    const views = {}, pointers = new Map();",
     "    const views = {}, pointers = new Map();\n    let fullFit = false; const stageFill = view => (view === 'front' && document.body.classList.contains('viewer-phone')) || fullFit ? 1 : .8; const defaultZoom = view => view === 'plan' && !fullFit ? 1.2 : 1;\n    document.body.classList.toggle('viewer-phone', navigator.maxTouchPoints > 0 && Math.min(screen.width, screen.height) <= 600);",
@@ -242,7 +255,7 @@ await patchAsset("stage-study-navigation.js", [
   ],
   [
     "      central() { camera('center'); },",
-    "      central() { camera('center'); },\n      fill(full) { fullFit = full; this.reset(); },\n      controls(open) { for (const v of Object.values(views)) { v.bar.dataset.open = String(open); v.toggle.setAttribute('aria-expanded', String(open)); } },",
+    "      central() { camera('center'); },\n      fill(full) { fullFit = full; this.reset(); },\n      state() { const c = engine.camera(); return { seats: c.seats.map(x => ({ id: x.id, label: x.label })), seat: c.seat, zoom: { front: Math.round(views.front.z * 100), plan: Math.round(views.plan.z * 100) } }; },\n      seat(id) { camera(id); },\n      resetView(view) { const v = views[view]; if (v) { v.z = defaultZoom(v.view); v.x = v.y = 0; layout(); } },",
     "full-width fit switch for line rehearsal"
   ],
   [
@@ -299,8 +312,8 @@ await patchAsset("stage-study-navigation.js", [
 await patchAsset("stage-study-navigation.css", [
   [
     ".study-frame { --viewer-blue:",
-    "\n.viewer-controls-toggle { display: none; }\n@media (orientation: landscape) {\n  .viewer-phone.study-frame[data-view=\"both\"] .study-drawings { grid-template-columns: minmax(0,2fr) minmax(0,1fr); grid-template-rows: 1fr; }\n}\n.viewer-phone.study-frame .study-drawing { grid-template-rows: minmax(0,1fr); }\n.viewer-phone .viewer-drawing-bar { position: absolute; right: 4px; top: 4px; z-index: 5; max-width: calc(100% - 8px); padding: 0; gap: 0; background: color-mix(in srgb, var(--viewer-bar) 90%, transparent); }\n.viewer-phone .viewer-drawing-bar:not([data-open=\"true\"]) { display: none; }\n.viewer-phone .viewer-drawing-bar[data-open=\"true\"] { flex-wrap: wrap; }\n.viewer-phone .viewer-drawing-bar label { display: none; }\n.viewer-phone .viewer-drawing-bar select { max-width: 150px; }\n\n.study-frame { --viewer-blue:",
-    "phone controls overlay opened from the parent bottom bar"
+    "\n.viewer-controls-toggle { display: none; }\n@media (orientation: landscape) {\n  .viewer-phone.study-frame[data-view=\"both\"] .study-drawings { grid-template-columns: minmax(0,2fr) minmax(0,1fr); grid-template-rows: 1fr; }\n}\n.viewer-phone.study-frame .study-drawing { grid-template-rows: minmax(0,1fr); }\n.viewer-phone .viewer-drawing-bar { display: none; }\n\n.study-frame { --viewer-blue:",
+    "phone figure controls live in the parent shell"
   ]
 ]);
 await patchAsset("stage-study-frame.js", [

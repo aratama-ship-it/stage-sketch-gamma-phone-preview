@@ -1,7 +1,7 @@
 // Read-only viewport adapter. Uses the original renderer/seat projection, not editor events.
 (() => {
   'use strict';
-  window.SHOSAI_STUDY_NAVIGATION = ({ engine, canvases, cancelAnnotations }) => {
+  window.SHOSAI_STUDY_NAVIGATION = ({ engine, canvases, cancelAnnotations, onState }) => {
     const views = {}, pointers = new Map();
     let fullFit = false; const stageFill = view => (view === 'front' && document.body.classList.contains('viewer-phone')) || fullFit ? 1 : .8; const defaultZoom = view => view === 'plan' && !fullFit ? 1.2 : 1;
     document.body.classList.toggle('viewer-phone', navigator.maxTouchPoints > 0 && Math.min(screen.width, screen.height) <= 600);
@@ -29,7 +29,7 @@
       const maxY = Math.max(0, (v.height * v.base * v.z - v.viewport.clientHeight) / 2);
       v.x = Math.max(-maxX, Math.min(maxX, v.x)); v.y = Math.max(-maxY, Math.min(maxY, v.y));
       v.surface.style.transform = `translate(${v.x + v.cx * v.z}px, ${v.y + v.cy * v.z}px) scale(${v.base * v.z})`;
-      v.surface.dataset.zoom = String(v.z);
+      v.surface.dataset.zoom = String(v.z); onState?.();
       v.reset.textContent = `${Math.round(v.z * 100)}% ↺`;
       v.reset.setAttribute('aria-label', text('拡大を元に戻す', 'Reset zoom') + ` · ${Math.round(v.z * 100)}%`);
     }
@@ -124,7 +124,9 @@
       mode(kind, enabled) { if (kind === 'pen') penOn = enabled; else stickyOn = enabled; if (enabled) camera('center'); },
       central() { camera('center'); },
       fill(full) { fullFit = full; this.reset(); },
-      controls(open) { for (const v of Object.values(views)) { v.bar.dataset.open = String(open); v.toggle.setAttribute('aria-expanded', String(open)); } },
+      state() { const c = engine.camera(); return { seats: c.seats.map(x => ({ id: x.id, label: x.label })), seat: c.seat, zoom: { front: Math.round(views.front.z * 100), plan: Math.round(views.plan.z * 100) } }; },
+      seat(id) { camera(id); },
+      resetView(view) { const v = views[view]; if (v) { v.z = defaultZoom(v.view); v.x = v.y = 0; layout(); } },
       crop(view, source) {
         const v = views[view], out = document.createElement('canvas');
         const ratio = Math.min(1, 960 / v.viewport.clientWidth, 960 / v.viewport.clientHeight);

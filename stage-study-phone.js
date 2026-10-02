@@ -4,7 +4,7 @@
   const phone = navigator.maxTouchPoints > 0 && Math.min(screen.width, screen.height) <= 600;
   if (!phone) return;
   const $ = id => document.getElementById(id), shell = document.querySelector('.study-shell'), orientation = matchMedia('(orientation: portrait)');
-  const words = { lines: ['稽古', 'Lines'], sceneMode: ['シーン', 'Scene'], linesMode: ['セリフ稽古', 'Line rehearsal'], linePrev: ['前のセリフ', 'Previous line'], lineNext: ['次のセリフ', 'Next line'], upNext: ['次のセリフ', 'Up next'], lineCount: ['セリフ', 'Line'], controlsFront: ['正面操作', 'Controls'], controlsPlan: ['平面操作', 'Controls'], controlsBoth: ['図の操作', 'Controls'], switchShow: ['ショーを切り替える', 'Switch show'], vertical: ['セリフを縦書きにする（日本語）', 'Vertical lines (Japanese text)'], verticalHint: ['稽古モードのセリフを縦書きで表示します。', 'Shows rehearsal lines in vertical writing.'], noLines: ['この場面にセリフはありません', 'No lines in this scene'], cueMemo: ['合図', 'Cue'], linesHint: ['下の前／次ボタンでセリフのある場面へ進めます。', 'Use the previous / next buttons below to reach a scene with lines.'], menu: ['メニュー', 'Menu'], light: ['照明のみ（作業灯なし）', 'Show lighting only (work light off)'], info: ['ショー情報', 'Show information'], settings: ['設定', 'Settings'], sceneInfo: ['場面情報', 'Scene information'], scenes: ['場面一覧', 'Scenes'], tools: ['書き込み', 'Draw'], memo: ['自分用メモ', 'My notes'], memoShort: ['メモ', 'Notes'], close: ['閉じる', 'Close'], view: ['舞台図を切り替える', 'Switch stage view'], both: ['両方', 'Both'], front: ['正面', 'Front'], plan: ['平面', 'Plan'], play: ['転換再生', 'Replay'], stop: ['停止', 'Stop'], share: ['オーナーへ共有', 'Share with owner'] };
+  const words = { lines: ['稽古', 'Lines'], sceneMode: ['シーン', 'Scene'], linesMode: ['セリフ稽古', 'Line rehearsal'], linePrev: ['前のセリフ', 'Previous line'], lineNext: ['次のセリフ', 'Next line'], upNext: ['次のセリフ', 'Up next'], lineCount: ['セリフ', 'Line'], controls: ['図の操作', 'View controls'], seat: ['どの客席から見るか', 'Audience viewpoint'], zoomReset: ['拡大を元に戻す', 'Reset zoom'], controlsFront: ['正面操作', 'Controls'], controlsPlan: ['平面操作', 'Controls'], controlsBoth: ['図の操作', 'Controls'], switchShow: ['ショーを切り替える', 'Switch show'], vertical: ['セリフを縦書きにする（日本語）', 'Vertical lines (Japanese text)'], verticalHint: ['稽古モードのセリフを縦書きで表示します。', 'Shows rehearsal lines in vertical writing.'], noLines: ['この場面にセリフはありません', 'No lines in this scene'], cueMemo: ['合図', 'Cue'], linesHint: ['下の前／次ボタンでセリフのある場面へ進めます。', 'Use the previous / next buttons below to reach a scene with lines.'], menu: ['メニュー', 'Menu'], light: ['照明のみ（作業灯なし）', 'Show lighting only (work light off)'], info: ['ショー情報', 'Show information'], settings: ['設定', 'Settings'], sceneInfo: ['場面情報', 'Scene information'], scenes: ['場面一覧', 'Scenes'], tools: ['書き込み', 'Draw'], memo: ['自分用メモ', 'My notes'], memoShort: ['メモ', 'Notes'], close: ['閉じる', 'Close'], view: ['舞台図を切り替える', 'Switch stage view'], both: ['両方', 'Both'], front: ['正面', 'Front'], plan: ['平面', 'Plan'], play: ['転換再生', 'Replay'], stop: ['停止', 'Stop'], share: ['オーナーへ共有', 'Share with owner'] };
   const t = key => words[key][document.documentElement.lang === 'en' ? 1 : 0], make = (tag, className) => Object.assign(document.createElement(tag), { className });
   const paths = { lines: 'M2 2h12v9H7l-4 3v-3H2Z', lineNext: 'm11 4 4 4-4 4 M1 2h7v7H5l-3 3V9H1Z', light: 'M12 3v4 M5.6 5.6l2.8 2.8 M18.4 5.6l-2.8 2.8 m-7.4 .9 7.6 0 3.5 10.2h-14.6z', close: 'm3 3 10 10 M13 3 3 13', info: 'M8 7v5 M8 4v.1 M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1', both: 'M1 2h14v5H1Z M1 9h14v5H1Z', front: 'M1 3h14v10H1Z M4 3v10 M12 3v10', plan: 'M2 2h12v12H2Z M2 11h12', controls: 'M2 4h7 M13 4h1 M2 12h1 M7 12h7 M11 2v4 M5 10v4', scenes: 'M5 3h10 M5 8h10 M5 13h10 M1 3h1 M1 8h1 M1 13h1' };
   const gearMarkup = '<circle cx="8" cy="8" r="4.2" stroke-width="1.3"/><circle cx="8" cy="8" r="1.4" stroke-width="1.3"/><path stroke-width="2.3" d="M8 3.10V1.90M11.94 5.55l1.04-.60M11.94 10.45l1.04.60M8 12.90v1.20M4.06 10.45l-1.04.60M4.06 5.55l-1.04-.60"/>';
@@ -13,7 +13,7 @@
   document.documentElement.classList.add('study-phone'); document.body.classList.add('study-phone');
   const panel = make('section', 'phone-panel'); panel.id = 'phone-panel'; panel.hidden = true; panel.setAttribute('role', 'region'); panel.setAttribute('aria-labelledby', 'phone-panel-title');
   const head = make('header', 'phone-panel-head'), title = make('h2', ''); title.id = 'phone-panel-title'; const close = button('phone-close', 'close', () => show('')); head.append(title, close); const contents = make('div', 'phone-panel-content'); panel.append(head, contents); shell.append(panel);
-  const panes = {}; for (const key of ['info', 'settings', 'sceneInfo', 'scenes', 'tools', 'memo', 'menu']) { panes[key] = make('section', ''); panes[key].hidden = true; contents.append(panes[key]); }
+  const panes = {}; for (const key of ['info', 'settings', 'sceneInfo', 'scenes', 'tools', 'memo', 'controls', 'menu']) { panes[key] = make('section', ''); panes[key].hidden = true; contents.append(panes[key]); }
   const nav = make('nav', 'phone-scenes'); const previous = button('phone-prev', 'study-prev', () => linesOn ? stepLine(-1) : $('study-prev').click()), current = button('phone-current', null, () => show('scenes')), next = button('phone-next', 'study-next', () => linesOn ? stepLine(1) : $('study-next').click()); current.className = 'phone-current'; const sceneListButton = button('phone-scene-list', 'scenes', () => show('scenes')), sceneInfo = button('phone-scene-info', 'info', () => { if (sceneInfo.getAttribute('aria-disabled') !== 'true') show('sceneInfo'); }); nav.append(current, sceneListButton, sceneInfo); shell.append(nav);
   const actions = make('nav', 'phone-tools'); shell.append(actions);
   const topActions = make('nav', 'phone-header-actions'), views = make('div', 'phone-views');
@@ -37,19 +37,35 @@
   let fitFull = false, speakerCast = '', slideDir = 0;
   const applySpeaker = () => lightFrame()?.contentWindow?.postMessage({ channel: 'stage-study', action: 'speaker', castId: speakerCast }, '*');
   const applyFit = () => lightFrame()?.contentWindow?.postMessage({ channel: 'stage-study', action: 'fit', full: fitFull }, '*');
+  let controlsState = null, controlsSig = '';
+  const controlsPane = panes.controls, seatLabel = make('label', ''), seatSelect = make('select', ''), zoomRow = make('div', 'phone-zoom-row');
+  seatSelect.id = 'phone-seat'; seatLabel.htmlFor = 'phone-seat';
+  seatSelect.onchange = () => lightFrame()?.contentWindow?.postMessage({ channel: 'stage-study', action: 'seat', id: seatSelect.value }, '*');
+  const zoomButtons = Object.fromEntries(['front', 'plan'].map(view => { const b = make('button', ''); b.type = 'button'; b.onclick = () => lightFrame()?.contentWindow?.postMessage({ channel: 'stage-study', action: 'reset-view', view }, '*'); zoomRow.append(b); return [view, b]; }));
+  controlsPane.classList.add('phone-controls-pane'); controlsPane.append(seatLabel, seatSelect, zoomRow);
+  function renderControls() {
+    const view = $('study-view').value, st = controlsState;
+    seatLabel.textContent = t('seat'); seatLabel.hidden = seatSelect.hidden = view === 'plan' || !st;
+    if (st) {
+      const sig = JSON.stringify([st.seats, st.seat, document.documentElement.lang]);
+      if (sig !== controlsSig) { controlsSig = sig; seatSelect.replaceChildren(...st.seats.map(s => Object.assign(document.createElement('option'), { value: s.id, textContent: s.label }))); seatSelect.value = st.seat; }
+      else if (seatSelect.value !== st.seat) seatSelect.value = st.seat;
+    }
+    zoomRow.hidden = !st;
+    for (const [key, b] of Object.entries(zoomButtons)) { b.hidden = !st || (view === 'front' && key === 'plan') || (view === 'plan' && key === 'front'); if (st) { b.textContent = t(key) + ' ' + st.zoom[key] + '% ↺'; b.setAttribute('aria-label', t('zoomReset') + ' · ' + t(key) + ' ' + st.zoom[key] + '%'); } }
+  }
   window.addEventListener('message', event => {
     const frame = lightFrame();
     if (!frame || event.source !== frame.contentWindow || event.origin !== 'null' || event.data?.channel !== 'stage-study') return;
-    if (event.data.action === 'ready') { hasLights = false; sync(); }
+    if (event.data.action === 'ready') { hasLights = false; controlsState = null; sync(); }
+    if (event.data.action === 'controls-state') { controlsState = event.data.state || null; renderControls(); }
     if (event.data.action === 'light-capability') { hasLights = event.data.hasLights === true; applyLight(); sync(); }
-    if (event.data.action === 'loaded') { applyLight(); applyFit(); applySpeaker(); applyControls(); }
+    if (event.data.action === 'loaded') { applyLight(); applyFit(); applySpeaker(); }
   });
   // A replacement frame must not inherit the old show's capability while loading.
   new MutationObserver(() => { hasLights = false; sync(); }).observe($('study-frame-host'), { childList: true });
   const steps = make('div', 'phone-steps'); steps.append(previous, next); actions.append(steps);
-  let controlsOpen = false;
-  const applyControls = () => lightFrame()?.contentWindow?.postMessage({ channel: 'stage-study', action: 'controls', open: controlsOpen }, '*');
-  const controls = button('phone-controls', 'controls', () => { controlsOpen = !controlsOpen; applyControls(); sync(); });
+  const controls = button('phone-controls', 'controls', () => show('controls'));
   const tools = button('phone-tools', 'study-pen', () => show('tools')), memo = button('phone-memo', 'study-sticky', () => show('memo'));
   for (const el of [controls, tools, memo]) { el.append(make('span', '')); actions.append(el); }
   const settings = button('phone-settings', 'settings', () => show('settings')), info = button('phone-info', 'info', () => show('info')); topActions.append(light, views, info, settings); document.querySelector('.study-header').append(topActions);
@@ -282,7 +298,7 @@
     previous.disabled = $('study-prev').disabled || !ready; next.disabled = $('study-next').disabled || !ready; previous.setAttribute('aria-label', $('study-prev').getAttribute('aria-label')); next.setAttribute('aria-label', $('study-next').getAttribute('aria-label'));
     current.textContent = $('study-scene-heading').textContent || t('scenes'); current.disabled = !ready; current.setAttribute('aria-label', t('scenes') + ' · ' + current.textContent);
     const viewNow = $('study-view').value, controlsKey = viewNow === 'plan' ? 'controlsPlan' : viewNow === 'both' ? 'controlsBoth' : 'controlsFront';
-    controls.replaceChildren(icon('controls'), Object.assign(make('span', ''), { textContent: t(controlsKey) })); controls.disabled = !ready; controls.setAttribute('aria-pressed', String(controlsOpen)); controls.setAttribute('aria-label', t(controlsKey));
+    controls.replaceChildren(icon('controls'), Object.assign(make('span', ''), { textContent: t(controlsKey) })); controls.disabled = !ready; controls.setAttribute('aria-pressed', String(opened === 'controls')); renderControls(); controls.setAttribute('aria-label', t(controlsKey));
     light.hidden = !hasLights; light.disabled = !ready || !hasLights;
     light.setAttribute('aria-pressed', String(lightMode === 'show'));
     light.setAttribute('aria-label', t('light')); light.title = t('light');
