@@ -279,7 +279,7 @@
       const done = ghost.animate([{ transform: `translate${axis}(0)`, opacity: 1 }, { transform: `translate${axis}(${-sign * dir * away}px)`, opacity: 0 }], timing);
       done.onfinish = done.oncancel = () => ghost.remove();
       for (const el of [lineLive, lineMemo]) if (!el.hidden) el.animate([{ transform: `translate${axis}(${sign * dir * pushed}px)`, opacity: .2 }, { transform: `translate${axis}(0)`, opacity: 1 }], timing);
-      if (!upcoming.hidden) upcoming.animate([{ opacity: 0, transform: `translate${axis}(${sign * dir * 28}px)` }, { opacity: .85, transform: `translate${axis}(0)` }], timing);
+      if (!upcoming.hidden) upcoming.animate([{ opacity: .85, transform: `translate${axis}(${sign * dir * pushed}px)` }, { opacity: .85, transform: `translate${axis}(0)` }], timing);
     }
     previous.setAttribute('aria-label', t('linePrev')); next.setAttribute('aria-label', t('lineNext'));
     previous.disabled = lineStepIndex(-1) < 0;
