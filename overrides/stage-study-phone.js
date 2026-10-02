@@ -4,16 +4,16 @@
   const phone = navigator.maxTouchPoints > 0 && Math.min(screen.width, screen.height) <= 600;
   if (!phone) return;
   const $ = id => document.getElementById(id), shell = document.querySelector('.study-shell'), orientation = matchMedia('(orientation: portrait)');
-  const words = { lines: ['稽古', 'Lines'], sceneMode: ['シーン', 'Scene'], linesMode: ['セリフ稽古', 'Line rehearsal'], linePrev: ['前のセリフ', 'Previous line'], lineNext: ['次のセリフ', 'Next line'], upNext: ['次のセリフ', 'Up next'], lineCount: ['セリフ', 'Line'], controls: ['図の操作', 'View controls'], seat: ['どの客席から見るか', 'Audience viewpoint'], zoomReset: ['拡大を元に戻す', 'Reset zoom'], controlsFront: ['正面操作', 'Controls'], controlsPlan: ['平面操作', 'Controls'], controlsBoth: ['図の操作', 'Controls'], switchShow: ['ショーを切り替える', 'Switch show'], vertical: ['セリフを縦書きにする（日本語）', 'Vertical lines (Japanese text)'], verticalHint: ['稽古モードのセリフを縦書きで表示します。', 'Shows rehearsal lines in vertical writing.'], noLines: ['この場面にセリフはありません', 'No lines in this scene'], cueMemo: ['合図', 'Cue'], linesHint: ['下の前／次ボタンでセリフのある場面へ進めます。', 'Use the previous / next buttons below to reach a scene with lines.'], menu: ['メニュー', 'Menu'], light: ['照明のみ（作業灯なし）', 'Show lighting only (work light off)'], info: ['ショー情報', 'Show information'], settings: ['設定', 'Settings'], sceneInfo: ['場面情報', 'Scene information'], scenes: ['場面一覧', 'Scenes'], tools: ['書き込み', 'Draw'], memo: ['自分用メモ', 'My notes'], memoShort: ['メモ', 'Notes'], close: ['閉じる', 'Close'], view: ['舞台図を切り替える', 'Switch stage view'], both: ['両方', 'Both'], front: ['正面', 'Front'], plan: ['平面', 'Plan'], play: ['転換再生', 'Replay'], stop: ['停止', 'Stop'], share: ['オーナーへ共有', 'Share with owner'] };
+  const words = { lines: ['稽古', 'Lines'], sceneMode: ['シーン', 'Scene'], linesMode: ['セリフ稽古', 'Line rehearsal'], linePrev: ['前のセリフ', 'Previous line'], lineNext: ['次のセリフ', 'Next line'], upNext: ['次のセリフ', 'Up next'], lineCount: ['セリフ', 'Line'], controls: ['図の操作', 'View controls'], script: ['台本（全セリフ）', 'Script (all lines)'], scriptOpen: ['全セリフを表示', 'Show full script'], scriptJump: ['このセリフから稽古', 'Rehearse from this line'], seat: ['どの客席から見るか', 'Audience viewpoint'], zoomReset: ['拡大を元に戻す', 'Reset zoom'], controlsFront: ['正面操作', 'Controls'], controlsPlan: ['平面操作', 'Controls'], controlsBoth: ['図の操作', 'Controls'], switchShow: ['ショーを切り替える', 'Switch show'], vertical: ['セリフを縦書きにする（日本語）', 'Vertical lines (Japanese text)'], verticalHint: ['稽古モードのセリフを縦書きで表示します。', 'Shows rehearsal lines in vertical writing.'], noLines: ['この場面にセリフはありません', 'No lines in this scene'], cueMemo: ['合図', 'Cue'], linesHint: ['下の前／次ボタンでセリフのある場面へ進めます。', 'Use the previous / next buttons below to reach a scene with lines.'], menu: ['メニュー', 'Menu'], light: ['照明のみ（作業灯なし）', 'Show lighting only (work light off)'], info: ['ショー情報', 'Show information'], settings: ['設定', 'Settings'], sceneInfo: ['場面情報', 'Scene information'], scenes: ['場面一覧', 'Scenes'], tools: ['書き込み', 'Draw'], memo: ['自分用メモ', 'My notes'], memoShort: ['メモ', 'Notes'], close: ['閉じる', 'Close'], view: ['舞台図を切り替える', 'Switch stage view'], both: ['両方', 'Both'], front: ['正面', 'Front'], plan: ['平面', 'Plan'], play: ['転換再生', 'Replay'], stop: ['停止', 'Stop'], share: ['オーナーへ共有', 'Share with owner'] };
   const t = key => words[key][document.documentElement.lang === 'en' ? 1 : 0], make = (tag, className) => Object.assign(document.createElement(tag), { className });
-  const paths = { lines: 'M2 2h12v9H7l-4 3v-3H2Z', lineNext: 'm11 4 4 4-4 4 M1 2h7v7H5l-3 3V9H1Z', light: 'M12 3v4 M5.6 5.6l2.8 2.8 M18.4 5.6l-2.8 2.8 m-7.4 .9 7.6 0 3.5 10.2h-14.6z', close: 'm3 3 10 10 M13 3 3 13', info: 'M8 7v5 M8 4v.1 M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1', both: 'M1 2h14v5H1Z M1 9h14v5H1Z', front: 'M1 3h14v10H1Z M4 3v10 M12 3v10', plan: 'M2 2h12v12H2Z M2 11h12', controls: 'M2 4h7 M13 4h1 M2 12h1 M7 12h7 M11 2v4 M5 10v4', scenes: 'M5 3h10 M5 8h10 M5 13h10 M1 3h1 M1 8h1 M1 13h1' };
+  const paths = { lines: 'M2 2h12v9H7l-4 3v-3H2Z', lineNext: 'm11 4 4 4-4 4 M1 2h7v7H5l-3 3V9H1Z', light: 'M12 3v4 M5.6 5.6l2.8 2.8 M18.4 5.6l-2.8 2.8 m-7.4 .9 7.6 0 3.5 10.2h-14.6z', close: 'm3 3 10 10 M13 3 3 13', info: 'M8 7v5 M8 4v.1 M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1', both: 'M1 2h14v5H1Z M1 9h14v5H1Z', front: 'M1 3h14v10H1Z M4 3v10 M12 3v10', plan: 'M2 2h12v12H2Z M2 11h12', script: 'M3 3h10 M3 6.5h10 M3 10h10 M3 13.5h6', controls: 'M2 4h7 M13 4h1 M2 12h1 M7 12h7 M11 2v4 M5 10v4', scenes: 'M5 3h10 M5 8h10 M5 13h10 M1 3h1 M1 8h1 M1 13h1' };
   const gearMarkup = '<circle cx="8" cy="8" r="4.2" stroke-width="1.3"/><circle cx="8" cy="8" r="1.4" stroke-width="1.3"/><path stroke-width="2.3" d="M8 3.10V1.90M11.94 5.55l1.04-.60M11.94 10.45l1.04.60M8 12.90v1.20M4.06 10.45l-1.04.60M4.06 5.55l-1.04-.60"/>';
   function icon(key) { const existing = $(key)?.querySelector('svg'); if (existing) return existing.cloneNode(true); const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg'); for (const [k, v] of Object.entries({ viewBox: key === 'light' ? '0 0 24 24' : '0 0 16 16', fill: 'none', stroke: 'currentColor', 'stroke-width': '1.3', 'stroke-linecap': 'round', 'stroke-linejoin': 'round', 'aria-hidden': 'true' })) svg.setAttribute(k, v); if (key === 'settings') { svg.innerHTML = gearMarkup; return svg; } const path = document.createElementNS(svg.namespaceURI, 'path'); path.setAttribute('d', paths[key]); svg.append(path); return svg; }
   function button(id, glyph, action) { const el = make('button', ''); el.type = 'button'; el.id = id; if (glyph) el.append(icon(glyph)); el.onclick = action; return el; }
   document.documentElement.classList.add('study-phone'); document.body.classList.add('study-phone');
   const panel = make('section', 'phone-panel'); panel.id = 'phone-panel'; panel.hidden = true; panel.setAttribute('role', 'region'); panel.setAttribute('aria-labelledby', 'phone-panel-title');
   const head = make('header', 'phone-panel-head'), title = make('h2', ''); title.id = 'phone-panel-title'; const close = button('phone-close', 'close', () => show('')); head.append(title, close); const contents = make('div', 'phone-panel-content'); panel.append(head, contents); shell.append(panel);
-  const panes = {}; for (const key of ['info', 'settings', 'sceneInfo', 'scenes', 'tools', 'memo', 'controls', 'menu']) { panes[key] = make('section', ''); panes[key].hidden = true; contents.append(panes[key]); }
+  const panes = {}; for (const key of ['info', 'settings', 'sceneInfo', 'scenes', 'tools', 'memo', 'controls', 'script', 'menu']) { panes[key] = make('section', ''); panes[key].hidden = true; contents.append(panes[key]); }
   const nav = make('nav', 'phone-scenes'); const previous = button('phone-prev', 'study-prev', () => linesOn ? stepLine(-1) : $('study-prev').click()), current = button('phone-current', null, () => show('scenes')), next = button('phone-next', 'study-next', () => linesOn ? stepLine(1) : $('study-next').click()); current.className = 'phone-current'; const sceneListButton = button('phone-scene-list', 'scenes', () => show('scenes')), sceneInfo = button('phone-scene-info', 'info', () => { if (sceneInfo.getAttribute('aria-disabled') !== 'true') show('sceneInfo'); }); nav.append(current, sceneListButton, sceneInfo); shell.append(nav);
   const actions = make('nav', 'phone-tools'); shell.append(actions);
   const topActions = make('nav', 'phone-header-actions'), views = make('div', 'phone-views');
@@ -74,10 +74,35 @@
   const brand = document.querySelector('.study-header h1'), defaultBrand = brand.textContent;
   const detail = make('section', 'phone-detail'), sceneNote = $('study-scene-note'); detail.hidden = true; shell.append(detail);
   const backdrop = make('div', 'phone-backdrop'); backdrop.hidden = true; backdrop.setAttribute('aria-hidden', 'true'); shell.append(backdrop);
-  const modalKeys = new Set(['info', 'settings', 'scenes', 'sceneInfo']);
+  const modalKeys = new Set(['info', 'settings', 'scenes', 'sceneInfo', 'script']);
   panes.tools.append(document.querySelector('.study-controls')); panes.memo.append(document.querySelector('.study-memo'));
   const share = make('details', 'phone-share'), shareTitle = make('summary', ''); share.append(shareTitle); const shareBlock = document.querySelector('.study-share'); shareBlock.before(share); share.append(shareBlock);
   panes.info.append(document.querySelector('.study-show-info'), $('study-change-summary'));
+  const scriptOpenInfo = make('button', 'phone-script-info'); scriptOpenInfo.type = 'button'; scriptOpenInfo.onclick = () => show('script'); panes.info.prepend(scriptOpenInfo);
+  const scriptList = make('div', 'phone-script'); panes.script.append(scriptList); let scriptSig = '', scriptWasOpen = false;
+  function renderScript() {
+    const isOpen = opened === 'script';
+    if (!isOpen) { scriptWasOpen = false; return; }
+    const options = [...$('study-scenes').options], sig = rehearsalLines.map(l => l.id).join(',') + '|' + options.map(o => o.value + o.textContent).join('|');
+    if (sig !== scriptSig) {
+      scriptSig = sig; const children = [];
+      for (const o of options) {
+        const own = rehearsalLines.filter(l => l.sceneId === o.value); if (!own.length) continue;
+        const head = make('h3', 'phone-script-scene'); head.textContent = o.textContent; children.push(head);
+        for (const line of own) {
+          const b = make('button', 'phone-script-line'); b.type = 'button'; b.dataset.line = line.id; b.dataset.scene = line.sceneId; b.style.borderLeftColor = line.color || 'var(--study-accent)';
+          const who = make('span', 'phone-script-speaker'), what = make('span', 'phone-script-text'); who.textContent = line.speaker; what.textContent = line.text;
+          b.append(who, what);
+          b.onclick = () => { const index = rehearsalLines.findIndex(l => l.id === line.id && l.sceneId === line.sceneId); if (index < 0) return; if (linesOn) { goLine(index); show(''); sync(); } else setLines(true, line.id); };
+          children.push(b);
+        }
+      }
+      scriptList.replaceChildren(...children);
+    }
+    let current = null;
+    for (const b of scriptList.querySelectorAll('.phone-script-line')) { const on = linesOn && b.dataset.line === lineId && b.dataset.scene === $('study-scenes').value; b.setAttribute('aria-current', String(on)); b.title = t('scriptJump'); if (on) current = b; }
+    if (!scriptWasOpen) { scriptWasOpen = true; (current || scriptList.querySelector(`[data-scene="${CSS.escape($('study-scenes').value)}"]`))?.scrollIntoView({ block: 'center' }); }
+  }
   const previewShows = window.__STAGE_SKETCH_PHONE_PREVIEW__?.shows || [], showSwitch = make('section', 'phone-show-switch'), showSwitchTitle = make('h3', ''), showList = make('div', 'phone-scene-list');
   const currentShow = window.__STAGE_SKETCH_PHONE_PREVIEW__?.sample;
   if (previewShows.length > 1) {
@@ -96,7 +121,7 @@
   const linesRegion = make('section', 'phone-lines'); linesRegion.id = 'phone-lines-region';
   linesRegion.hidden = true; linesRegion.setAttribute('role', 'region');
   const linesHead = make('div', 'phone-lines-head'), linesMeta = make('span', 'phone-lines-meta');
-  linesHead.append(linesMeta);
+  const scriptBtn = button('phone-script-open', 'script', () => show('script')); linesHead.append(linesMeta, scriptBtn);
   const lineLive = make('div', 'phone-line-live'); lineLive.setAttribute('aria-live', 'polite'); lineLive.setAttribute('aria-atomic', 'true');
   const lineSpeaker = make('p', 'phone-line-speaker'), lineText = make('p', 'phone-line-text study-note-text');
   lineLive.append(lineSpeaker, lineText);
@@ -296,6 +321,7 @@
   function sync() {
     const ready = !$('study-workspace').hidden && !$('study-note-fields').disabled;
     if (ready && pendingLines) { const saved = pendingLines; pendingLines = null; setLines(true, saved.lineId, true); return; }
+    scriptBtn.setAttribute('aria-label', t('scriptOpen')); scriptBtn.title = t('scriptOpen'); scriptOpenInfo.hidden = !rehearsalLines.length; scriptOpenInfo.textContent = t('scriptOpen'); renderScript();
     previous.disabled = $('study-prev').disabled || !ready; next.disabled = $('study-next').disabled || !ready; previous.setAttribute('aria-label', $('study-prev').getAttribute('aria-label')); next.setAttribute('aria-label', $('study-next').getAttribute('aria-label'));
     current.textContent = $('study-scene-heading').textContent || t('scenes'); current.disabled = !ready; current.setAttribute('aria-label', t('scenes') + ' · ' + current.textContent);
     const viewNow = $('study-view').value, controlsKey = viewNow === 'plan' ? 'controlsPlan' : viewNow === 'both' ? 'controlsBoth' : 'controlsFront';

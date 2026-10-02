@@ -192,3 +192,13 @@ body.study-phone { --phone-lines-ratio: .4; --phone-line-size: clamp(1.45rem, 6.
 .study-phone .phone-zoom-row button { min-height: 44px; flex: 1 1 120px; }
 .study-phone .phone-lines[data-len="long"] .phone-line-text { font-size: calc(var(--phone-line-size) * .84); }
 .study-phone .phone-lines[data-len="xlong"] .phone-line-text { font-size: calc(var(--phone-line-size) * .7); }
+.study-phone .phone-lines-head #phone-script-open { flex: 0 0 var(--phone-hit); width: var(--phone-hit); height: var(--phone-hit); min-width: var(--phone-hit); min-height: var(--phone-hit); padding: var(--study-s2); display: flex; align-items: center; justify-content: center; color: var(--study-accent-strong); background: var(--study-identity-bg); border-color: var(--study-accent); }
+.study-phone #phone-script-open svg { width: var(--phone-icon); height: var(--phone-icon); }
+.study-phone .phone-script-info { width: 100%; min-height: 44px; margin: 0 0 var(--study-s3); text-align: left; font: 14px/1.5 var(--sans); }
+.study-phone .phone-script { display: grid; gap: 4px; }
+.study-phone .phone-script-scene { margin: var(--study-s3) 0 var(--study-s1); font-size: var(--phone-control); font-weight: 500; letter-spacing: .04em; color: var(--study-accent-strong); position: sticky; top: -12px; padding: 4px 0; background: var(--study-bg); }
+.study-phone .phone-script-scene:first-child { margin-top: 0; }
+.study-phone .phone-script-line { display: grid; gap: 2px; text-align: left; min-height: 44px; padding: 6px 10px; border-left-width: 4px; border-left-style: solid; font: 15px/1.6 var(--sans); }
+.study-phone .phone-script-line[aria-current="true"] { background: var(--study-accent-strong); color: var(--study-bg); }
+.study-phone .phone-script-speaker { font-size: 12px; opacity: .8; }
+.study-phone .phone-script-text { overflow-wrap: anywhere; }
