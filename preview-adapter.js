@@ -12,10 +12,10 @@
   });
   const originalFetch = window.fetch.bind(window);
   let payloadPromise = null;
-  const payload = () => payloadPromise ||= originalFetch('./samples/' + sample + '.json?b=20261002-1256', { cache: 'no-store' }).then(r => {
+  const payload = () => payloadPromise ||= originalFetch('./samples/' + sample + '.json?b=20261002-1257', { cache: 'no-store' }).then(r => {
     if (!r.ok) throw new Error('sample-missing'); return r.json();
   });
-  window.__STAGE_SKETCH_PHONE_PREVIEW__ = { build: "20261002-1256", source: "0.2.69 7af5a27", sample, submissions: 0, shows: [{"key":"romeo-juliet","title":"ロミオとジュリエット（RJセカンド）","titleEn":"Romeo and Juliet (second draft)"},{"key":"feature-test","title":"テスト: 全機能の試験場","titleEn":"Feature test show"},{"key":"four-outlines","title":"四つの輪郭（AI用JSONの標準見本）","titleEn":"Four Outlines (AI JSON sample)"}] };
+  window.__STAGE_SKETCH_PHONE_PREVIEW__ = { build: "20261002-1257", source: "0.2.69 7af5a27", sample, submissions: 0, shows: [{"key":"romeo-juliet","title":"ロミオとジュリエット（RJセカンド）","titleEn":"Romeo and Juliet (second draft)"},{"key":"feature-test","title":"テスト: 全機能の試験場","titleEn":"Feature test show"},{"key":"four-outlines","title":"四つの輪郭（AI用JSONの標準見本）","titleEn":"Four Outlines (AI JSON sample)"}] };
   window.fetch = async (input, options = {}) => {
     const url = new URL(input instanceof Request ? input.url : String(input), location.href);
     const method = String(options.method || (input instanceof Request ? input.method : 'GET')).toUpperCase();

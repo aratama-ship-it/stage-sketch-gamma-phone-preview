@@ -1,7 +1,7 @@
 /* Based on the main PWA's stage-phone-viewer: stacked portrait / 64px landscape rail. */
 html.study-phone, html.study-phone body { width: 100%; height: 100%; overflow: hidden; overscroll-behavior: none; }
 body.study-phone {
-  --phone-header: 52px; --phone-scenes: 44px; --phone-tools: 48px; --phone-rail: 64px;
+  --phone-header: 52px; --phone-scenes: 44px; --phone-tools: 56px; --phone-rail: 64px;
   --phone-hit: 40px; --phone-icon: 18px; --phone-modal-width: 420px; --phone-modal-vw: 92vw;
   --phone-modal-ratio: .8; --phone-detail-ratio: .3; --phone-dot: 5px; --phone-overlay-opacity: .8;
   --phone-brand: 18px; --phone-control: 12px; --phone-heading: 14px; --phone-panel: 360px;
@@ -202,3 +202,8 @@ body.study-phone { --phone-lines-ratio: .4; --phone-line-size: clamp(1.45rem, 6.
 .study-phone .phone-script-line[aria-current="true"] { background: var(--study-accent-strong); color: var(--study-bg); }
 .study-phone .phone-script-speaker { font-size: 12px; opacity: .8; }
 .study-phone .phone-script-text { overflow-wrap: anywhere; }
+.study-phone .phone-steps button { width: 68px; }
+.study-phone .phone-steps svg { width: 30px; height: 30px; flex: 0 0 30px; }
+@media (orientation: landscape) {
+  .study-phone .phone-steps button { width: 76px; height: 64px; }
+}
