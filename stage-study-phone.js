@@ -235,6 +235,7 @@
       linesFlow.append(ghost);
     }
     linesRegion.classList.toggle('is-vertical', vertical);
+    const lineLength = (line?.text || '').length; linesRegion.dataset.len = lineLength > 70 ? 'xlong' : lineLength > 40 ? 'long' : 'short';
     const seconds = line?.seconds;
     const time = seconds == null ? '' : `${Math.floor(seconds / 60)}:${String(Math.floor(seconds % 60)).padStart(2, '0')}`;
     setText(linesMeta, [line ? `${t('lineCount')} ${index + 1} / ${rehearsalLines.length}` : t('linesMode'), $('study-scene-heading').textContent.split(' · ')[0], time].filter(Boolean).join(' · '));

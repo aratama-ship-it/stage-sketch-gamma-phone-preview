@@ -1,7 +1,7 @@
 {
   "kind": "stage-sketch-gamma-phone-share-preview",
-  "buildId": "20261002-0946",
-  "generatedAt": "2026-10-02T00:46:46.607Z",
+  "buildId": "20261002-0959",
+  "generatedAt": "2026-10-02T00:59:32.554Z",
   "source": {
     "dir": "/Users/arata/git-repos/gamma-publish-20261001",
     "commit": "7af5a27",
@@ -45,12 +45,12 @@
     {
       "file": "stage-study-phone.css",
       "sourceSha256": "e69d639b82673c0f220a2aff5db7e437fb8b1f8d2e87264c6dc0f4c248f5cade",
-      "sha256": "746e783661af4a0bf18e6b5bdf64bbe20581adb423be5f049445204e5d662b93"
+      "sha256": "ad780d4bb8691105ecff90cbd3780b556c858ee275fe7c8d013e179e6ee8eb4c"
     },
     {
       "file": "stage-study-phone.js",
       "sourceSha256": "db40bede4b17a7383da4ec05f01434e7ceecf0abbb83bd31e21a4d8db45b1713",
-      "sha256": "0e2111d9c98878221fe95048580e45fa677c2a895924e7c7bc7d3368a23f00e0"
+      "sha256": "f993e19f5e7c13d1347884a50e13db2bd5889aa0c687ab75a6283d7cb8c32c46"
     }
   ],
   "patches": [
@@ -135,16 +135,16 @@
     },
     {
       "file": "viewer.html",
-      "sourceSha256": "7ef7b626abb3726406d83743b94e366d41d27f55a689e594c4afd9fc5ea5afaa",
-      "sha256": "3c5b64357cd5c1d3969ab7b8b0d4b280fd2af712799457b6bae966048a3439ce",
+      "sourceSha256": "6efb67898fa93404133ea0e65ddc60e198c48414f32063d69994c4a3ba8972b6",
+      "sha256": "1287156f3a1687bcb5cdd5a1164c90bcd43fa751b4841b1f0255faae13c927a9",
       "changes": [
         "retired pinned-note UI"
       ]
     },
     {
       "file": "study-frame.html",
-      "sourceSha256": "1e873e51a312d9b963052a97b318b6cc4516da79564be9d6d829eed83eb03047",
-      "sha256": "86c6061ff04206f3e0679e48d2daef333682c87be0f29411038b005594720776",
+      "sourceSha256": "0a8be56c386b3e68af0b08042895c07847f4bcfd75e3246548c0e57f71e7b97e",
+      "sha256": "14917c22093604164fd23f8b2a1080cbcdf30eb8f7c991e58fe4998e384e2771",
       "changes": [
         "lighting model before stage modules",
         "lighting render dependencies in main-app order"
@@ -152,8 +152,8 @@
     },
     {
       "file": "stage-study-viewer.js",
-      "sourceSha256": "f67d330166d7430c374cc3f9b323ff73775d7caa111e5d4ba4407e9174e4a06b",
-      "sha256": "07f3684ac46535c2cd93d6fc498ce47e673ba5ff2b2042672f40a4c1532053b5",
+      "sourceSha256": "c8e7c13f551457da2cc3b88fdb72c67d26dcc04b2547f946986cbe351d2f9b4c",
+      "sha256": "44e1d2470ca113fd36031d7232034d92fbaaf4e83e7741a506986691b14c329c",
       "changes": [
         "read-only loaded project event for line rehearsal",
         "retire sticky UI while retaining inert compatibility nodes",
@@ -184,7 +184,7 @@
     },
     "index.html": {
       "bytes": 3690,
-      "sha256": "b03c2c6f4eee95e3a5ecf06a91ca5d28eb1bc9acac918561576f628dc1194aa4"
+      "sha256": "1105583e2ebe0b8dc45936dc26032a0fa9dccfe035f49c27bd151c372495d8c7"
     },
     "light-design/laser-effects.js": {
       "bytes": 8370,
@@ -196,7 +196,7 @@
     },
     "preview-adapter.js": {
       "bytes": 2954,
-      "sha256": "6bac4a655fc26e7c38e6e47242d68c8263176dfc627c430cdfe1e50b38786bb4"
+      "sha256": "c29b4be3a73f264bdf27c7a7ec1d7959b98dc9b64976b2e44f93234351a02d85"
     },
     "samples/feature-test.json": {
       "bytes": 328856,
@@ -244,7 +244,7 @@
     },
     "stage-study-continuity.js": {
       "bytes": 12723,
-      "sha256": "08ed99a6e0268aeb32faebf2a675bd663b86733869dcde0d67a34e4f3a66b2b9"
+      "sha256": "e0e6e982709796652595e6942db54f4efb47f32f352a23f63fb3549905a59823"
     },
     "stage-study-frame.js": {
       "bytes": 7998,
@@ -263,12 +263,12 @@
       "sha256": "556c0ee93c076c8507afa9f6de267514ff2c03818bec6629b1400ed65c1a414f"
     },
     "stage-study-phone.css": {
-      "bytes": 19792,
-      "sha256": "746e783661af4a0bf18e6b5bdf64bbe20581adb423be5f049445204e5d662b93"
+      "bytes": 20235,
+      "sha256": "ad780d4bb8691105ecff90cbd3780b556c858ee275fe7c8d013e179e6ee8eb4c"
     },
     "stage-study-phone.js": {
-      "bytes": 35343,
-      "sha256": "0e2111d9c98878221fe95048580e45fa677c2a895924e7c7bc7d3368a23f00e0"
+      "bytes": 35483,
+      "sha256": "f993e19f5e7c13d1347884a50e13db2bd5889aa0c687ab75a6283d7cb8c32c46"
     },
     "stage-study-private.js": {
       "bytes": 4694,
@@ -284,7 +284,7 @@
     },
     "stage-study-viewer.js": {
       "bytes": 42193,
-      "sha256": "07f3684ac46535c2cd93d6fc498ce47e673ba5ff2b2042672f40a4c1532053b5"
+      "sha256": "44e1d2470ca113fd36031d7232034d92fbaaf4e83e7741a506986691b14c329c"
     },
     "stage-study.css": {
       "bytes": 32727,
@@ -300,7 +300,7 @@
     },
     "study-frame.html": {
       "bytes": 315680,
-      "sha256": "86c6061ff04206f3e0679e48d2daef333682c87be0f29411038b005594720776"
+      "sha256": "14917c22093604164fd23f8b2a1080cbcdf30eb8f7c991e58fe4998e384e2771"
     },
     "style.css": {
       "bytes": 511326,
@@ -308,7 +308,7 @@
     },
     "viewer.html": {
       "bytes": 22062,
-      "sha256": "3c5b64357cd5c1d3969ab7b8b0d4b280fd2af712799457b6bae966048a3439ce"
+      "sha256": "1287156f3a1687bcb5cdd5a1164c90bcd43fa751b4841b1f0255faae13c927a9"
     }
   }
 }
